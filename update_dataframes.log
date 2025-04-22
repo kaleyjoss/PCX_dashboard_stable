@@ -1,0 +1,190 @@
+2025-04-22 17:20:51,883 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:20:51,883 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:20:51,954 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:20:51,961 - INFO - update_dataframes.py:48 - Subs in subject.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 17:20:51,961 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/mindlamp_data
+2025-04-22 17:20:51,961 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in power_activityScores_hourly.csv. Type: <class 'str'>
+2025-04-22 17:20:51,961 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in accel_activityScores_hourly.csv. Type: <class 'str'>
+2025-04-22 17:20:51,963 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_power_activityScores_hourly-day1to64.csv
+2025-04-22 17:20:51,965 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_gps_dist_hourly-day1to64.csv
+2025-04-22 17:20:51,966 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_accel_activityScores_hourly-day1to64.csv
+2025-04-22 17:20:51,967 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_power_activityScores_hourly-day1to125.csv
+2025-04-22 17:20:51,968 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to124.csv
+2025-04-22 17:20:51,969 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to118.csv
+2025-04-22 17:20:51,969 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to119.csv
+2025-04-22 17:20:51,970 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to125.csv
+2025-04-22 17:20:51,971 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to109.csv
+2025-04-22 17:20:51,972 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to121.csv
+2025-04-22 17:20:51,972 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to120.csv
+2025-04-22 17:20:51,973 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to108.csv
+2025-04-22 17:20:51,974 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to122.csv
+2025-04-22 17:20:51,974 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to123.csv
+2025-04-22 17:20:51,975 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to106.csv
+2025-04-22 17:20:51,976 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to112.csv
+2025-04-22 17:20:51,976 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to113.csv
+2025-04-22 17:20:51,977 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to107.csv
+2025-04-22 17:20:51,977 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to111.csv
+2025-04-22 17:20:51,978 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to105.csv
+2025-04-22 17:20:51,979 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to104.csv
+2025-04-22 17:20:51,980 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to110.csv
+2025-04-22 17:20:51,980 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to114.csv
+2025-04-22 17:20:51,981 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to115.csv
+2025-04-22 17:20:51,982 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to117.csv
+2025-04-22 17:20:51,982 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to116.csv
+2025-04-22 17:20:51,983 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_accel_activityScores_hourly-day1to125.csv
+2025-04-22 17:20:51,984 - INFO - update_dataframes.py:101 - Found power files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:20:51,984 - INFO - update_dataframes.py:102 - Found accel files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:20:51,984 - INFO - update_dataframes.py:103 - Found gps files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:20:51,985 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/Data-dashboard/utilities/sheets/key_to_readable_name.xlsx
+2025-04-22 17:21:08,295 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:21:08,295 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:21:08,334 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:21:08,340 - INFO - update_dataframes.py:48 - Subs in subject.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 17:21:08,340 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/mindlamp_data
+2025-04-22 17:21:08,340 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in power_activityScores_hourly.csv. Type: <class 'str'>
+2025-04-22 17:21:08,340 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in accel_activityScores_hourly.csv. Type: <class 'str'>
+2025-04-22 17:21:08,340 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_power_activityScores_hourly-day1to64.csv
+2025-04-22 17:21:08,341 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_gps_dist_hourly-day1to64.csv
+2025-04-22 17:21:08,342 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_accel_activityScores_hourly-day1to64.csv
+2025-04-22 17:21:08,342 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_power_activityScores_hourly-day1to125.csv
+2025-04-22 17:21:08,343 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to124.csv
+2025-04-22 17:21:08,343 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to118.csv
+2025-04-22 17:21:08,344 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to119.csv
+2025-04-22 17:21:08,344 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to125.csv
+2025-04-22 17:21:08,345 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to109.csv
+2025-04-22 17:21:08,345 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to121.csv
+2025-04-22 17:21:08,346 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to120.csv
+2025-04-22 17:21:08,346 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to108.csv
+2025-04-22 17:21:08,347 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to122.csv
+2025-04-22 17:21:08,347 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to123.csv
+2025-04-22 17:21:08,348 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to106.csv
+2025-04-22 17:21:08,348 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to112.csv
+2025-04-22 17:21:08,348 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to113.csv
+2025-04-22 17:21:08,349 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to107.csv
+2025-04-22 17:21:08,349 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to111.csv
+2025-04-22 17:21:08,350 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to105.csv
+2025-04-22 17:21:08,350 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to104.csv
+2025-04-22 17:21:08,351 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to110.csv
+2025-04-22 17:21:08,351 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to114.csv
+2025-04-22 17:21:08,352 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to115.csv
+2025-04-22 17:21:08,352 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to117.csv
+2025-04-22 17:21:08,353 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to116.csv
+2025-04-22 17:21:08,353 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_accel_activityScores_hourly-day1to125.csv
+2025-04-22 17:21:08,354 - INFO - update_dataframes.py:101 - Found power files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:08,354 - INFO - update_dataframes.py:102 - Found accel files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:08,354 - INFO - update_dataframes.py:103 - Found gps files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:08,355 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/Data-dashboard/utilities/sheets/key_to_readable_name.xlsx
+2025-04-22 17:21:08,371 - INFO - subject.py:139 -          reftime  day timeofday  weekday  activityScore_hour01  ...  activityScore_hour24      subject_id  sensor  daily_hr_average  daily_mins
+64  1.727400e+12    1   0:00:00        7                   NaN  ...                   NaN  sub-PCX-PCT927   accel               NaN        0.00
+65  1.727480e+12    2   0:00:00        1                   NaN  ...                  4.60  sub-PCX-PCT927   accel          4.341333       65.12
+66  1.727570e+12    3   0:00:00        2                  3.82  ...                  1.82  sub-PCX-PCT927   accel          3.812083       91.49
+67  1.727650e+12    4   0:00:00        3                  2.12  ...                   NaN  sub-PCX-PCT927   accel          3.292727       72.44
+68  1.727740e+12    5   0:00:00        4                   NaN  ...                  2.55  sub-PCX-PCT927   accel          3.612500       43.35
+
+[5 rows x 32 columns]
+2025-04-22 17:21:08,379 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:21:08,379 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:21:08,386 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:21:08,392 - INFO - dashboard.py:59 - Subs in dashboard.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 17:21:08,395 - INFO - dash.py:2254 - Dash is running on http://127.0.0.1:8090/
+
+2025-04-22 17:21:09,188 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:21:09,188 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:21:09,231 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:21:09,237 - INFO - update_dataframes.py:48 - Subs in subject.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 17:21:09,238 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/mindlamp_data
+2025-04-22 17:21:09,238 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in power_activityScores_hourly.csv. Type: <class 'str'>
+2025-04-22 17:21:09,238 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in accel_activityScores_hourly.csv. Type: <class 'str'>
+2025-04-22 17:21:09,238 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_power_activityScores_hourly-day1to64.csv
+2025-04-22 17:21:09,239 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_gps_dist_hourly-day1to64.csv
+2025-04-22 17:21:09,239 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_accel_activityScores_hourly-day1to64.csv
+2025-04-22 17:21:09,240 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_power_activityScores_hourly-day1to125.csv
+2025-04-22 17:21:09,241 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to124.csv
+2025-04-22 17:21:09,241 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to118.csv
+2025-04-22 17:21:09,242 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to119.csv
+2025-04-22 17:21:09,242 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to125.csv
+2025-04-22 17:21:09,242 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to109.csv
+2025-04-22 17:21:09,243 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to121.csv
+2025-04-22 17:21:09,243 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to120.csv
+2025-04-22 17:21:09,244 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to108.csv
+2025-04-22 17:21:09,244 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to122.csv
+2025-04-22 17:21:09,245 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to123.csv
+2025-04-22 17:21:09,245 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to106.csv
+2025-04-22 17:21:09,246 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to112.csv
+2025-04-22 17:21:09,246 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to113.csv
+2025-04-22 17:21:09,247 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to107.csv
+2025-04-22 17:21:09,247 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to111.csv
+2025-04-22 17:21:09,247 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to105.csv
+2025-04-22 17:21:09,248 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to104.csv
+2025-04-22 17:21:09,248 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to110.csv
+2025-04-22 17:21:09,249 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to114.csv
+2025-04-22 17:21:09,249 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to115.csv
+2025-04-22 17:21:09,250 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to117.csv
+2025-04-22 17:21:09,250 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to116.csv
+2025-04-22 17:21:09,251 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_accel_activityScores_hourly-day1to125.csv
+2025-04-22 17:21:09,251 - INFO - update_dataframes.py:101 - Found power files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:09,251 - INFO - update_dataframes.py:102 - Found accel files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:09,251 - INFO - update_dataframes.py:103 - Found gps files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:09,252 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/Data-dashboard/utilities/sheets/key_to_readable_name.xlsx
+2025-04-22 17:21:09,267 - INFO - subject.py:139 -          reftime  day timeofday  weekday  activityScore_hour01  ...  activityScore_hour24      subject_id  sensor  daily_hr_average  daily_mins
+64  1.727400e+12    1   0:00:00        7                   NaN  ...                   NaN  sub-PCX-PCT927   accel               NaN        0.00
+65  1.727480e+12    2   0:00:00        1                   NaN  ...                  4.60  sub-PCX-PCT927   accel          4.341333       65.12
+66  1.727570e+12    3   0:00:00        2                  3.82  ...                  1.82  sub-PCX-PCT927   accel          3.812083       91.49
+67  1.727650e+12    4   0:00:00        3                  2.12  ...                   NaN  sub-PCX-PCT927   accel          3.292727       72.44
+68  1.727740e+12    5   0:00:00        4                   NaN  ...                  2.55  sub-PCX-PCT927   accel          3.612500       43.35
+
+[5 rows x 32 columns]
+2025-04-22 17:21:09,274 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:21:09,274 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:21:09,280 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:21:09,286 - INFO - dashboard.py:59 - Subs in dashboard.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 17:21:15,262 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:21:15,263 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:21:15,303 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:21:15,309 - INFO - update_dataframes.py:48 - Subs in subject.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 17:21:15,309 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/mindlamp_data
+2025-04-22 17:21:15,310 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in power_activityScores_hourly.csv. Type: <class 'str'>
+2025-04-22 17:21:15,310 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in accel_activityScores_hourly.csv. Type: <class 'str'>
+2025-04-22 17:21:15,310 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_power_activityScores_hourly-day1to64.csv
+2025-04-22 17:21:15,311 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_gps_dist_hourly-day1to64.csv
+2025-04-22 17:21:15,312 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_accel_activityScores_hourly-day1to64.csv
+2025-04-22 17:21:15,312 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_power_activityScores_hourly-day1to125.csv
+2025-04-22 17:21:15,313 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to124.csv
+2025-04-22 17:21:15,313 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to118.csv
+2025-04-22 17:21:15,314 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to119.csv
+2025-04-22 17:21:15,315 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to125.csv
+2025-04-22 17:21:15,315 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to109.csv
+2025-04-22 17:21:15,316 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to121.csv
+2025-04-22 17:21:15,316 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to120.csv
+2025-04-22 17:21:15,317 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to108.csv
+2025-04-22 17:21:15,317 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to122.csv
+2025-04-22 17:21:15,318 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to123.csv
+2025-04-22 17:21:15,318 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to106.csv
+2025-04-22 17:21:15,319 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to112.csv
+2025-04-22 17:21:15,319 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to113.csv
+2025-04-22 17:21:15,320 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to107.csv
+2025-04-22 17:21:15,320 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to111.csv
+2025-04-22 17:21:15,321 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to105.csv
+2025-04-22 17:21:15,321 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to104.csv
+2025-04-22 17:21:15,322 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to110.csv
+2025-04-22 17:21:15,322 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to114.csv
+2025-04-22 17:21:15,322 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to115.csv
+2025-04-22 17:21:15,323 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to117.csv
+2025-04-22 17:21:15,323 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to116.csv
+2025-04-22 17:21:15,324 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_accel_activityScores_hourly-day1to125.csv
+2025-04-22 17:21:15,325 - INFO - update_dataframes.py:101 - Found power files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:15,325 - INFO - update_dataframes.py:102 - Found accel files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:15,325 - INFO - update_dataframes.py:103 - Found gps files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-04-22 17:21:15,325 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/Data-dashboard/utilities/sheets/key_to_readable_name.xlsx
+2025-04-22 17:21:15,357 - INFO - subject.py:139 -          reftime  day timeofday  weekday  activityScore_hour01  ...  activityScore_hour24      subject_id  sensor  daily_hr_average  daily_mins
+64  1.727400e+12    1   0:00:00        7                   NaN  ...                   NaN  sub-PCX-PCT927   accel               NaN        0.00
+65  1.727480e+12    2   0:00:00        1                   NaN  ...                  4.60  sub-PCX-PCT927   accel          4.341333       65.12
+66  1.727570e+12    3   0:00:00        2                  3.82  ...                  1.82  sub-PCX-PCT927   accel          3.812083       91.49
+67  1.727650e+12    4   0:00:00        3                  2.12  ...                   NaN  sub-PCX-PCT927   accel          3.292727       72.44
+68  1.727740e+12    5   0:00:00        4                   NaN  ...                  2.55  sub-PCX-PCT927   accel          3.612500       43.35
+
+[5 rows x 32 columns]
+2025-04-22 17:21:15,364 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:21:15,364 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:21:15,371 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:21:15,376 - INFO - dashboard.py:59 - Subs in dashboard.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])

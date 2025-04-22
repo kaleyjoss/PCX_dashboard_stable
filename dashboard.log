@@ -1,0 +1,18 @@
+2025-04-22 16:59:17,452 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 16:59:17,452 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 16:59:17,626 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 16:59:17,634 - INFO - dashboard.py:59 - Subs in dashboard.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 16:59:17,642 - INFO - dash.py:2254 - Dash is running on http://127.0.0.1:8090/
+
+2025-04-22 16:59:18,489 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 16:59:18,490 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 16:59:18,529 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 16:59:18,535 - INFO - dashboard.py:59 - Subs in dashboard.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 17:15:13,289 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:15:13,290 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:15:13,372 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:15:13,380 - INFO - dashboard.py:59 - Subs in dashboard.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-04-22 17:15:18,445 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/subject_logs
+2025-04-22 17:15:18,445 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
+2025-04-22 17:15:18,484 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
+2025-04-22 17:15:18,489 - INFO - dashboard.py:59 - Subs in dashboard.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])

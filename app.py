@@ -2,7 +2,9 @@ import dash
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 import logging
-
+import importlib
+from scripts import update_dataframes
+importlib.reload(update_dataframes)
 
 
 # Create app
