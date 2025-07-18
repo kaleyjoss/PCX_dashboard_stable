@@ -1,0 +1,36 @@
+﻿readable_name,field
+PCR-ID,id
+Clinical-Diagnosis,clin_diagnosis1
+Clinical-Diagnosis-(Secondary),clin_diagnosis2
+MRI-Session-Date,mri_scan_date
+Consent-to-study?,mri_consent
+Consent-to-NDA?,mri_consent_NDA
+Consent-to-mindLAMP?,mri_consent_mindLAMP
+T1w,mri_PCR ID_ses-001_T1w
+T2w,mri_PCR ID_ses-001_T2w
+Resting-state-1,mri_PCR ID_ses-001_task-rest_run-01_func
+Fmap-epi-AP,mri_PCR ID_ses-001_dir-AP_epi
+Fmap-epi-PA,mri_PCR ID_ses-001_dir-PA_epi
+Resting-state-2,mri_PCR ID_ses-001_task-rest_run-02_func
+Fmap-fieldmap,mri_PCR ID_ses-001_acq-B0_fieldmap
+Flanker-task,mri_PCR ID_ses-001_task-flanker_run-02_func
+Language-Task,mri_PCR ID_ses-001_task-language_run-02_func
+The-Elevator,mri_PCR ID_ses-001_task-theElevator_run-02_func
+DWI,mri_PCR ID_ses-001_dwi
+Fmap-phasediff-AP,mri_PCR ID_ses-001_dir-AP_phasediff
+Fmap-phasediff-PA,mri_PCR ID_ses-001_dir-PA_phasediff
+Momentous,mri_PCR ID_ses-001_task-momentous_run-02_func
+Resting-state-3,mri_PCR ID_ses-001_task-rest_run-03_func
+Resting-state-4,mri_PCR ID_ses-001_task-rest_run-04_func
+MRI-Scan-finished?,mri_scan_done
+MRI-Scan-Notes,mri_scan_notes
+Movie-rater-task ,movie_rater_task
+Self-report-battery-(MRI),mri_self-report_battery
+MRI-Session-notes,mri_session_notes
+Sent-post-scan-email?,email_post_mri
+Sent-MRI-session-payment?,pay_MRI_session
+Sent-supplemental-battery-payment?,pay_supplemental
+Is-the-raw-data-in-Flywheel?,data_in_flywheel
+Data-converted-to-BIDS,data_BIDS_curated
+Data-converted-to-fMRIPrep,data_fMRIPrep
+Data-downloaded-to-Amarel,data_downloaded_to_amarel

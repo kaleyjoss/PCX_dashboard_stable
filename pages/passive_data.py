@@ -25,7 +25,7 @@ if 'scripts.sub_id' in sys.modules:
 
 
 # Register page into dash app as pagename
-dash.register_page(__name__, path="/subject")
+dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
 
 # Set PCX Project Data path
 pcx_dir = os.path.expanduser("~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2")
@@ -148,3 +148,4 @@ def cb(subject_id, days):
 sub = 'sub-PCX-PCT927'
 sub_df = accel_df.query("subject_id == @sub")
 logging.info(sub_df.head())
+

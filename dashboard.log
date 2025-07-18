@@ -16,3 +16,892 @@
 2025-04-22 17:15:18,445 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot in sub-PCR2Pilot.xlsx
 2025-04-22 17:15:18,484 - INFO - sub_id.py:47 -  Found sub-PCR2Pilot2 in sub-PCR2Pilot2.xlsx
 2025-04-22 17:15:18,489 - INFO - dashboard.py:59 - Subs in dashboard.py has keys dict_keys(['sub-PCR2Pilot', 'sub-PCR2Pilot2'])
+2025-07-17 15:22:11,240 - INFO - dash.py:2254 - Dash is running on http://127.0.0.1:8050/
+
+2025-07-18 07:38:23,887 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/1038251934.py", line 86, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:41:16,922 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/2253842512.py", line 86, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:41:47,030 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/735697535.py", line 87, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:41:49,324 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/735697535.py", line 87, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:42:02,404 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/1649521019.py", line 87, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:42:03,900 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/1649521019.py", line 87, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:42:47,527 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3681408536.py", line 88, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:42:49,752 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3681408536.py", line 88, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:43:05,349 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3906628118.py", line 89, in cb
+    fig = px.imshow(filtered_df, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:43:06,968 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3906628118.py", line 89, in cb
+    fig = px.imshow(filtered_df, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:43:29,559 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/1670765021.py", line 89, in cb
+    fig = px.imshow(filtered_df, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:43:31,565 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/1670765021.py", line 89, in cb
+    fig = px.imshow(filtered_df, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:43:38,640 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3862641560.py", line 89, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:43:40,030 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3862641560.py", line 89, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:48:40,279 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3638319232.py", line 92, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:48:58,870 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/870707223.py", line 92, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:50:32,135 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/2803799882.py", line 92, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:51:49,844 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3425850805.py", line 91, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:51:51,604 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3425850805.py", line 91, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:51:52,578 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3425850805.py", line 91, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:51:57,089 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3425850805.py", line 91, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:55:18,250 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/472261153.py", line 91, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:56:56,002 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3066307793.py", line 91, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 07:57:04,558 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3890463190.py", line 92, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 08:01:21,828 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/2957893861.py", line 91, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 08:01:31,406 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/584512979.py", line 92, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 09:04:49,909 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_99824/3983635707.py", line 90, in cb
+    fig = px.imshow(filtered_df_bin, origin='lower',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/plotly/express/_imshow.py", line 388, in imshow
+    raise ValueError(
+ValueError: The length of the y vector must match the length of the first dimension of the img matrix.
+2025-07-18 09:11:25,546 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/mindlamp_data
+2025-07-18 09:11:25,547 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in power_activityScores_hourly.csv. Type: <class 'str'>
+2025-07-18 09:11:25,547 - WARNING - sub_id.py:51 - ⚠️ Warning: no subject ID found in accel_activityScores_hourly.csv. Type: <class 'str'>
+2025-07-18 09:11:25,549 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_power_activityScores_hourly-day1to64.csv
+2025-07-18 09:11:25,553 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_gps_dist_hourly-day1to64.csv
+2025-07-18 09:11:25,555 - INFO - sub_id.py:47 -  Found sub-PCX-PCT929 in PCX-PCT929-phone_accel_activityScores_hourly-day1to64.csv
+2025-07-18 09:11:25,556 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_power_activityScores_hourly-day1to125.csv
+2025-07-18 09:11:25,558 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to124.csv
+2025-07-18 09:11:25,559 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to118.csv
+2025-07-18 09:11:25,560 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to119.csv
+2025-07-18 09:11:25,562 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to125.csv
+2025-07-18 09:11:25,563 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to109.csv
+2025-07-18 09:11:25,564 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to121.csv
+2025-07-18 09:11:25,564 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to120.csv
+2025-07-18 09:11:25,565 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to108.csv
+2025-07-18 09:11:25,567 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to122.csv
+2025-07-18 09:11:25,568 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to123.csv
+2025-07-18 09:11:25,569 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to106.csv
+2025-07-18 09:11:25,570 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to112.csv
+2025-07-18 09:11:25,571 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to113.csv
+2025-07-18 09:11:25,572 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to107.csv
+2025-07-18 09:11:25,572 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to111.csv
+2025-07-18 09:11:25,573 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to105.csv
+2025-07-18 09:11:25,574 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to104.csv
+2025-07-18 09:11:25,575 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to110.csv
+2025-07-18 09:11:25,576 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to114.csv
+2025-07-18 09:11:25,577 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to115.csv
+2025-07-18 09:11:25,577 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to117.csv
+2025-07-18 09:11:25,578 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_gps_dist_hourly-day1to116.csv
+2025-07-18 09:11:25,579 - INFO - sub_id.py:47 -  Found sub-PCX-PCT927 in PCX-PCT927-phone_accel_activityScores_hourly-day1to125.csv
+2025-07-18 09:11:25,580 - INFO - update_dataframes.py:82 - Found power files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-07-18 09:11:25,580 - INFO - update_dataframes.py:83 - Found accel files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-07-18 09:11:25,580 - INFO - update_dataframes.py:84 - Found gps files for: dict_keys(['sub-PCX-PCT929', 'sub-PCX-PCT927'])
+2025-07-18 09:11:26,322 - INFO - paths.py:106 - Using cached path: /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/Data-dashboard/utilities/sheets/key_to_readable_name.xlsx
+2025-07-18 09:11:26,362 - INFO - 2783426715.py:151 -          reftime  day timeofday  weekday  activityScore_hour01  \
+64  1.727400e+12    1   0:00:00        7                   NaN   
+65  1.727480e+12    2   0:00:00        1                   NaN   
+66  1.727570e+12    3   0:00:00        2                  3.82   
+67  1.727650e+12    4   0:00:00        3                  2.12   
+68  1.727740e+12    5   0:00:00        4                   NaN   
+
+    activityScore_hour02  activityScore_hour03  activityScore_hour04  \
+64                   NaN                   NaN                   NaN   
+65                   NaN                   NaN                   NaN   
+66                  2.05                  1.93                  1.83   
+67                  2.03                  1.83                  1.92   
+68                   NaN                   NaN                   NaN   
+
+    activityScore_hour05  activityScore_hour06  ...  activityScore_hour19  \
+64                   NaN                   NaN  ...                   NaN   
+65                   NaN                   NaN  ...                  5.95   
+66                  1.93                  1.92  ...                  4.57   
+67                  1.87                  1.83  ...                  4.72   
+68                   NaN                   NaN  ...                  3.52   
+
+    activityScore_hour20  activityScore_hour21  activityScore_hour22  \
+64                   NaN                   NaN                   NaN   
+65                  2.38                  4.28                  4.83   
+66                  4.68                  2.32                  3.52   
+67                  4.68                  4.87                  5.13   
+68                  2.78                  2.65                  3.17   
+
+    activityScore_hour23  activityScore_hour24      subject_id  sensor  \
+64                   NaN                   NaN  sub-PCX-PCT927   accel   
+65                  4.98                  4.60  sub-PCX-PCT927   accel   
+66                  2.20                  1.82  sub-PCX-PCT927   accel   
+67                   NaN                   NaN  sub-PCX-PCT927   accel   
+68                  4.17                  2.55  sub-PCX-PCT927   accel   
+
+    daily_hr_average  daily_mins  
+64               NaN        0.00  
+65          4.341333       65.12  
+66          3.812083       91.49  
+67          3.292727       72.44  
+68          3.612500       43.35  
+
+[5 rows x 32 columns]

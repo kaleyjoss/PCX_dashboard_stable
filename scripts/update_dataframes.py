@@ -31,23 +31,8 @@ def update_dfs(pcx_dir):
         format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
     )
 
-    # Save subject logs to subs df
-    subs = {}
-    sub_logs_path = paths.get_path('subject_logs', pcx_dir, isdir=True)
-    if sub_logs_path:
-        for file in os.listdir(sub_logs_path):
-            if file.startswith("~$") or not file.endswith((".xlsx", ".xls")):
-                continue  # skip temp or non-excel files
-            sub = sub_id.extract(file)
-            if sub is not None:
-                subs[sub] = pd.read_excel(os.path.join(sub_logs_path, file),sheet_name='JSON_formatted')
-    logging.info(f'Subs in subject.py has keys {subs.keys()}')
-    try:
-        subs_df = pd.concat([sub for sub in subs.values()], axis=0, ignore_index=True)
-        # power_df = power_df.set_index(['subject_id'])
-    except Exception as e:
-        logging.error(e)
-        raise e
+    subs_df=pd.read_excel('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/Subject_tracker_PCR.xlsx', sheet_name='clean_data')
+
     
     power = {}
     gps = {}
