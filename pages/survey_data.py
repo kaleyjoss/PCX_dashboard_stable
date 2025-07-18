@@ -132,7 +132,7 @@ def render_graph(subject):
 				style={'width': '100%',  'height': '100%' },  className = "outer-graph",
 			)
 
-subject_viewer_app.layout = html.Div([
+layout = html.Div([
 	dcc.Location(id="url"),
 	html.H1(children='Subject Viewer', style={'margin':20}),
 	html.Div(children=[

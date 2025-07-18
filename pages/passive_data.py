@@ -38,7 +38,7 @@ gps_df = mindlamp_df[mindlamp_df['sensor']=='gps']
 
 # App layout
 layout = html.Div([
-    html.H1('Data by Subject'),
+    html.H1('Data by Subject', style={'margin':20}),
     dcc.Dropdown(id="subject_id", value='sub-PCX-PCT927', clearable=False,
         options=[{"label": f'{y}', "value": y} for y in power_df['subject_id'].unique()]),
     dcc.RadioItems(id='days', value='All days', 

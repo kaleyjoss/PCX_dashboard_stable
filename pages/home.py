@@ -64,7 +64,7 @@ subs_df_filtered = subs_df_binary.loc[subs_df_binary['Clinical Interview Session
 
 # App layout
 layout = html.Div([
-    html.H1('Subject Tasks Completed'),
+    html.H1('Subject Tasks Completed',  style={'margin':20}),
     dcc.Dropdown(
         id='subject_id',
         options=['All']+[sub_id for sub_id in subs_df_filtered['Qual ID'].unique()],
