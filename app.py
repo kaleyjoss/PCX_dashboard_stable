@@ -1,26 +1,27 @@
 import dash
 from dash import Dash, dcc, html, callback, Input, Output, dash_table
+from flask import send_from_directory
+from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 import dash_bootstrap_components as dbc
 import pandas as pd
 import dash_mantine_components as dmc
 import json
 from dash import page_container
-
+import os
 app = Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN], use_pages=True,  pages_folder="pages")
 
-# subs_df=pd.read_excel('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/Subject_tracker_PCR.xlsx', sheet_name='clean_data')
-# subject_ids = subs_df['PCR ID'].unique()
+server = app.server   # get the Flask server inside Dash
 
-# clinRatings=pd.read_csv('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/behavioral/PCX_ClinicalVisit_ClinicianRatings/PCX_ClinicalVisit_ClinicianRatings_June 18, 2025_17.59.csv')
-# supp=pd.read_csv('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/behavioral/PCX_SupplementalBattery/PCX_SupplementalBattery_June 18, 2025_17.12.csv')
-# fmriBattery=pd.read_csv('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/behavioral/PCX_fMRIVisit_SelfReport/PCX_fMRIVisit_SelfReport_June 18, 2025_17.13.csv')
-# clinBattery=pd.read_csv('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/behavioral/PCX_ClinicalVisit_ClinicianRatings/PCX_ClinicalVisit_ClinicianRatings_June 18, 2025_17.59.csv')
+# folder where your reports live
+REPORTS_DIR = os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX/fmriprep_reports')
 
-# # Skip displaying some irrelevant fields if necessary, change
-# heatmap_columns = subs_df.columns.to_list()
-# subs_df_binary = subs_df.fillna(0)
-# subs_df_filtered = subs_df_binary.loc[subs_df_binary['Clinical Interview Session Date'] != 0, :]
+# Flask route to serve files from REPORTS_DIR
+@server.route("/reports/<path:filename>")
+def serve_report(filename):
+    full_path = os.path.join(REPORTS_DIR, filename)
+    directory, filename = os.path.split(full_path)
+    return send_from_directory(directory, filename)
 
 
 SIDEBAR_STYLE = {
@@ -48,8 +49,10 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Home", href="/", active="exact"),
-                dbc.NavLink("By Subject", href="/passive_data", active="exact"),
-                dbc.NavLink("Dashboard", href="/surveys", active="exact"),
+                dbc.NavLink("Passive Data", href="/passive_data", active="exact"),
+                dbc.NavLink("Survey Data", href="/survey_data", active="exact"),
+                dbc.NavLink("MRI Logs", href="/mri_log", active="exact"),
+
             ],
             vertical=True,
             pills=True,
@@ -62,7 +65,7 @@ app.layout = html.Div([
     sidebar,
     html.Div([
         page_container  # ← REQUIRED to show the current page content here
-    ], style={"padding": "2rem"}),
+    ], style={"padding": "2rem", 'margin': '0 auto', 'max-width': '1200px'}),
 ])
 
 

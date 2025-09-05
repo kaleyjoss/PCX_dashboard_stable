@@ -21,8 +21,6 @@ if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 
 def update_dfs(pcx_dir):
-
-
     # Set up logging
     logging.basicConfig(
         filename='update_dataframes.log',        # File to write logs to, saved in working directory
@@ -31,7 +29,7 @@ def update_dfs(pcx_dir):
         format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
     )
 
-    subs_df=pd.read_excel('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/Subject_tracker_PCR.xlsx', sheet_name='clean_data')
+    subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
 
     
     power = {}

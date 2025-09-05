@@ -28,7 +28,7 @@ if 'scripts.sub_id' in sys.modules:
 dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
 
 # Set PCX Project Data path
-pcx_dir = os.path.expanduser("~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2")
+pcx_dir = os.path.expanduser("~/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX")
 
 # Update DFs
 subs_df, mindlamp_df, selected_cols, readable_cols = update_dfs(pcx_dir)

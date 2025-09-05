@@ -49,16 +49,30 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
 
-subs_df=pd.read_excel('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data/Subject_tracker_PCR.xlsx', sheet_name='clean_data')
+subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
 
-# Skip displaying some irrelevant fields if necessary, change
-heatmap_columns = subs_df.columns.to_list()
 subs_df_binary = subs_df.fillna(0)
 subs_df_filtered = subs_df_binary.loc[subs_df_binary['Clinical Interview Session Date'] != 0, :]
+subs_df_filtered = subs_df_filtered.loc[:, ~subs_df_filtered.columns.str.contains('Unnamed', case=False)]
+tags_row = subs_df_filtered.iloc[0]
+
+def filter_by_tag(df, tags_row, desired_tags):
+    matching_cols = []
+    for tag in desired_tags:
+        matching = tags_row[tags_row.astype(str).str.contains(tag, na=False)].index.tolist()
+        matching_cols.extend(matching)
+
+    # Remove duplicates while preserving order
+    matching_cols = list(dict.fromkeys(matching_cols))
+
+    return df[matching_cols]
+
+tracker_df = filter_by_tag(subs_df_filtered, tags_row, ['id','tracker'])
 
 # # Now the structure is:
-# # |PCR ID:  | Qual ID    |    diagnosis    |  mri_surveys  | <-- these are all columns in clean_data
-# # |PCR200   |  qualr200  |     <value>     |      0        | ...
+# # |PCR ID:  | SUBJECT_ID |     Session Date    |   Session Time     | <-- these are all columns in tracker
+# # |tags     |  id     | tracker, scheduling | tracker, scheduling| ...
+# # |PCR200   |qualr200 |     <value>         |       <value>      | ...
 
 
 
@@ -67,11 +81,15 @@ layout = html.Div([
     html.H1('Subject Tasks Completed',  style={'margin':20}),
     dcc.Dropdown(
         id='subject_id',
-        options=['All']+[sub_id for sub_id in subs_df_filtered['Qual ID'].unique()],
+        options=['All']+[sub_id for sub_id in subs_df_filtered['SUBJECT_ID'].unique()],
         placeholder="Select a subject",
-        value='All'
+        value='All', style={'width': '90%', 'margin': '10 auto', 'display': 'block'}
     ),
-    dcc.Graph(figure={}, id='dashboard-graph')
+    dcc.Graph(figure={}, id='dashboard-graph', style={
+        'width': '100%',
+        'height': '100%',
+        'padding': 10,
+        'flex': 1,})
 ])
 
 
@@ -83,9 +101,10 @@ layout = html.Div([
 
 def cb(subject_id):
     if subject_id == "All":
-        filtered_df = subs_df_filtered
+        filtered_df = tracker_df
     else:
-        filtered_df = subs_df_filtered[subs_df_filtered['Qual ID'] == subject_id]
+        filtered_df = tracker_df[tracker_df['SUBJECT_ID'] == subject_id]
+    
     # Binarize non-zero values
     filtered_df_bin = filtered_df.where(filtered_df == 0, 1)
     #display(filtered_df_bin)
@@ -95,7 +114,8 @@ def cb(subject_id):
                     title="Tasks Completed by Participants",
                     zmin=0, zmax=1, color_continuous_scale=[[0, "white"], [1, "black"]],
                     labels=dict(x="Tasks Completed", y="Subject", color="Done = Black"),
-                    x=subs_df_filtered.columns,
-                    y=subs_df_filtered['Qual ID'])
+                    x=filtered_df.columns,
+                    y=filtered_df['SUBJECT_ID'],
+                    width=1500, height=800)
     return fig
 
