@@ -1,6 +1,7 @@
 A flask web app to visualize participant data for a variety of data collection steps, ranging from fMRI analysis to smartphone sensor tracking.
 
 To run this app, first open up your terminal, and navigate to this folder. 
+`cd ~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data-dashboard/data-dashboard`
 
 If you have conda set up, you can create a virtual environment:
 `conda create --name pcx-dashboard` 

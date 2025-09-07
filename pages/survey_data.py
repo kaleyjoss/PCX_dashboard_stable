@@ -275,9 +275,6 @@ layout = html.Div([
 	html.H1(children='Subject Viewer', style={'margin':20}),
 	
 	html.Div(children=[
-		html.Div("Use this dropdown to select the subject"),
-		dcc.Dropdown(subject_ids, id='subject-picker',clearable=False, value='qualr200'),
-		dcc.Store(id='subject-id'),
 		dcc.Markdown(id='caption'),
 		dcc.Markdown(id='diagnosis', style={'width': '30%', 'padding': '10px'}),
 
@@ -305,10 +302,11 @@ layout = html.Div([
 	])
 ])
 
+
+
 @callback(
-	Output(component_id='subject-id', component_property='data'),
 	Output(component_id='sub-overview', component_property='children'),
-	Input(component_id='subject-picker', component_property='value')
+	Input(component_id='subject-id', component_property='data'),
 )
 def update_subject(subject):
 	sub_overview = render_overview(subject)

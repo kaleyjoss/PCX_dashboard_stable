@@ -39,8 +39,6 @@ gps_df = mindlamp_df[mindlamp_df['sensor']=='gps']
 # App layout
 layout = html.Div([
     html.H1('Data by Subject', style={'margin':20}),
-    dcc.Dropdown(id="subject_id", value='sub-PCX-PCT927', clearable=False,
-        options=[{"label": f'{y}', "value": y} for y in power_df['subject_id'].unique()]),
     dcc.RadioItems(id='days', value='All days', 
         options=['All days','Weekdays','Weekends']),
 
@@ -54,7 +52,7 @@ layout = html.Div([
 # Add controls to build the interaction
 @callback(
     Output(component_id='phone_use-graph', component_property='figure'),
-    Input(component_id='subject_id', component_property='value'),
+    Input(component_id='subject-id', component_property='data'),
     Input(component_id='days', component_property='value')
 )
 
@@ -99,7 +97,7 @@ def cb(days):
 # Add controls to build the interaction
 @callback(
     Output(component_id='activity-graph', component_property='figure'),
-    Input(component_id='subject_id', component_property='value'),
+    Input(component_id='subject-id', component_property='data'),
     Input(component_id='days', component_property='value')
 )
 
@@ -123,7 +121,7 @@ def cb(subject_id, days):
 
 @callback(
     Output(component_id='gps-graph', component_property='figure'),
-    Input(component_id='subject_id', component_property='value'),
+    Input(component_id='subject-id', component_property='data'),
     Input(component_id='days', component_property='value')
 )
 

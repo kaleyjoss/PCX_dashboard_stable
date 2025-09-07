@@ -35,8 +35,6 @@ subjects = os.listdir(mri_dir)
 # App layout
 layout = html.Div([
     html.H1('Data by Subject', style={'margin':20}),
-    dcc.Dropdown(id="subject_id", value='sub-PCR200', clearable=False,
-        options=[{"label": f'{y.replace('.html','')}', "value": y} for y in subjects]),
     html.Iframe(
         id='report_location', style={"width": "100%", "height": "800px"}
     )
@@ -47,10 +45,11 @@ layout = html.Div([
 # Add controls to build the interaction
 @callback(
     Output(component_id='report_location', component_property='src'),
-    Input(component_id='subject_id', component_property='value'),
+    Input(component_id='subject-id', component_property='data'),
 )
 
 def cb(subject_id):
+    pcrid = subject_id.replace('qualr', 'sub-PCR').replace('qualm', 'sub-PCM')
     """Callback to update the filepath based on the selected id"""
-    return f"/reports/{subject_id}/index.html"
+    return f"/reports/{pcrid}.html/index.html"
 

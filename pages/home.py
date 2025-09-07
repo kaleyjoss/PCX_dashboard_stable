@@ -49,7 +49,15 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
 
+rmr = pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/RMR/RMR_goals.xlsx'))
+
+
+
 subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
+
+# rmr['Quarter'] = pd.to_datetime(rmr['Quarter'])
+# fig = px.line(x='Quarter', y='Total', title='RMR Goals')
+
 
 subs_df_binary = subs_df.fillna(0)
 subs_df_filtered = subs_df_binary.loc[subs_df_binary['Clinical Interview Session Date'] != 0, :]
@@ -74,17 +82,9 @@ tracker_df = filter_by_tag(subs_df_filtered, tags_row, ['id','tracker'])
 # # |tags     |  id     | tracker, scheduling | tracker, scheduling| ...
 # # |PCR200   |qualr200 |     <value>         |       <value>      | ...
 
-
-
 # App layout
 layout = html.Div([
     html.H1('Subject Tasks Completed',  style={'margin':20}),
-    dcc.Dropdown(
-        id='subject_id',
-        options=['All']+[sub_id for sub_id in subs_df_filtered['SUBJECT_ID'].unique()],
-        placeholder="Select a subject",
-        value='All', style={'width': '90%', 'margin': '10 auto', 'display': 'block'}
-    ),
     dcc.Graph(figure={}, id='dashboard-graph', style={
         'width': '100%',
         'height': '100%',
@@ -96,7 +96,7 @@ layout = html.Div([
 # Controls to filter the figure by subject ID and
 @callback(
     Output('dashboard-graph', 'figure'),
-    Input('subject_id', 'value')
+    Input('subject-id', 'data')
 )
 
 def cb(subject_id):
