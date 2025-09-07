@@ -50,16 +50,24 @@ logging.basicConfig(
 )
 
 rmr = pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/RMR/RMR_goals.xlsx'))
-
-
 tracker_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
-
 subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
 
-# rmr['Quarter'] = pd.to_datetime(rmr['Quarter'])
-# fig = px.line(x='Quarter', y='Total', title='RMR Goals')
+# num phone data: in accel_df, gps_df, power_df
+# num mri data: in surveys['mri_self_report_data']
+# num clin interview session: in surveys['clinical_administered_data']
+# goal: in rmr
+
+# RMR visual
 
 
+
+
+# Subject 1-liners
+
+
+
+# Tracker Visual
 subs_df_binary = subs_df.fillna(0)
 subs_df_filtered = subs_df_binary.loc[subs_df_binary['Clinical Interview Session Date'] != 0, :]
 subs_df_filtered = subs_df_filtered.loc[:, ~subs_df_filtered.columns.str.contains('Unnamed', case=False)]

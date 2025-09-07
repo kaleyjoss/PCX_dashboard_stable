@@ -20,6 +20,30 @@ dash.register_page(__name__, path="/survey_data", title='Survey Data', name='Sur
 
 tracker_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
 
+import logging
+logging.basicConfig(
+	level=logging.INFO,        # Minimum logging level
+	format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
+)
+
+demographic_survey_cols = [
+	"sex",
+	"sex_5_TEXT",
+	"age",
+	"weight",
+	"place_birth",
+	"marital",
+	"marital_6",
+	"house",
+	"house_7",
+	"live_with_whom",
+	"live_with_whom_2",
+	"native_lang",
+	"native_lang_2",
+	"ethnic",
+	"racial"]
+
+
 def create_sub(df, subject):
 	sub_df=df[df['SUBJECT_ID']==subject].copy()
 	sub_df=sub_df.reset_index()
@@ -30,25 +54,36 @@ def create_sub(df, subject):
 def filter_subject_qualtrics(df, subject):
 	return df[df['SUBJECT_ID']==subject]
 
+#table = render_table(subject, surveys, subsurvey_key, survey_name=survey_name, survey_cols=survey_cols)
+
 def render_table(subject, surveys, subsurvey_key, survey_name=None, sub_survey_name=None, survey_regex=None, survey_cols=None, df_to_use=None):
 	if df_to_use is not None:
 		df = df_to_use
-		cols =  survey_cols if survey_cols is not None else df.columns.to_list()
-	if sub_survey_name is not None and df_to_use is None:
-		df = surveys[survey_name]
-		if survey_cols is not None:
-			cols = [col for col in df.columns if col in survey_cols]
+		if sub_survey_name is not None: 
+			cols = [col for col in df.columns.to_list() if sub_survey_name in col and 'notes' not in col and 'total' not in col]
+		elif survey_cols is not None:
+			cols =  [col for col in df.columns.to_list() if col in survey_cols]
 		else:
+			cols = df.columns.to_list()
+	elif survey_cols is not None:
+		if survey_name is not None:
+			df = surveys[survey_name]
+			cols = [col for col in survey_cols if col in df.columns.to_list()]
+		elif survey_name is None:
+			search_for_col = survey_cols[0]
+			for survey_name in surveys:
+				if search_for_col in surveys[survey_name].columns.to_list():
+					df = surveys[survey_name]
+					cols = [col for col in df.columns if col in survey_cols]
+	elif sub_survey_name is not None:
+		if survey_name is not None:
+			df = surveys[survey_name]
 			cols = [col for col in df.columns if sub_survey_name in col and 'notes' not in col and 'total' not in col]
-	if survey_cols is not None and survey_name is None:
-		search_for_col = survey_cols[0]
-		for survey_name in surveys:
-			if search_for_col in surveys[survey_name].columns.to_list():
-				df = surveys[survey_name]
-				cols = [col for col in df.columns if col in survey_cols]
+		
 	else:
-		return None
+		return html.Div(children=[f'Not enough keywords to render_table -- {subject}'])
 	
+	#logging.info(f'For subject {subject}, rendering table of {cols}. {df.head(2)}')
 	if len(cols)==0:
 		return html.Div(children=[f'No data for subject {subject}, survey {survey_name}'])
 	else:
@@ -61,7 +96,6 @@ def render_table(subject, surveys, subsurvey_key, survey_name=None, sub_survey_n
 		long_df['label'] = long_df['name'].map(mapping)
 		long_df = long_df[['label', 'value']]
 		long_df['label'] = long_df['label'].str.split('\n').str[0]
-		#long_df = long_df.sort_values('value', ascending=False)
 	
 		return dash_table.DataTable(
 			data=long_df.to_dict('records'),
@@ -80,7 +114,7 @@ def render_table(subject, surveys, subsurvey_key, survey_name=None, sub_survey_n
 				{
 					column: {'value': str(value), 'type': 'markdown'}
 					for column, value in row.items()
-				} for row in df.to_dict('records')
+				} for row in long_df.to_dict('records')
 			],
 			tooltip_duration=None,
 			style_cell={
@@ -107,7 +141,7 @@ def render_table(subject, surveys, subsurvey_key, survey_name=None, sub_survey_n
 def render_chart(subject, recoded_surveys, subsurvey_key, sub_survey_name, survey_name=None):
 	if survey_name is not None:
 		df = recoded_surveys[survey_name]
-	elif sub_survey_name is not None:
+	if sub_survey_name is not None:
 		df = recoded_surveys[subsurvey_key[sub_survey_name]]
 		cols = [col for col in df.columns if sub_survey_name in col and 'notes' not in col and 'total' not in col and 'timing' not in col]
 		if len(cols)==0:
@@ -128,7 +162,7 @@ def render_chart(subject, recoded_surveys, subsurvey_key, sub_survey_name, surve
 			return dcc.Graph(
 				figure=fig,
 				config={'displayModeBar': True}, 
-				style={'width': '100%',  'height': '100%' },  className = "outer-graph",
+				style={'width': 500,  'height': 300},  className = "outer-graph",
 			)
 
 
@@ -156,35 +190,19 @@ def render_graph(subject, recoded_surveys, sub_survey_name, survey_name=None):
 		return dcc.Graph(
 			figure=fig,
 			config={'displayModeBar': True}, 
-			style={'width': '100%',  'height': '100%', 'padding': 10},  className = "outer-graph",
+			style={'width': 500,  'height': 300, 'padding': 1 },  className = "outer-graph",
 		)
 
 def render_overview(subject, surveys, survey_name):
 	df = surveys[survey_name]
 	if subject is None:
-		return None
+		return html.Div(children=['No subject selected'])
 	if not subject in surveys[survey_name]['SUBJECT_ID'].unique():
 		if subject.lower() in surveys[survey_name]['SUBJECT_ID'].unique():
 				subject = subject.lower()
 		else:
-			return None
-	survey_cols = [
-	"sex",
-	"sex_5_TEXT",
-	"age",
-	"weight",
-	"place_birth",
-	"marital",
-	"marital_6",
-	"house",
-	"house_7",
-	"live_with_whom",
-	"live_with_whom_2",
-	"native_lang",
-	"native_lang_2",
-	"ethnic",
-	"racial"]
-	table = render_table(subject, surveys, subsurvey_key, survey_name=survey_name, survey_cols=survey_cols)
+			return html.Div(children=[f'Subject {subject} has not completed the MRI scan yet.'])
+	return render_table(subject, surveys, subsurvey_key, survey_cols=demographic_survey_cols)
 
 def render_diagnosis(subject, surveys, survey_name):
 	df = surveys[survey_name]
@@ -213,23 +231,25 @@ layout = html.Div([
 	
 	html.Div(children=[
 		dcc.Markdown(id='caption'),
-		dcc.Markdown(id='diagnosis', style={'width': '30%', 'padding': '10px'}),
+		dcc.Markdown(id='diagnosis', style={'width': '100%', 'padding': '0px'}),
 
 
 		html.Div(children=[
-			html.Div(id='sub-overview', style={'width': '30%', 'padding': '10px'}),
+			html.Div(id='sub-overview', style={'width': '20%', 'padding': '0px'}),
 			html.Div(id='survey-container', 
 					children=[
 						html.Div(id='session-notes'),
 						html.Div(id='scan-notes'),
-						dcc.RadioItems((['panss', 'bprs', 'ymrs', 'madrs', 'cssrs']), id='sub-survey-name', value='panss'),
-						dcc.Tabs(id="content-type", value='Chart', children=[
-							dcc.Tab(label='Chart', value='Chart'),
-							dcc.Tab(label='Table', value='Table'),
-							])
-					], style={'width': '30%','padding': '10px'}
+					], style={'width': '20%','padding': '0px'}
 			),
-			html.Div(id='tabs-content', style={'width': '30%','padding': '10px'})
+			html.Div(id='chart-container', children=[
+				dcc.RadioItems((['panss', 'bprs', 'ymrs', 'madrs', 'cssrs']), id='sub-survey-name', value='panss'),
+				dcc.Tabs(id="content-type", value='Chart', children=[
+					dcc.Tab(label='Chart', value='Chart'),
+					dcc.Tab(label='Table', value='Table'),
+					]),
+				html.Div(id='tabs-content', style={'width': 500,'padding': '5px'})
+			]),
 
 		], style={
 			'display': 'flex',
@@ -297,7 +317,7 @@ def update_caption(subject):
 
 def render_content(subject, sub_survey_name, contentType):
 	if contentType=='Table':
-		return render_table(subject, surveys, subsurvey_key, sub_survey_name)
+		return render_table(subject, surveys, subsurvey_key, sub_survey_name=sub_survey_name)
 	if contentType=='Chart':
-		return render_chart(subject, recoded_surveys, subsurvey_key, sub_survey_name)
+		return render_chart(subject, recoded_surveys, subsurvey_key, sub_survey_name=sub_survey_name)
 

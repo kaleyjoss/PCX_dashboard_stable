@@ -26,7 +26,7 @@ def extract(filename, list=False):
             
             if sub_id is not None:    
                 sub = 'sub-' + sub_id
-                logging.info(f"✅ Found {sub} in {file}")
+                # logging.info(f"✅ Found {sub} in {file}")
                 return sub
     else:
         if '$' in filename:
@@ -41,7 +41,7 @@ def extract(filename, list=False):
                     sub_id = match.group()
             if sub_id is not None:
                 sub = 'sub-' + sub_id
-                logging.info(f" Found {sub} in {filename}")
+                # logging.info(f" Found {sub} in {filename}")
                 return sub
                 
     
