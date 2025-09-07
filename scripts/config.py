@@ -53,8 +53,8 @@ for root, dirs, files in os.walk(surveys_dir):
                 recoded_surveys[survey]=pd.read_csv(filepath_recoded)
 
 first_df = surveys['clinical_administered_data']
-subject_ids = first_df['SUBJECT_ID'].unique()
-
+subject_ids_all = first_df['SUBJECT_ID'].unique()
+subject_ids = [sub for sub in subject_ids_all if 'qual' in sub and '{' not in sub and 'Subject ID' not in sub]
 
 
 # Set PCX Project Data path

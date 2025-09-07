@@ -73,11 +73,11 @@ def cb(subject_id, days):
 # Add controls to build the interaction
 @callback(
     Output(component_id='daily_phoneuse-graph', component_property='figure'),
+    Input(component_id='subject-id', component_property='data'),
     Input(component_id='days', component_property='value')
 )
 
-
-def cb(days):
+def cb(subject_id, days):
     """Callback to update the figure based on the selected id"""
     if days == 'All days':
         power_df_filtered = power_df
@@ -86,7 +86,13 @@ def cb(days):
     elif days == 'Weekends':
         power_df_filtered = power_df[power_df['weekday'].astype(str).str.contains('6|7')]
     
-    fig = px.line(power_df_filtered, x='day', y='daily_mins', color='subject_id', title=f'Phone Activity (minutes each hour) for each subject', 
+    if subject_id is not None:
+        sub_clean = subject_id.lower().replace('_','').replace('qualr','PCX-PCR').replace('qualm','PCX-PCM')
+        sub = f'sub-{sub_clean}'
+        df = power_df_filtered.query("subject_id == @sub")
+    else:
+        df = power_df_filtered
+    fig = px.line(df, x='day', y='daily_mins', color='subject_id', title=f'Phone Activity (minutes each hour) for {sub}', 
                   height=400, width=600)
     return fig
 
