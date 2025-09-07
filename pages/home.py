@@ -3,7 +3,6 @@ from dash import html, Input, Output, callback, dcc
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 import logging
-
 import os
 import sys
 import dash
@@ -29,6 +28,7 @@ dash.register_page(__name__,
     title='Home',
     name='Home'
 )
+
 # # Import custom scripts
 sys.path.append(project_dir)
 import scripts.paths as paths
@@ -52,6 +52,7 @@ logging.basicConfig(
 rmr = pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/RMR/RMR_goals.xlsx'))
 
 
+tracker_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
 
 subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
 
@@ -100,7 +101,7 @@ layout = html.Div([
 )
 
 def cb(subject_id):
-    if subject_id == "All":
+    if subject_id is None:
         filtered_df = tracker_df
     else:
         filtered_df = tracker_df[tracker_df['SUBJECT_ID'] == subject_id]

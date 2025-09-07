@@ -11,6 +11,7 @@ import importlib
 import logging
 import pickle
 import inspect
+
 # Import custom scripts
 sys.path.append(os.path.basename(os.getcwd()))
 import scripts.paths as paths
@@ -35,7 +36,7 @@ def update_dfs(pcx_dir):
     power = {}
     gps = {}
     accel = {}
-    mindlamp_data_path = paths.get_path('mindlamp_data', pcx_dir, isdir=True)
+    mindlamp_data_path = paths.get_path('mindlamp_mri_data', pcx_dir, isdir=True)
     if mindlamp_data_path:
         for dirpath, dirnames, filenames in os.walk(mindlamp_data_path):
             # Search for specific file type

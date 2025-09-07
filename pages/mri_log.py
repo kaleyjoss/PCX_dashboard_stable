@@ -10,6 +10,8 @@ import xarray as xr
 import importlib
 import logging
 import pickle
+import os
+import sys
 import inspect
 
 # Import custom scripts
@@ -18,6 +20,7 @@ sys.path.append(project_dir)
 from scripts.update_dataframes import update_dfs
 import scripts.paths as paths
 import scripts.sub_id as sub_id
+from scripts.config import subject_ids, surveys, recoded_surveys, subsurvey_key
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:
@@ -49,6 +52,8 @@ layout = html.Div([
 )
 
 def cb(subject_id):
+    if subject_id is None:
+        return None
     pcrid = subject_id.replace('qualr', 'sub-PCR').replace('qualm', 'sub-PCM')
     """Callback to update the filepath based on the selected id"""
     return f"/reports/{pcrid}.html/index.html"

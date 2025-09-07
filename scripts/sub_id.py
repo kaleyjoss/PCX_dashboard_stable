@@ -20,13 +20,10 @@ def extract(filename, list=False):
     sub_id=None
     if list: 
         for file in filename:
-            match = re.search(r'PCX-PCT[a-zA-Z0-9]+', file)
+            match = re.search(r'PCX-PC[a-zA-Z0-9]+', file)
             if match:
                 sub_id = match.group() 
-            else: 
-                match = re.search(r'PC[a-zA-Z0-9]+', file)
-                if match:
-                    sub_id = match.group()
+            
             if sub_id is not None:    
                 sub = 'sub-' + sub_id
                 logging.info(f"✅ Found {sub} in {file}")
@@ -35,7 +32,7 @@ def extract(filename, list=False):
         if '$' in filename:
             return None
         else:
-            match = re.search(r'PCX-PCT[a-zA-Z0-9]+', filename)
+            match = re.search(r'PCX-PC[a-zA-Z0-9]+', filename)
             if match:
                 sub_id = match.group() 
             else: 

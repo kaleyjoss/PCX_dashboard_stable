@@ -11,6 +11,9 @@ import importlib
 import logging
 import pickle
 import inspect
+import os
+import sys
+
 
 # Import custom scripts
 project_dir = os.path.basename(os.getcwd())
@@ -22,23 +25,14 @@ if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
-
+from scripts.config import subject_ids, surveys, recoded_surveys, subsurvey_key
+from scripts.config import subs_df, power_df, accel_df, gps_df, mindlamp_df, selected_cols, readable_cols
 
 # Register page into dash app as pagename
 dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
 
-# Set PCX Project Data path
-pcx_dir = os.path.expanduser("~/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX")
-
-# Update DFs
-subs_df, mindlamp_df, selected_cols, readable_cols = update_dfs(pcx_dir)
-power_df = mindlamp_df[mindlamp_df['sensor']=='power']
-accel_df = mindlamp_df[mindlamp_df['sensor']=='accel']
-gps_df = mindlamp_df[mindlamp_df['sensor']=='gps']
-
 # App layout
 layout = html.Div([
-    html.H1('Data by Subject', style={'margin':20}),
     dcc.RadioItems(id='days', value='All days', 
         options=['All days','Weekdays','Weekends']),
 
@@ -59,7 +53,10 @@ layout = html.Div([
 
 def cb(subject_id, days):
     """Callback to update the figure based on the selected id"""
-    sub = subject_id
+    if subject_id is None:
+        return None
+    sub_clean = subject_id.lower().replace('_','').replace('qualr','PCX-PCR').replace('qualm','PCX-PCM')
+    sub = f'sub-{sub_clean}'
     sub_df = power_df.query("subject_id == @sub")
     if days == 'Weekdays':
         sub_df = sub_df[sub_df['weekday'].astype(str).str.contains('1|2|3|4|5')]
@@ -69,7 +66,7 @@ def cb(subject_id, days):
                         dims=["Days", "Hours of the Day"],
                         coords={"Days": sub_df['day'], "Hours of the Day": readable_cols})
     
-    fig = px.imshow(xr_power, origin='lower', title=f'Phone Activity (minutes each hour) for sub-{sub}',
+    fig = px.imshow(xr_power, origin='lower', title=f'Phone Activity (minutes each hour) for {sub}',
                     zmin=0,zmax=60,height=400, width=600)
     return fig
 
@@ -103,7 +100,10 @@ def cb(days):
 
 def cb(subject_id, days):
     """Callback to update the figure based on the selected id"""
-    sub = subject_id
+    if subject_id is None:
+        return None
+    sub_clean = subject_id.lower().replace('_','').replace('qualr','PCX-PCR').replace('qualm','PCX-PCM')
+    sub = f'sub-{sub_clean}'
     sub_df = accel_df.query("subject_id == @sub")
     if days == 'Weekdays':
         sub_df = sub_df[sub_df['weekday'].astype(str).str.contains('1|2|3|4|5')]
@@ -113,7 +113,7 @@ def cb(subject_id, days):
                         dims=["Days", "Hours of the Day"],
                         coords={"Days": sub_df['day'], "Hours of the Day": readable_cols})
     
-    fig = px.imshow(xr_power, origin='lower', title=f'Physical Activity (acceleration speed) minutes each hour for sub-{sub}',
+    fig = px.imshow(xr_power, origin='lower', title=f'Physical Activity (acceleration speed) minutes each hour for {sub}',
                     zmin=0,zmax=60,height=400, width=600)
     return fig
 
@@ -128,7 +128,10 @@ def cb(subject_id, days):
 
 def cb(subject_id, days):
     """Callback to update the figure based on the selected id"""
-    sub = subject_id
+    if subject_id is  None:
+        return None
+    sub_clean = subject_id.lower().replace('_','').replace('qualr','PCX-PCR').replace('qualm','PCX-PCM')
+    sub = f'sub-{sub_clean}'
     sub_df = gps_df.query("subject_id == @sub")
     if days == 'Weekdays':
         sub_df = sub_df[sub_df['weekday'].astype(str).str.contains('1|2|3|4|5')]
@@ -138,12 +141,9 @@ def cb(subject_id, days):
                         dims=["Days", "Hours of the Day"],
                         coords={"Days": sub_df['day'], "Hours of the Day": readable_cols})
     
-    fig = px.imshow(xr_power, origin='lower', title=f'Mobility (distance each hour) for sub-{sub}',
+    fig = px.imshow(xr_power, origin='lower', title=f'Mobility (distance each hour) for {sub}',
                     zmin=0,zmax=60,height=400, width=600)
     return fig
 
-"""Callback to update the figure based on the selected id"""
-sub = 'sub-PCX-PCT927'
-sub_df = accel_df.query("subject_id == @sub")
-logging.info(sub_df.head())
+
 
