@@ -2,6 +2,9 @@ import dash
 from dash import html, Input, Output, callback, dcc
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
+from dash import Dash, _dash_renderer
+from dash_iconify import DashIconify
+_dash_renderer._set_react_version("18.2.0")
 import logging
 import os
 import sys
@@ -78,22 +81,39 @@ beginning = dt.strptime(start, '%b %d %Y')
 days_of_study = today - beginning
 today_goal = int(days_of_study.days * rate_per_day)
 today_site = today_goal / 2
-today_c = pd.DataFrame([today_str, np.nan, np.nan, today_site, today_site, today_goal, len(session1_r), len(session1_r), len(session2_r), len(session1_m), len(session1_m), len(session2_m), total_real])
+today_c = pd.DataFrame([today_str, 'Today', np.nan, np.nan, today_site, today_site, today_goal, len(session1_r), len(session1_r), len(session2_r), len(session1_m), len(session1_m), len(session2_m), total_real])
 today_row = today_c.T
 today_row.columns = rmr_df.columns.to_list()
 rmr_df_today = pd.concat([rmr_df, today_row])
-rmr_df_today['Quarter'] = rmr_df_today['Quarter'].apply(lambda x: dt.strptime(x, '%b %d %Y'))
-rmr_df_today = rmr_df_today.sort_values('Quarter').reset_index(drop=True)
+rmr_df_today['Date'] = rmr_df_today['Date'].apply(lambda x: dt.strptime(x, '%b %d %Y'))
+rmr_df_today = rmr_df_today.sort_values('Date').reset_index(drop=True)
 rmr_df_today = rmr_df_today.reset_index()
-today_row = rmr_df_today.loc[rmr_df_today['Quarter']==today_str]
+today_row = rmr_df_today.loc[rmr_df_today['Date']==today_str]
 today_index = today_row['index'].values.squeeze()
 two_quarters_out=today_index+2
 rmr_df_today = rmr_df_today[:two_quarters_out]
 
 
-rmr_goal = px.line(rmr_df_today, x='Quarter', y=['Total Goal', 'Total Real'], width=500, height=300, title='Total Subjects Consented: Goal and Real')
-r_goal = px.line(rmr_df_today, x='Quarter', y=['Rutgers Goal', 'Rutgers Consented', 'Rutgers Clinical Interview', 'Rutgers Scan'], width=500, height=300, title='Subjects at Rutgers vs. Goal')
-m_goal = px.line(rmr_df_today, x='Quarter', y=['McLean Goal', 'McLean Consented', 'McLean Clinical Interview', 'McLean Scan'], width=500, height=300, title='Subjects at McLean vs. Goal')
+
+rmr_goal = px.line(rmr_df_today, x='Date', y=['Total Goal', 'Total Real'], width=500, height=300, title='Total Subjects Consented: Goal and Real', labels='Quarter')
+r_goal = px.line(rmr_df_today, x='Date', y=['Rutgers Goal', 'Rutgers Consented', 'Rutgers Clinical Interview', 'Rutgers Scan'], width=500, height=300, title='Subjects at Rutgers vs. Goal', labels='Quarter')
+m_goal = px.line(rmr_df_today, x='Date', y=['McLean Goal', 'McLean Consented', 'McLean Clinical Interview', 'McLean Scan'], width=500, height=300, title='Subjects at McLean vs. Goal', labels='Quarter')
+
+
+cad = surveys['clinical_administered_data']
+prim_diagnoses_cols = ['SUBJECT_ID']+[col for col in cad if 'primary_diagnoses' in col]
+other_diagnoses_cols = ['SUBJECT_ID']+[col for col in cad if 'other_diagnoses' in col]
+primary = cad[prim_diagnoses_cols].bfill(axis=1).iloc[:, 0:2]
+primary = primary.loc[~primary['SUBJECT_ID'].str.contains("{")]
+primary = primary.loc[~primary['SUBJECT_ID'].str.contains("ie")]
+primary = primary.dropna()
+primary_pie = px.pie(primary, names='primary_diagnoses_1', title='Subject Primary Diagnoses')
+
+other_diagnoses_cols = ['SUBJECT_ID']+[col for col in cad if 'other_diagnoses' in col]
+other = cad[other_diagnoses_cols].bfill(axis=1).iloc[:, 0:2]
+other = other.loc[~other['SUBJECT_ID'].str.contains("{")]
+other = other.loc[~other['SUBJECT_ID'].str.contains("ie")]
+other_pie = px.pie(other, names='other_diagnoses_1', title='Subject Other Diagnoses')
 
 
 # Subject 1-liners
@@ -124,21 +144,91 @@ tracker_df = filter_by_tag(subs_df_filtered, tags_row, ['id','tracker'])
 # # |tags     |  id     | tracker, scheduling | tracker, scheduling| ...
 # # |PCR200   |qualr200 |     <value>         |       <value>      | ...
 
+
+icons = {
+    'up': "tabler:arrow-up-right",
+    'down': "tabler:arrow-down-right",
+}
+
+
+r_prog = int((len(session1_r)/135)*100)
+r_scans_prog = int((len(session2_r)/135)*100)
+m_prog = int((len(session1_m)/135)*100)
+m_scans_prog = int((len(session2_m)/135)*100)
+
+data = [
+    {'label': 'Rutgers Clinical Interview', 'stats': len(session1_r), 'progress': r_prog, 'color': 'red', 'icon': 'up'},
+    {'label': 'Rutgers Scans', 'stats': len(session2_r), 'progress': r_scans_prog, 'color': 'red', 'icon': 'up'},
+    {'label': 'McLean Clinical Interview', 'stats': len(session1_m), 'progress': m_prog, 'color': 'blue', 'icon': 'up'},
+    {'label': 'McLean Scans', 'stats': len(session2_m), 'progress': m_scans_prog, 'color': 'blue', 'icon': 'up'},
+]
+
+
+
+def StatsRing():
+    stats = []
+    for stat in data:
+        Icon = icons[stat['icon']]
+        stats.append(
+            dmc.Paper(
+                children=[
+                    dmc.Group(
+                        children=[
+                            dmc.RingProgress(
+                                size=80,
+                                roundCaps=True,
+                                thickness=8,
+                                sections=[{'value': stat['progress'], 'color': stat['color']}],
+                                label=dmc.Center(
+                                    DashIconify(icon=Icon, width=20, height=20)
+                                )
+                            ),
+                            dmc.Box(
+                                children=[
+                                    dmc.Text(stat['label'], c="dimmed", size="xs", tt="uppercase", fw=700),
+                                    dmc.Text(stat['stats'], fw=700, size="xl"),
+                                ]
+                            )
+                        ]
+                    )
+                ],
+                withBorder=True,
+                radius="md",
+                p="xs",
+            )
+        )
+
+    return dmc.Grid(
+        children=stats,
+        cols={"base": 4, "sm": 1},
+        p="lg"
+    )
+
 # App layout
 layout = html.Div([
-    html.H1('Subject Tasks Completed',  style={'margin':20}),
-    html.Div(id='graphs', children=[
-        dcc.Graph(figure=rmr_goal, id='rmr-goal'),
-        dcc.Graph(figure=r_goal, id='rutgers-goal'),
-        dcc.Graph(figure=m_goal, id='mclean-goal'),
+    dmc.MantineProvider(children=[
+        dmc.Text('PCX Current Status',  c='blue', tt='uppercase',style={"fontSize": 40},),
+        StatsRing(),
+        dmc.Group(id='graphs', children=[
+            dcc.Graph(figure=rmr_goal, id='rmr-goal'),
+            dcc.Graph(figure=r_goal, id='rutgers-goal'),
+            dcc.Graph(figure=m_goal, id='mclean-goal'),
+            html.Div(id='graphs', children=[
+                dcc.Graph(figure=primary_pie, id='primary-pie'),
+                dcc.Graph(figure=other_pie, id='other-pie'),
+                ]),
+            ]),
     ]),
     
+    
+            
     dcc.Graph(figure={}, id='dashboard-graph', style={
         'width': '100%',
         'height': '100%',
         'padding': 10,
         'flex': 1,})
 ])
+
 
 
 # Controls to filter the figure by subject ID and
