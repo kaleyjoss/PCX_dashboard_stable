@@ -18,6 +18,9 @@ import logging
 import re
 import pickle
 import inspect
+import datetime
+from datetime import datetime as dt
+import numpy as np
 
 # Set project dir
 project_dir = os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2')
@@ -39,6 +42,7 @@ if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 from scripts.sub_id import extract
 from scripts.paths import get_path
+from scripts.config import subject_ids, surveys, recoded_surveys, subsurvey_key
 
 
 # Set up logging
@@ -49,18 +53,47 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
 
-rmr = pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/RMR/RMR_goals.xlsx'))
+rmr_df = pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/RMR/RMR_running.xlsx'))
 tracker_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
 subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
-
 # num phone data: in accel_df, gps_df, power_df
 # num mri data: in surveys['mri_self_report_data']
 # num clin interview session: in surveys['clinical_administered_data']
 # goal: in rmr
 
 # RMR visual
+session1 = surveys['clinical_administered_data']
+session1_r = session1.loc[session1['SUBJECT_ID'].str.contains('qualr')]
+session1_m = session1.loc[session1['SUBJECT_ID'].str.contains('qualm')]
+session2 = surveys['mri_self_report_data']
+session2_r = session2.loc[session2['SUBJECT_ID'].str.contains('qualr')]
+session2_m = session2.loc[session2['SUBJECT_ID'].str.contains('qualm')]
+total_real = len(session1_r) + len(session1_m)
+
+today = datetime.datetime.today()
+today_str = today.strftime('%b %d %Y')
+rate_per_day = 0.22
+start = 'Dec 1 2024'
+beginning = dt.strptime(start, '%b %d %Y')
+days_of_study = today - beginning
+today_goal = int(days_of_study.days * rate_per_day)
+today_site = today_goal / 2
+today_c = pd.DataFrame([today_str, np.nan, np.nan, today_site, today_site, today_goal, len(session1_r), len(session1_r), len(session2_r), len(session1_m), len(session1_m), len(session2_m), total_real])
+today_row = today_c.T
+today_row.columns = rmr_df.columns.to_list()
+rmr_df_today = pd.concat([rmr_df, today_row])
+rmr_df_today['Quarter'] = rmr_df_today['Quarter'].apply(lambda x: dt.strptime(x, '%b %d %Y'))
+rmr_df_today = rmr_df_today.sort_values('Quarter').reset_index(drop=True)
+rmr_df_today = rmr_df_today.reset_index()
+today_row = rmr_df_today.loc[rmr_df_today['Quarter']==today_str]
+today_index = today_row['index'].values.squeeze()
+two_quarters_out=today_index+2
+rmr_df_today = rmr_df_today[:two_quarters_out]
 
 
+rmr_goal = px.line(rmr_df_today, x='Quarter', y=['Total Goal', 'Total Real'], width=500, height=300, title='Total Subjects Consented: Goal and Real')
+r_goal = px.line(rmr_df_today, x='Quarter', y=['Rutgers Goal', 'Rutgers Consented', 'Rutgers Clinical Interview', 'Rutgers Scan'], width=500, height=300, title='Subjects at Rutgers vs. Goal')
+m_goal = px.line(rmr_df_today, x='Quarter', y=['McLean Goal', 'McLean Consented', 'McLean Clinical Interview', 'McLean Scan'], width=500, height=300, title='Subjects at McLean vs. Goal')
 
 
 # Subject 1-liners
@@ -94,6 +127,12 @@ tracker_df = filter_by_tag(subs_df_filtered, tags_row, ['id','tracker'])
 # App layout
 layout = html.Div([
     html.H1('Subject Tasks Completed',  style={'margin':20}),
+    html.Div(id='graphs', children=[
+        dcc.Graph(figure=rmr_goal, id='rmr-goal'),
+        dcc.Graph(figure=r_goal, id='rutgers-goal'),
+        dcc.Graph(figure=m_goal, id='mclean-goal'),
+    ]),
+    
     dcc.Graph(figure={}, id='dashboard-graph', style={
         'width': '100%',
         'height': '100%',
