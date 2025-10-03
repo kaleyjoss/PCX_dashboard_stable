@@ -16,10 +16,9 @@ import sys
 
 
 # Import custom scripts
-project_dir = os.path.basename(os.getcwd())
-sys.path.append(project_dir)
+dashboard_dir = os.path.basename(os.getcwd())
+sys.path.append(dashboard_dir)
 from scripts.update_dataframes import update_dfs
-import scripts.paths as paths
 import scripts.sub_id as sub_id
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
@@ -27,15 +26,12 @@ if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
 from scripts.update_dataframes import update_dfs
+from scripts.paths import get_path, project_dir, tracker_df, rmr_df, subs_df, pcx_dir, mri_dir, data_dir
+import scripts.paths as paths
 
 # Register page into dash app as pagename
 dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
 
-
-
-
-# Update passive data dfs
-pcx_dir = os.path.expanduser("~/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX")
 
 subs_df, mindlamp_df, selected_cols, readable_cols = update_dfs(pcx_dir)
 power_df = mindlamp_df[mindlamp_df['sensor']=='power']

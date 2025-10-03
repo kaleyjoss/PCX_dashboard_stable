@@ -11,9 +11,10 @@ from datetime import datetime as dt
 import sys
 
 # Import custom scripts
-project_dir = os.path.basename(os.getcwd())
-sys.path.append(project_dir)
 from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
+from scripts.paths import get_path, tracker_df, rmr_df, subs_df, pcx_dir, mri_dir, data_dir
+dashboard_dir = os.path.basename(os.getcwd())
+sys.path.append(dashboard_dir)
 
 #external_stylesheet = dbc.themes.CERULEAN
 dash.register_page(__name__, path="/survey_data", title='Survey Data', name='Survey Data')
@@ -25,24 +26,6 @@ logging.basicConfig(
 	level=logging.INFO,        # Minimum logging level
 	format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
-
-demographic_survey_cols = [
-	"sex",
-	"sex_5_TEXT",
-	"age",
-	"weight",
-	"place_birth",
-	"marital",
-	"marital_6",
-	"house",
-	"house_7",
-	"live_with_whom",
-	"live_with_whom_2",
-	"native_lang",
-	"native_lang_2",
-	"ethnic",
-	"racial"]
-
 
 def create_sub(df, subject):
 	sub_df=df[df['SUBJECT_ID']==subject].copy()

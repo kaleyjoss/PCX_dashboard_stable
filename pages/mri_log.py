@@ -15,10 +15,10 @@ import sys
 import inspect
 
 # Import custom scripts
-project_dir = os.path.basename(os.getcwd())
-sys.path.append(project_dir)
+dashboard_dir = os.path.basename(os.getcwd())
+sys.path.append(dashboard_dir)
 from scripts.update_dataframes import update_dfs
-import scripts.paths as paths
+from scripts.paths import get_path, tracker_df, rmr_df, subs_df, pcx_dir, mri_dir, data_dir
 import scripts.sub_id as sub_id
 from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
 if 'scripts.paths' in sys.modules:
@@ -30,9 +30,7 @@ if 'scripts.sub_id' in sys.modules:
 # Register page into dash app as pagename
 dash.register_page(__name__, path="/mri_log", title='MRI Report', name='MRI Report')
 
-# Set PCX Project Data path
-pcx_dir = os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX')
-mri_dir = os.path.join(pcx_dir, 'fmriprep_reports')
+
 subjects = os.listdir(mri_dir)
 
 # App layout

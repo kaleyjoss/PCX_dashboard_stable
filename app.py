@@ -13,8 +13,8 @@ import os
 import sys
 
 # Import custom scripts
-project_dir = os.path.basename(os.getcwd())
-sys.path.append(project_dir)
+dashboard_dir = os.path.basename(os.getcwd())
+sys.path.append(dashboard_dir)
 from scripts.surveys import surveys_dir, REPORTS_DIR, subject_ids
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN], use_pages=True,  pages_folder="pages")

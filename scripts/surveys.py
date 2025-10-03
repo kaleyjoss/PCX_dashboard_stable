@@ -12,11 +12,6 @@ repo_dir = os.path.basename(os.getcwd())
 sys.path.append(repo_dir)
 from scripts.utils import extract_survey_date, get_most_recent_survey
 
-data_dir = os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX')
-
-# project where survey exports live
-surveys_dir = os.path.join(data_dir, 'behavioral')
-
 # folder where your fmriprep reports live
 REPORTS_DIR = os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX/fmriprep_reports')
 tracker_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
@@ -75,6 +70,12 @@ for root, dirs, files in os.walk(surveys_dir):
 				recoded_surveys[survey] = valid_df
 				recoded_surveys[survey][str(survey)] = recoded_surveys[survey]['StartDate']
 				recoded_surveys[survey] = recoded_surveys[survey]
+
+
+prim_diagnoses_cols = ['SUBJECT_ID']+[col for col in surveys['clinical_administered_data'] if 'primary_diagnoses' in col]
+surveys['clinical_administered_data']['primary_diagnoses_all'] = surveys['clinical_administered_data'][prim_diagnoses_cols].bfill(axis=1).iloc[:, 1:2]
+other_diagnoses_cols = ['SUBJECT_ID']+[col for col in surveys['clinical_administered_data'] if 'other_diagnoses' in col]
+surveys['clinical_administered_data']['other_diagnoses_all'] = surveys['clinical_administered_data'][other_diagnoses_cols].bfill(axis=1).iloc[:, 1:2]
 
 
 first_df = surveys['clinical_administered_data']

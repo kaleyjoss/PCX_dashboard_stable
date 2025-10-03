@@ -1,9 +1,9 @@
 import os
 import pickle
 import logging
+import pandas as pd
 
-
-def find_file(target_file, search_dir):
+def find(target_folder, search_dir):
     """Walk through the filesystem to find the folder recursively.
     
     Args:
@@ -13,41 +13,15 @@ def find_file(target_file, search_dir):
     Returns:
         str or None: The full path to the found folder, or None if not found.
     """
-    logging.info(f'Looking in <3 {search_dir} for "{target_file}"')
 
-    for root, dirnames, files in os.walk(search_dir):
-        if target_file in files:
-            full_path = os.path.join(root, target_file)
-            logging.info(f'✅ Found file: {full_path}')
-            return full_path
-        else:
-            logging.debug(f'Searching in: {root} — Files: {files}')
-
-    return None
-
-
-
-def find_folder(target_folder, search_dir):
-    """Walk through the filesystem to find the folder recursively.
-    
-    Args:
-        target_folder (str): The name of the folder to search for.
-        search_dir (str): The root directory to start searching from.
-
-    Returns:
-        str or None: The full path to the found folder, or None if not found.
-    """
-    logging.info(f'Looking in {search_dir} for folder "{target_folder}"')
-
-    for root, dirnames, _ in os.walk(search_dir):
-        if target_folder in dirnames:
-            full_path = os.path.join(root, target_folder)
+    for filenames in os.listdir(search_dir):
+        if target_folder in filenames:
+            full_path = os.path.join(search_dir, target_folder)
             logging.info(f'✅ Found folder: {full_path}')
             return full_path
         else:
-            logging.debug(f'Searching in: {root} — Subfolders: {dirnames}')
+            logging.debug(f'Searching in: {search_dir} — didnt find {target_folder}, found subfolders: {filenames}. If you would like to change what directory to look for this file, change it in /scripts/paths.py')
 
-    logging.warning(f'❌💗💗 Folder "{target_folder}" not found in "{search_dir}"')
     return None
 
 
@@ -72,18 +46,18 @@ def save_cached_path(path, cache_prefix='path_'):
 
 
 
-def get_path(target, search_dir, isdir=False, cache_file='path_cache.pkl'):
+def get_path(target, search_dir, cache_file='path_cache.pkl'):
     """
     Retrieve the full path to a target file by checking a cache or searching the filesystem.
 
     This function first attempts to load a previously cached path from a pickle file. If the
     cached path exists and is valid, it returns that. If the cache is missing or invalid,
-    it searches the given directory recursively for the target file. Once found, the path
+    it searches the given directory one-level-deep for the target file. Once found, the path
     is cached for future use and returned.
 
     Args:
         target (str): The name of the file to search for (e.g., 'data.csv').
-        search_dir (str): The root directory to begin the recursive search.
+        search_dir (str): The root directory to begin the search.
         isdir (bool, optional): Note whether you're searching for a file or directory
                                 Defaults to file
         cache_file (str, optional): Path to the pickle file used to cache the result.
@@ -107,15 +81,24 @@ def get_path(target, search_dir, isdir=False, cache_file='path_cache.pkl'):
         return path
 
     # Otherwise, search for it
-    logging.info("🔍 Searching for target...")
-    if isdir:
-        path = find_folder(target, search_dir)
-    if not isdir:
-        path = find_file(target, search_dir)
+    path = find(target, search_dir)
     if path:
-        logging.info(f"✅ Found target: {path}")
         save_cached_path(path)
         return path
-    else:
-        logging.error(f"❌💗💗 Could not find {target} in {search_dir}")
-        raise FileNotFoundError(f"❌💗💗 Could not find {target} in {search_dir}")
+
+
+project_dir = (os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2'))
+logging.info(f'Using projet_dir {project_dir}')
+               
+rmr_path = get_path('RMR_running.xlsx', os.path.join(project_dir, 'Admin'))
+rmr_df = pd.read_excel(rmr_path)
+tracker_path = get_path('Subject_tracker_PCR.xlsx', project_dir)
+tracker_df = pd.read_excel(tracker_path)
+subs_df = tracker_df
+
+pcx_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
+mri_dir = get_path('fmriprep_reports', pcx_dir, isdir=True)
+data_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
+surveys_dir = get_path('behavioral',data_dir)
+
+

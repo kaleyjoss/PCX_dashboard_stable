@@ -25,10 +25,6 @@ import datetime
 from datetime import datetime as dt
 import numpy as np
 
-# Set project dir
-project_dir = os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2')
-
-
 dash.register_page(__name__, 
     path='/', # these 3 are automatically generated like this, but you can edit them
     title='Home',
@@ -36,7 +32,9 @@ dash.register_page(__name__,
 )
 
 # # Import custom scripts
-sys.path.append(project_dir)
+dashboard_dir = os.path.basename(os.getcwd())
+sys.path.append(dashboard_dir)
+
 import scripts.paths as paths
 import scripts.sub_id as sub_id
 if 'scripts.paths' in sys.modules:
@@ -44,7 +42,7 @@ if 'scripts.paths' in sys.modules:
 if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 from scripts.sub_id import extract
-from scripts.paths import get_path
+from scripts.paths import get_path, tracker_df, rmr_df, subs_df, pcx_dir, mri_dir, data_dir
 from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
 
 
@@ -56,46 +54,28 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
 
-rmr_df = pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Admin/RMR/RMR_running.xlsx'))
-tracker_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
-subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
-# num phone data: in accel_df, gps_df, power_df
-# num mri data: in surveys['mri_self_report_data']
-# num clin interview session: in surveys['clinical_administered_data']
-# goal: in rmr
- #RMR visual
-session1 = surveys['clinical_administered_data'][2:]
-session1['SUBJECT_ID'] = session1['SUBJECT_ID'].str.lower()
-session1['SUBJECT_ID'] = session1['SUBJECT_ID'].str.replace('pcr', 'qualr')
-session1 = session1[~session1['SUBJECT_ID'].str.contains('test', na=False)]
+#RMR visual
+session1 = surveys['clinical_administered_data']
+session2 = surveys['mri_self_report_data']
+session1sr = surveys['clinical_self_report_data']
 
 prim_diagnoses_cols = ['SUBJECT_ID']+[col for col in session1 if 'primary_diagnoses' in col]
 session1['primary_diagnoses_all'] = session1[prim_diagnoses_cols].bfill(axis=1).iloc[:, 1:2]
 other_diagnoses_cols = ['SUBJECT_ID']+[col for col in session1 if 'other_diagnoses' in col]
 session1['other_diagnoses_all'] = session1[other_diagnoses_cols].bfill(axis=1).iloc[:, 1:2]
+
 session1['duration_mins'] = pd.to_numeric(session1['Duration (in seconds)'])/60
 session1_r = session1[session1['SITE_ID']=='Rutgers University / UBHC']
 session1_m = session1[session1['SITE_ID'] == 'McLean Hospital']
-session1_clean = session1.dropna(subset='SUBJECT_ID')
-session1sr = surveys['clinical_self_report_data'][2:]
-session1sr['SUBJECT_ID'] = session1sr['SUBJECT_ID'].str.lower()
-session1sr['SUBJECT_ID'] = session1sr['SUBJECT_ID'].str.replace('pcr', 'qualr')
-session1sr = session1sr[~session1sr['SUBJECT_ID'].str.contains('test', na=False)]
-session1sr_clean = session1sr.dropna(subset='SUBJECT_ID')
 
-session1sr_clean['duration_mins'] = pd.to_numeric(session1sr_clean['Duration (in seconds)'])/60
-session1sr_r = session1sr_clean[session1sr_clean['SITE_ID']=='Rutgers University / UBHC']
-session1sr_m = session1sr_clean[session1sr_clean['SITE_ID'] == 'McLean Hospital']
-session2 = surveys['mri_self_report_data'][2:]
-session2['SUBJECT_ID'] = session2['SUBJECT_ID'].str.lower()
-session2['SUBJECT_ID'] = session2['SUBJECT_ID'].str.replace('pcr', 'qualr')
-session2 = session2[~session2['SUBJECT_ID'].str.contains('test', na=False)]
+session1sr['duration_mins'] = pd.to_numeric(session1sr['Duration (in seconds)'])/60
+session1sr_r = session1sr[session1sr['SITE_ID']=='Rutgers University / UBHC']
+session1sr_m = session1sr[session1sr['SITE_ID'] == 'McLean Hospital']
 
-session2_clean = session2.dropna(subset='SUBJECT_ID')
+session2['duration_mins'] = pd.to_numeric(session2['Duration (in seconds)'])/60
+session2_r = session2[session2['SITE_ID']=='Rutgers University / UBHC']
+session2_m = session2[session2['SITE_ID'] == 'McLean Hospital']
 
-session2['duration_mins'] = pd.to_numeric(session2_clean['Duration (in seconds)'])/60
-session2_r = session2_clean[session2_clean['SITE_ID']=='Rutgers University / UBHC']
-session2_m = session2_clean[session2_clean['SITE_ID'] == 'McLean Hospital']
 total_real = len(session1_r) + len(session1_m)
 
 # Pie charts
@@ -103,21 +83,19 @@ primary_pie = px.pie(session1, names='primary_diagnoses_all', title='Subject Pri
 other_pie = px.pie(session1, names='other_diagnoses_all', title='Subject Other Diagnoses')
 
 
-demographic_survey_cols = [
-	"sex",
-	"age",
-    "ethnic",
-	"racial",
-	"weight",
-	"place_birth",
-	"native_lang"]
+survey_cols = [
+    "SUBJECT_ID",'SITE_ID','primary_diagnoses_all','other_diagnoses_all',
+    'clinical_administered_data','clinical_self_report_data', 
+    'mri_self_report_data','supplemental_self_report_data',
+	"sex","age", "ethnic","racial","place_birth", 'name_meds','purpose_meds']
 
+session0_merge = session1[[col for col in survey_cols if col in session1.columns]]
+session1_merge = session1sr[[col for col in survey_cols if col in session1sr.columns]]
+session2_merge = session2[[col for col in survey_cols if col in session2.columns]]
 
-session0_merge = session1[['SUBJECT_ID','SITE_ID','primary_diagnoses_all','other_diagnoses_all']]
-session1_merge = session1sr[['SUBJECT_ID','SITE_ID'] + [col for col in demographic_survey_cols if col in session1sr.columns] + ['clinical_self_report_data']]
-session2_merge = session2_clean[['SUBJECT_ID'] +  [col for col in demographic_survey_cols if col in session2_clean.columns] + ['mri_self_report_data']]
-
-session3_merge = surveys['supplemental_self_report_data'][2:][['SUBJECT_ID','supplemental_self_report_data']]
+session3 = surveys['supplemental_self_report_data']
+session3_clean = session3.dropna(subset='SUBJECT_ID')
+session3_merge = session3_clean[[col for col in survey_cols if col in session3_clean.columns]]
 session3_merge['SUBJECT_ID'] = session3_merge['SUBJECT_ID'].str.lower()
 
 
@@ -129,22 +107,14 @@ s3 = session3_merge.set_index("SUBJECT_ID")
 s0 = session0_merge.set_index("SUBJECT_ID")
 demographic_df = s1.combine_first(s2).combine_first(s3).combine_first(s0).reset_index()
 
-column_order = ['SUBJECT_ID', 'SITE_ID', 'clinical_self_report_data', 'mri_self_report_data','supplemental_self_report_data',
-                'primary_diagnoses_all','other_diagnoses_all'] + demographic_survey_cols
-       
+
 demographic_df = (
     demographic_df.groupby("SUBJECT_ID")
     .agg(lambda x: ", ".join(x.dropna().astype(str).unique()))
-    .reset_index()
-)
-
-demographic_df['clinical_self_report_data'] = pd.to_datetime(demographic_df['clinical_self_report_data'], format="%m/%d/%y %H:%M", errors='coerce')
-demographic_df['clinical_self_report_data'] = demographic_df['clinical_self_report_data'].sort_values('clinical_self_report_data', ascending=False)
-
-
+    .reset_index())
 today = datetime.datetime.today()
 today_str = today.strftime('%b %d %Y')
-demographic_df.to_csv(os.path.join(project_dir, 'Dashboard', 'demographic_df', f'demographic_df_{today_str}.csv'))
+demographic_df.to_csv(os.path.join(pcx_dir, 'Dashboard', 'demographic_df', f'demographic_df_{today_str}.csv'))
 
 rate_per_day = 0.22
 start = 'Dec 1 2024'
