@@ -15,7 +15,7 @@ import sys
 # Import custom scripts
 project_dir = os.path.basename(os.getcwd())
 sys.path.append(project_dir)
-from scripts.config import surveys_dir, REPORTS_DIR, subject_ids
+from scripts.surveys import surveys_dir, REPORTS_DIR, subject_ids
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN], use_pages=True,  pages_folder="pages")
 
@@ -86,5 +86,5 @@ def update_subject(subject):
     return subject
     
 if __name__ == "__main__":
-    app.run(debug=True, port=8090)
+    app.run(host="0.0.0.0", port=8090, debug=True)
 

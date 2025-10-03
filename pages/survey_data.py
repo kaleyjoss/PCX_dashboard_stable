@@ -13,7 +13,7 @@ import sys
 # Import custom scripts
 project_dir = os.path.basename(os.getcwd())
 sys.path.append(project_dir)
-from scripts.config import subject_ids, surveys, recoded_surveys, subsurvey_key
+from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
 
 #external_stylesheet = dbc.themes.CERULEAN
 dash.register_page(__name__, path="/survey_data", title='Survey Data', name='Survey Data')

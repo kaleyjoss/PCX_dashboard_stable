@@ -2,7 +2,7 @@ import dash
 from dash import html, Input, Output, callback, dcc
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
-from dash import Dash, _dash_renderer
+from dash import Dash, _dash_renderer, dash_table
 from dash_iconify import DashIconify
 _dash_renderer._set_react_version("18.2.0")
 import logging
@@ -45,7 +45,7 @@ if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 from scripts.sub_id import extract
 from scripts.paths import get_path
-from scripts.config import subject_ids, surveys, recoded_surveys, subsurvey_key
+from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
 
 
 # Set up logging
@@ -63,18 +63,89 @@ subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_
 # num mri data: in surveys['mri_self_report_data']
 # num clin interview session: in surveys['clinical_administered_data']
 # goal: in rmr
+ #RMR visual
+session1 = surveys['clinical_administered_data'][2:]
+session1['SUBJECT_ID'] = session1['SUBJECT_ID'].str.lower()
+session1['SUBJECT_ID'] = session1['SUBJECT_ID'].str.replace('pcr', 'qualr')
+session1 = session1[~session1['SUBJECT_ID'].str.contains('test', na=False)]
 
-# RMR visual
-session1 = surveys['clinical_administered_data']
-session1_r = session1.loc[session1['SUBJECT_ID'].str.contains('qualr')]
-session1_m = session1.loc[session1['SUBJECT_ID'].str.contains('qualm')]
-session2 = surveys['mri_self_report_data']
-session2_r = session2.loc[session2['SUBJECT_ID'].str.contains('qualr')]
-session2_m = session2.loc[session2['SUBJECT_ID'].str.contains('qualm')]
+prim_diagnoses_cols = ['SUBJECT_ID']+[col for col in session1 if 'primary_diagnoses' in col]
+session1['primary_diagnoses_all'] = session1[prim_diagnoses_cols].bfill(axis=1).iloc[:, 1:2]
+other_diagnoses_cols = ['SUBJECT_ID']+[col for col in session1 if 'other_diagnoses' in col]
+session1['other_diagnoses_all'] = session1[other_diagnoses_cols].bfill(axis=1).iloc[:, 1:2]
+session1['duration_mins'] = pd.to_numeric(session1['Duration (in seconds)'])/60
+session1_r = session1[session1['SITE_ID']=='Rutgers University / UBHC']
+session1_m = session1[session1['SITE_ID'] == 'McLean Hospital']
+session1_clean = session1.dropna(subset='SUBJECT_ID')
+session1sr = surveys['clinical_self_report_data'][2:]
+session1sr['SUBJECT_ID'] = session1sr['SUBJECT_ID'].str.lower()
+session1sr['SUBJECT_ID'] = session1sr['SUBJECT_ID'].str.replace('pcr', 'qualr')
+session1sr = session1sr[~session1sr['SUBJECT_ID'].str.contains('test', na=False)]
+session1sr_clean = session1sr.dropna(subset='SUBJECT_ID')
+
+session1sr_clean['duration_mins'] = pd.to_numeric(session1sr_clean['Duration (in seconds)'])/60
+session1sr_r = session1sr_clean[session1sr_clean['SITE_ID']=='Rutgers University / UBHC']
+session1sr_m = session1sr_clean[session1sr_clean['SITE_ID'] == 'McLean Hospital']
+session2 = surveys['mri_self_report_data'][2:]
+session2['SUBJECT_ID'] = session2['SUBJECT_ID'].str.lower()
+session2['SUBJECT_ID'] = session2['SUBJECT_ID'].str.replace('pcr', 'qualr')
+session2 = session2[~session2['SUBJECT_ID'].str.contains('test', na=False)]
+
+session2_clean = session2.dropna(subset='SUBJECT_ID')
+
+session2['duration_mins'] = pd.to_numeric(session2_clean['Duration (in seconds)'])/60
+session2_r = session2_clean[session2_clean['SITE_ID']=='Rutgers University / UBHC']
+session2_m = session2_clean[session2_clean['SITE_ID'] == 'McLean Hospital']
 total_real = len(session1_r) + len(session1_m)
+
+# Pie charts
+primary_pie = px.pie(session1, names='primary_diagnoses_all', title='Subject Primary Diagnoses')
+other_pie = px.pie(session1, names='other_diagnoses_all', title='Subject Other Diagnoses')
+
+
+demographic_survey_cols = [
+	"sex",
+	"age",
+    "ethnic",
+	"racial",
+	"weight",
+	"place_birth",
+	"native_lang"]
+
+
+session0_merge = session1[['SUBJECT_ID','SITE_ID','primary_diagnoses_all','other_diagnoses_all']]
+session1_merge = session1sr[['SUBJECT_ID','SITE_ID'] + [col for col in demographic_survey_cols if col in session1sr.columns] + ['clinical_self_report_data']]
+session2_merge = session2_clean[['SUBJECT_ID'] +  [col for col in demographic_survey_cols if col in session2_clean.columns] + ['mri_self_report_data']]
+
+session3_merge = surveys['supplemental_self_report_data'][2:][['SUBJECT_ID','supplemental_self_report_data']]
+session3_merge['SUBJECT_ID'] = session3_merge['SUBJECT_ID'].str.lower()
+
+
+
+# align on SUBJECT_ID first
+s1 = session1_merge.set_index("SUBJECT_ID")
+s2 = session2_merge.set_index("SUBJECT_ID")
+s3 = session3_merge.set_index("SUBJECT_ID")
+s0 = session0_merge.set_index("SUBJECT_ID")
+demographic_df = s1.combine_first(s2).combine_first(s3).combine_first(s0).reset_index()
+
+column_order = ['SUBJECT_ID', 'SITE_ID', 'clinical_self_report_data', 'mri_self_report_data','supplemental_self_report_data',
+                'primary_diagnoses_all','other_diagnoses_all'] + demographic_survey_cols
+       
+demographic_df = (
+    demographic_df.groupby("SUBJECT_ID")
+    .agg(lambda x: ", ".join(x.dropna().astype(str).unique()))
+    .reset_index()
+)
+
+demographic_df['clinical_self_report_data'] = pd.to_datetime(demographic_df['clinical_self_report_data'], format="%m/%d/%y %H:%M", errors='coerce')
+demographic_df['clinical_self_report_data'] = demographic_df['clinical_self_report_data'].sort_values('clinical_self_report_data', ascending=False)
+
 
 today = datetime.datetime.today()
 today_str = today.strftime('%b %d %Y')
+demographic_df.to_csv(os.path.join(project_dir, 'Dashboard', 'demographic_df', f'demographic_df_{today_str}.csv'))
+
 rate_per_day = 0.22
 start = 'Dec 1 2024'
 beginning = dt.strptime(start, '%b %d %Y')
@@ -93,30 +164,32 @@ today_index = today_row['index'].values.squeeze()
 two_quarters_out=today_index+2
 rmr_df_today = rmr_df_today[:two_quarters_out]
 
-
-
 rmr_goal = px.line(rmr_df_today, x='Date', y=['Total Goal', 'Total Real'], width=500, height=300, title='Total Subjects Consented: Goal and Real', labels='Quarter')
 r_goal = px.line(rmr_df_today, x='Date', y=['Rutgers Goal', 'Rutgers Consented', 'Rutgers Clinical Interview', 'Rutgers Scan'], width=500, height=300, title='Subjects at Rutgers vs. Goal', labels='Quarter')
 m_goal = px.line(rmr_df_today, x='Date', y=['McLean Goal', 'McLean Consented', 'McLean Clinical Interview', 'McLean Scan'], width=500, height=300, title='Subjects at McLean vs. Goal', labels='Quarter')
 
 
-cad = surveys['clinical_administered_data']
-prim_diagnoses_cols = ['SUBJECT_ID']+[col for col in cad if 'primary_diagnoses' in col]
-other_diagnoses_cols = ['SUBJECT_ID']+[col for col in cad if 'other_diagnoses' in col]
-primary = cad[prim_diagnoses_cols].bfill(axis=1).iloc[:, 0:2]
-primary = primary.loc[~primary['SUBJECT_ID'].str.contains("{")]
-primary = primary.loc[~primary['SUBJECT_ID'].str.contains("ie")]
-primary = primary.dropna()
-primary_pie = px.pie(primary, names='primary_diagnoses_1', title='Subject Primary Diagnoses')
 
-other_diagnoses_cols = ['SUBJECT_ID']+[col for col in cad if 'other_diagnoses' in col]
-other = cad[other_diagnoses_cols].bfill(axis=1).iloc[:, 0:2]
-other = other.loc[~other['SUBJECT_ID'].str.contains("{")]
-other = other.loc[~other['SUBJECT_ID'].str.contains("ie")]
-other_pie = px.pie(other, names='other_diagnoses_1', title='Subject Other Diagnoses')
+# Surveys
+cad_recoded = recoded_surveys['clinical_administered_data'][2:]
+panss_p_total_cols = [f'panss_p0{str(i)}' for i in range(1,8)]
+panss_n_total_cols = [f'panss_n0{str(i)}' for i in range(1,8)]
+panss_g_total_cols = [f'panss_g0{str(i)}' for i in range(1,8)]
+bprs_total_cols = [f'bprs_0{str(i)}' for i in range(1,10)]+[f'bprs_1{i}' for i in range(0,9)]
+ymrs_total_cols = [f'ymrs_0{str(i)}' for i in range(1,10)]+[f'ymrs_1{i}' for i in range(0,2)]
+madrs_total_cols = [f'madrs_0{str(i)}' for i in range(1,10)]+['madrs_10']
+
+all_cols = panss_p_total_cols+panss_n_total_cols+panss_g_total_cols+bprs_total_cols+ymrs_total_cols+madrs_total_cols
+cad_recoded[all_cols] = cad_recoded[all_cols].astype(float)
 
 
-# Subject 1-liners
+cad_recoded['panss_p_total'] = cad_recoded[panss_p_total_cols].sum(axis=1)
+cad_recoded['panss_n_total'] = cad_recoded[panss_n_total_cols].sum(axis=1)
+cad_recoded['panss_g_total'] = cad_recoded[panss_g_total_cols].sum(axis=1)
+cad_recoded['bprs_total'] = cad_recoded[bprs_total_cols].sum(axis=1)
+cad_recoded['ymrs_total'] = cad_recoded[ymrs_total_cols].sum(axis=1)
+cad_recoded['madrs_total'] = cad_recoded[madrs_total_cols].sum(axis=1)
+
 
 
 
@@ -198,17 +271,68 @@ def StatsRing():
             )
         )
 
-    return dmc.Grid(
+    return dmc.SimpleGrid(
         children=stats,
         cols={"base": 4, "sm": 1},
         p="lg"
     )
+
+
+
+def render_table(df, cols):
+    if 'SUBJECT_ID' not in cols:
+        cols = cols + ['SUBJECT_ID']
+    survey_df = df[cols]
+
+    return dash_table.DataTable(
+        data=survey_df.to_dict('records'),
+        columns=[{'id': c, 'name': c} for c in survey_df.columns],
+        css=[{
+            "selector": ".dash-spreadsheet td div",
+            "rule": """
+                line-height: 20px;
+                max-height: none; min-height: 20px; height: auto;
+                display: block;
+                white-space: normal;
+                overflow-y: visible;
+            """
+            }],
+        tooltip_data=[
+            {
+                column: {'value': str(value), 'type': 'markdown'}
+                for column, value in row.items()
+            } for row in survey_df.to_dict('records')
+        ],
+        tooltip_duration=None,
+        style_cell={
+            "textAlign": "left",
+            "whiteSpace": "normal",
+            "height": "auto",
+            "fontFamily": "Arial, sans-serif",
+            "fontSize": "14px",
+            "padding": "8px"
+        },
+        style_header={
+            "backgroundColor": "#f0f2f6",
+            "fontWeight": "bold"
+        },
+        style_data_conditional=[
+            {
+                "if": {"row_index": "odd"},
+                "backgroundColor": "#fafafa"
+            }
+        ]      
+    )
+
+
+#recent_subs = render_table()
 
 # App layout
 layout = html.Div([
     dmc.MantineProvider(children=[
         dmc.Text('PCX Current Status',  c='blue', tt='uppercase',style={"fontSize": 40},),
         StatsRing(),
+        html.Div(render_table(demographic_df, column_order)),
         dmc.Group(id='graphs', children=[
             dcc.Graph(figure=rmr_goal, id='rmr-goal'),
             dcc.Graph(figure=r_goal, id='rutgers-goal'),
@@ -218,15 +342,28 @@ layout = html.Div([
                 dcc.Graph(figure=other_pie, id='other-pie'),
                 ]),
             ]),
+            #html.Div(figure=recent_subs, id='recent-subs', style={'width': '20%', 'padding': '0px'}),
+
+        # html.Div(id='duration-container', children=[
+		# 		dcc.RadioItems((['Rutgers', 'McLean']), id='site', value='Rutgers'),
+        #         dcc.Tabs(id="session", value='Clinical Interview Session', children=[
+        #             dcc.Tab(label='Clinical Interview Session', value='Clinical Interview Session'),
+		# 			dcc.Tab(label='Clinical Self-Report', value='Clinical Self-Report'),
+        #             dcc.Tab(label='fMRI Self-Report', value='fMRI Self-Report'),
+		# 		]),
+
+		# 		html.Div(id='table-duration', style={'width': 500,'padding': '5px'}),
+        #         html.Div(id='chart-duration', style={'width': 500,'padding': '5px'})
+		# ]),
+
     ]),
     
+    # dcc.Graph(figure={}, id='dashboard-graph', style={
+    #     'width': '100%',
+    #     'height': '100%',
+    #     'padding': 10,
+    #     'flex': 1,})
     
-            
-    dcc.Graph(figure={}, id='dashboard-graph', style={
-        'width': '100%',
-        'height': '100%',
-        'padding': 10,
-        'flex': 1,})
 ])
 
 
@@ -257,3 +394,36 @@ def cb(subject_id):
                     width=1500, height=800)
     return fig
 
+
+@callback(
+    Output('table-duration', 'children'),
+    Output('chart-duration', 'children'),
+    Input('site', 'value'),
+    Input('session', 'value'),
+)
+
+def cb(site, session):
+    if session=='Clinical Interview Session':
+        if site=='McLean':
+            df = session1_m
+        else:
+            df = session1_r
+    if session=='Clinical Self-Report':
+        if site=='McLean':
+            df = session1sr_m
+        else:
+            df = session1sr_r
+    if session=='fMRI Self-Report':
+        if site=='McLean':
+            df = session2_m
+        else:
+            df = session2_r
+    cols = ['SUBJECT_ID','RecordedDate', 'duration_mins','primary_diagnoses_all', 'other_diagnoses_all']
+    cols_present = [col for col in cols if col in df.columns]
+
+
+    
+    #Bar chart of duration for each sub
+    fig = px.bar(df, x='SUBJECT_ID', y='duration_mins', text_auto='.2s', range_y=[0,120])
+
+    return render_table(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")

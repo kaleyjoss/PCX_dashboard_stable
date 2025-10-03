@@ -20,7 +20,7 @@ sys.path.append(project_dir)
 from scripts.update_dataframes import update_dfs
 import scripts.paths as paths
 import scripts.sub_id as sub_id
-from scripts.config import subject_ids, surveys, recoded_surveys, subsurvey_key
+from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:

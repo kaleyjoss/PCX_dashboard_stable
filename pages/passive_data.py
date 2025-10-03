@@ -25,15 +25,28 @@ if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
-from scripts.config import subject_ids, surveys, recoded_surveys, subsurvey_key
-from scripts.config import subs_df, power_df, accel_df, gps_df, mindlamp_df, selected_cols, readable_cols
+from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
+from scripts.update_dataframes import update_dfs
 
 # Register page into dash app as pagename
 dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
 
+
+
+
+# Update passive data dfs
+pcx_dir = os.path.expanduser("~/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX")
+
+subs_df, mindlamp_df, selected_cols, readable_cols = update_dfs(pcx_dir)
+power_df = mindlamp_df[mindlamp_df['sensor']=='power']
+accel_df = mindlamp_df[mindlamp_df['sensor']=='accel']
+gps_df = mindlamp_df[mindlamp_df['sensor']=='gps']
+
+
+
 # App layout
 layout = html.Div([
-    dcc.RadioItems(id='days', value='All days', 
+    dcc.RadioItems(id='days', value='All days',
         options=['All days','Weekdays','Weekends']),
 
     dcc.Graph(figure={}, id='phone_use-graph'),
