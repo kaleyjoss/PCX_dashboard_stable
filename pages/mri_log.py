@@ -18,9 +18,9 @@ import inspect
 dashboard_dir = os.path.basename(os.getcwd())
 sys.path.append(dashboard_dir)
 from scripts.update_dataframes import update_dfs
-from scripts.paths import get_path, tracker_df, rmr_df, subs_df, pcx_dir, mri_dir, data_dir
+from scripts.paths import load_paths
 import scripts.sub_id as sub_id
-from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
+from scripts.surveys import load_surveys
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:
@@ -30,7 +30,8 @@ if 'scripts.sub_id' in sys.modules:
 # Register page into dash app as pagename
 dash.register_page(__name__, path="/mri_log", title='MRI Report', name='MRI Report')
 
-
+paths_dict = load_paths()
+mri_dir = paths_dict['mri_dir']
 subjects = os.listdir(mri_dir)
 
 # App layout

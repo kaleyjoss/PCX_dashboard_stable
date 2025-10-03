@@ -14,7 +14,7 @@ import inspect
 
 # Import custom scripts
 sys.path.append(os.path.basename(os.getcwd()))
-import scripts.paths as paths
+import scripts.paths 
 import scripts.sub_id as sub_id
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
@@ -36,7 +36,7 @@ def update_dfs(pcx_dir):
     power = {}
     gps = {}
     accel = {}
-    mindlamp_data_path = paths.get_path('mindlamp_mri_data', pcx_dir, isdir=True)
+    mindlamp_data_path = scripts.paths.get_path('mindlamp_mri_data', pcx_dir)
     if mindlamp_data_path:
         for dirpath, dirnames, filenames in os.walk(mindlamp_data_path):
             # Search for specific file type
@@ -110,7 +110,7 @@ def update_dfs(pcx_dir):
 
     # Extract the relevant columns 
     selected_cols = [col for col in power_df.columns if isinstance(col, str) and 'activityScore' in col]
-    legend_path = paths.get_path('key_to_readable_name.xlsx', pcx_dir, isdir=False)
+    legend_path = scripts.paths.get_path('key_to_readable_name.xlsx', pcx_dir)
     if legend_path:
         legend = pd.read_excel(legend_path)
         legend = legend.set_index('key')

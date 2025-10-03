@@ -20,7 +20,6 @@ sys.path.append(basename)
 
 # Import custom scripts
 from scripts.update_dataframes import update_dfs
-import scripts.paths as paths
 import scripts.sub_id as sub_id
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])

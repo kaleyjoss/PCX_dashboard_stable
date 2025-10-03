@@ -3,6 +3,15 @@ import pickle
 import logging
 import pandas as pd
 
+'''
+To use: 
+paths = load_paths()
+surveys_dir = paths["surveys_dir"]
+REPORTS_DIR = paths["REPORTS_DIR"]
+...
+
+'''
+
 def find(target_folder, search_dir):
     """Walk through the filesystem to find the folder recursively.
     
@@ -17,7 +26,6 @@ def find(target_folder, search_dir):
     for filenames in os.listdir(search_dir):
         if target_folder in filenames:
             full_path = os.path.join(search_dir, target_folder)
-            logging.info(f'✅ Found folder: {full_path}')
             return full_path
         else:
             logging.debug(f'Searching in: {search_dir} — didnt find {target_folder}, found subfolders: {filenames}. If you would like to change what directory to look for this file, change it in /scripts/paths.py')
@@ -77,7 +85,6 @@ def get_path(target, search_dir, cache_file='path_cache.pkl'):
     # Try to load a cached path
     path = get_cached_path(target)
     if path:
-        logging.info(f"Using cached path: {path}")
         return path
 
     # Otherwise, search for it
@@ -87,18 +94,33 @@ def get_path(target, search_dir, cache_file='path_cache.pkl'):
         return path
 
 
-project_dir = (os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2'))
-logging.info(f'Using projet_dir {project_dir}')
-               
-rmr_path = get_path('RMR_running.xlsx', os.path.join(project_dir, 'Admin'))
-rmr_df = pd.read_excel(rmr_path)
-tracker_path = get_path('Subject_tracker_PCR.xlsx', project_dir)
-tracker_df = pd.read_excel(tracker_path)
-subs_df = tracker_df
+def load_paths():
+    project_dir = os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2')
+    logging.info(f'Using project_dir {project_dir}')
 
-pcx_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
-mri_dir = get_path('fmriprep_reports', pcx_dir, isdir=True)
-data_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
-surveys_dir = get_path('behavioral',data_dir)
+    rmr_path = get_path('RMR_running.xlsx', os.path.join(project_dir, 'Admin'))
+    rmr_df = pd.read_excel(rmr_path)
 
+    tracker_path = get_path('Subject_tracker_PCR.xlsx', project_dir)
+    tracker_df = pd.read_excel(tracker_path)
 
+    pcx_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
+    mri_dir = get_path('fmriprep_reports', pcx_dir)
+    data_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
+    surveys_dir = get_path('behavioral', data_dir)
+    REPORTS_DIR = get_path('fmriprep_reports', pcx_dir)
+    demographic_df_dir = get_path('demographic_df', pcx_dir)
+
+    logging.info('Using cached paths from /scripts/paths.py. If you move a file, change its location.')
+
+    return {
+        "project_dir": project_dir,
+        "rmr_df": rmr_df,
+        "tracker_df": tracker_df,
+        "pcx_dir": pcx_dir,
+        "mri_dir": mri_dir,
+        "REPORTS_DIR": REPORTS_DIR,
+        "data_dir": data_dir,
+        "surveys_dir": surveys_dir,
+        "demographic_df_dir": demographic_df_dir,
+    }

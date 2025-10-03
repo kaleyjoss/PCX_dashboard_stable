@@ -11,15 +11,21 @@ from datetime import datetime as dt
 import sys
 
 # Import custom scripts
-from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
-from scripts.paths import get_path, tracker_df, rmr_df, subs_df, pcx_dir, mri_dir, data_dir
+from scripts.surveys import load_surveys, subsurvey_key
+from scripts.paths import load_paths
 dashboard_dir = os.path.basename(os.getcwd())
 sys.path.append(dashboard_dir)
 
 #external_stylesheet = dbc.themes.CERULEAN
 dash.register_page(__name__, path="/survey_data", title='Survey Data', name='Survey Data')
 
-tracker_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
+paths_dict = load_paths()
+tracker_df=paths_dict['tracker_df']
+surveys_dir = paths_dict['surveys_dir']
+surveys, recoded_surveys = load_surveys(surveys_dir)
+
+first_df = surveys['clinical_administered_data']
+subject_ids = first_df['SUBJECT_ID'].unique()
 
 import logging
 logging.basicConfig(

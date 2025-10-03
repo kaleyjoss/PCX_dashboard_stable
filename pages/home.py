@@ -35,17 +35,6 @@ dash.register_page(__name__,
 dashboard_dir = os.path.basename(os.getcwd())
 sys.path.append(dashboard_dir)
 
-import scripts.paths as paths
-import scripts.sub_id as sub_id
-if 'scripts.paths' in sys.modules:
-    importlib.reload(sys.modules['scripts.paths'])
-if 'scripts.sub_id' in sys.modules:
-    importlib.reload(sys.modules['scripts.sub_id'])
-from scripts.sub_id import extract
-from scripts.paths import get_path, tracker_df, rmr_df, subs_df, pcx_dir, mri_dir, data_dir
-from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
-
-
 # Set up logging
 logging.basicConfig(
     filename='dashboard.log',        # File to write logs to, saved in working directory
@@ -53,16 +42,37 @@ logging.basicConfig(
     level=logging.INFO,        # Minimum logging level
     format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
+import scripts.sub_id as sub_id
+if 'scripts.paths' in sys.modules:
+    importlib.reload(sys.modules['scripts.paths'])
+if 'scripts.sub_id' in sys.modules:
+    importlib.reload(sys.modules['scripts.sub_id'])
+from scripts.sub_id import extract
+from scripts.paths import load_paths
+from scripts.surveys import load_surveys, add_diagnoses_columns
+
+paths = load_paths()
+project_dir = paths["project_dir"]
+surveys_dir = paths["surveys_dir"]
+rmr_df = paths["rmr_df"]
+tracker_df = paths["tracker_df"]
+demographic_df_dir = paths["demographic_df_dir"]
+
+surveys, recoded_surveys = load_surveys(surveys_dir)
+surveys = add_diagnoses_columns(surveys)
+
+first_df = surveys['clinical_administered_data']
+subject_ids = first_df['SUBJECT_ID'].unique()
 
 #RMR visual
 session1 = surveys['clinical_administered_data']
+print(f'session1 head:: len {len(session1)}')
+print(session1.head())
+print('session1 head::')
+
 session2 = surveys['mri_self_report_data']
 session1sr = surveys['clinical_self_report_data']
-
-prim_diagnoses_cols = ['SUBJECT_ID']+[col for col in session1 if 'primary_diagnoses' in col]
-session1['primary_diagnoses_all'] = session1[prim_diagnoses_cols].bfill(axis=1).iloc[:, 1:2]
-other_diagnoses_cols = ['SUBJECT_ID']+[col for col in session1 if 'other_diagnoses' in col]
-session1['other_diagnoses_all'] = session1[other_diagnoses_cols].bfill(axis=1).iloc[:, 1:2]
+session3 = surveys['supplemental_self_report_data']
 
 session1['duration_mins'] = pd.to_numeric(session1['Duration (in seconds)'])/60
 session1_r = session1[session1['SITE_ID']=='Rutgers University / UBHC']
@@ -92,13 +102,7 @@ survey_cols = [
 session0_merge = session1[[col for col in survey_cols if col in session1.columns]]
 session1_merge = session1sr[[col for col in survey_cols if col in session1sr.columns]]
 session2_merge = session2[[col for col in survey_cols if col in session2.columns]]
-
-session3 = surveys['supplemental_self_report_data']
-session3_clean = session3.dropna(subset='SUBJECT_ID')
-session3_merge = session3_clean[[col for col in survey_cols if col in session3_clean.columns]]
-session3_merge['SUBJECT_ID'] = session3_merge['SUBJECT_ID'].str.lower()
-
-
+session3_merge = session3[[col for col in survey_cols if col in session3.columns]]
 
 # align on SUBJECT_ID first
 s1 = session1_merge.set_index("SUBJECT_ID")
@@ -114,7 +118,7 @@ demographic_df = (
     .reset_index())
 today = datetime.datetime.today()
 today_str = today.strftime('%b %d %Y')
-demographic_df.to_csv(os.path.join(pcx_dir, 'Dashboard', 'demographic_df', f'demographic_df_{today_str}.csv'))
+demographic_df.to_csv(os.path.join(demographic_df_dir, f'demographic_df_{today_str}.csv'))
 
 rate_per_day = 0.22
 start = 'Dec 1 2024'
@@ -140,30 +144,31 @@ m_goal = px.line(rmr_df_today, x='Date', y=['McLean Goal', 'McLean Consented', '
 
 
 
-# Surveys
-cad_recoded = recoded_surveys['clinical_administered_data'][2:]
-panss_p_total_cols = [f'panss_p0{str(i)}' for i in range(1,8)]
-panss_n_total_cols = [f'panss_n0{str(i)}' for i in range(1,8)]
-panss_g_total_cols = [f'panss_g0{str(i)}' for i in range(1,8)]
-bprs_total_cols = [f'bprs_0{str(i)}' for i in range(1,10)]+[f'bprs_1{i}' for i in range(0,9)]
-ymrs_total_cols = [f'ymrs_0{str(i)}' for i in range(1,10)]+[f'ymrs_1{i}' for i in range(0,2)]
-madrs_total_cols = [f'madrs_0{str(i)}' for i in range(1,10)]+['madrs_10']
+# # Surveys
+# cad_recoded = recoded_surveys['clinical_administered_data'][2:]
+# panss_p_total_cols = [f'panss_p0{str(i)}' for i in range(1,8)]
+# panss_n_total_cols = [f'panss_n0{str(i)}' for i in range(1,8)]
+# panss_g_total_cols = [f'panss_g0{str(i)}' for i in range(1,8)]
+# bprs_total_cols = [f'bprs_0{str(i)}' for i in range(1,10)]+[f'bprs_1{i}' for i in range(0,9)]
+# ymrs_total_cols = [f'ymrs_0{str(i)}' for i in range(1,10)]+[f'ymrs_1{i}' for i in range(0,2)]
+# madrs_total_cols = [f'madrs_0{str(i)}' for i in range(1,10)]+['madrs_10']
 
-all_cols = panss_p_total_cols+panss_n_total_cols+panss_g_total_cols+bprs_total_cols+ymrs_total_cols+madrs_total_cols
-cad_recoded[all_cols] = cad_recoded[all_cols].astype(float)
+# all_cols = panss_p_total_cols+panss_n_total_cols+panss_g_total_cols+bprs_total_cols+ymrs_total_cols+madrs_total_cols
+# cad_recoded[all_cols] = cad_recoded[all_cols].astype(float)
 
 
-cad_recoded['panss_p_total'] = cad_recoded[panss_p_total_cols].sum(axis=1)
-cad_recoded['panss_n_total'] = cad_recoded[panss_n_total_cols].sum(axis=1)
-cad_recoded['panss_g_total'] = cad_recoded[panss_g_total_cols].sum(axis=1)
-cad_recoded['bprs_total'] = cad_recoded[bprs_total_cols].sum(axis=1)
-cad_recoded['ymrs_total'] = cad_recoded[ymrs_total_cols].sum(axis=1)
-cad_recoded['madrs_total'] = cad_recoded[madrs_total_cols].sum(axis=1)
+# cad_recoded['panss_p_total'] = cad_recoded[panss_p_total_cols].sum(axis=1)
+# cad_recoded['panss_n_total'] = cad_recoded[panss_n_total_cols].sum(axis=1)
+# cad_recoded['panss_g_total'] = cad_recoded[panss_g_total_cols].sum(axis=1)
+# cad_recoded['bprs_total'] = cad_recoded[bprs_total_cols].sum(axis=1)
+# cad_recoded['ymrs_total'] = cad_recoded[ymrs_total_cols].sum(axis=1)
+# cad_recoded['madrs_total'] = cad_recoded[madrs_total_cols].sum(axis=1)
 
 
 
 
 # Tracker Visual
+subs_df = paths['tracker_df']
 subs_df_binary = subs_df.fillna(0)
 subs_df_filtered = subs_df_binary.loc[subs_df_binary['Clinical Interview Session Date'] != 0, :]
 subs_df_filtered = subs_df_filtered.loc[:, ~subs_df_filtered.columns.str.contains('Unnamed', case=False)]
@@ -302,7 +307,7 @@ layout = html.Div([
     dmc.MantineProvider(children=[
         dmc.Text('PCX Current Status',  c='blue', tt='uppercase',style={"fontSize": 40},),
         StatsRing(),
-        html.Div(render_table(demographic_df, column_order)),
+        html.Div(render_table(demographic_df, survey_cols)),
         dmc.Group(id='graphs', children=[
             dcc.Graph(figure=rmr_goal, id='rmr-goal'),
             dcc.Graph(figure=r_goal, id='rutgers-goal'),
@@ -365,35 +370,35 @@ def cb(subject_id):
     return fig
 
 
-@callback(
-    Output('table-duration', 'children'),
-    Output('chart-duration', 'children'),
-    Input('site', 'value'),
-    Input('session', 'value'),
-)
+# @callback(
+#     Output('table-duration', 'children'),
+#     Output('chart-duration', 'children'),
+#     Input('site', 'value'),
+#     Input('session', 'value'),
+# )
 
-def cb(site, session):
-    if session=='Clinical Interview Session':
-        if site=='McLean':
-            df = session1_m
-        else:
-            df = session1_r
-    if session=='Clinical Self-Report':
-        if site=='McLean':
-            df = session1sr_m
-        else:
-            df = session1sr_r
-    if session=='fMRI Self-Report':
-        if site=='McLean':
-            df = session2_m
-        else:
-            df = session2_r
-    cols = ['SUBJECT_ID','RecordedDate', 'duration_mins','primary_diagnoses_all', 'other_diagnoses_all']
-    cols_present = [col for col in cols if col in df.columns]
+# def cb(site, session):
+#     if session=='Clinical Interview Session':
+#         if site=='McLean':
+#             df = session1_m
+#         else:
+#             df = session1_r
+#     if session=='Clinical Self-Report':
+#         if site=='McLean':
+#             df = session1sr_m
+#         else:
+#             df = session1sr_r
+#     if session=='fMRI Self-Report':
+#         if site=='McLean':
+#             df = session2_m
+#         else:
+#             df = session2_r
+#     cols = ['SUBJECT_ID','RecordedDate', 'duration_mins','primary_diagnoses_all', 'other_diagnoses_all']
+#     cols_present = [col for col in cols if col in df.columns]
 
 
     
-    #Bar chart of duration for each sub
-    fig = px.bar(df, x='SUBJECT_ID', y='duration_mins', text_auto='.2s', range_y=[0,120])
+#     #Bar chart of duration for each sub
+#     fig = px.bar(df, x='SUBJECT_ID', y='duration_mins', text_auto='.2s', range_y=[0,120])
 
-    return render_table(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")
+#     return render_table(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")

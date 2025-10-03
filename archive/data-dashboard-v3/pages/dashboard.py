@@ -19,15 +19,17 @@ project_dir = os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki
 
 # # Import custom scripts
 sys.path.append(project_dir)
-import scripts.paths as paths
 import scripts.sub_id as sub_id
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 from scripts.sub_id import extract
-from scripts.paths import get_path
+from scripts.paths import load_paths
 
+paths = load_paths()
+project_dir = paths["project_dir"]
+surveys_dir = paths["surveys_dir"]
 
 # Register page into dash app as pagename
 dash.register_page(__name__, path="/dashboard")
@@ -46,7 +48,7 @@ logging.basicConfig(
 # With keys of each sub-ID (ex: sub-PCR200)
 # And within each key, a df which has 3 columns: key, value and readable_name
 subs = {}
-sub_logs_path = get_path('subject_logs', project_dir, isdir=True)
+sub_logs_path = get_path('subject_logs', project_dir)
 if sub_logs_path:
     for file in os.listdir(sub_logs_path):
         if file.startswith("~$") or not file.endswith((".xlsx", ".xls")):

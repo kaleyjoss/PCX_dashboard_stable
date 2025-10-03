@@ -4,10 +4,10 @@ import pandas as pd
 import sys
 import logging
 import importlib
-import scripts.paths as paths
 import scripts.sub_id as sub_id
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
+import scripts.paths
 
 
 def update_dfs(base_dir):
@@ -56,7 +56,7 @@ def update_dfs(base_dir):
                     sensor_dir = os.path.join(subject_dir, "processed", sensor)
                     if os.path.exists(sensor_dir):
                         id = subject_id.replace('sub-','')
-                        sensor_file = paths.find_file(fr"{id}-phone_{sensor}_{type}_{temp}-day(\d+)to(\d+).csv", sensor_dir, regex=True)
+                        sensor_file = scripts.paths.find_file(fr"{id}-phone_{sensor}_{type}_{temp}-day(\d+)to(\d+).csv", sensor_dir, regex=True)
                         if sensor_file is not None:
                             logging.info(f"Found file {sensor_file}")
                             file_path = os.path.join(sensor_dir, sensor_file)

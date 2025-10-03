@@ -24,13 +24,21 @@ if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
-from scripts.surveys import subject_ids, surveys, recoded_surveys, subsurvey_key
 from scripts.update_dataframes import update_dfs
-from scripts.paths import get_path, project_dir, tracker_df, rmr_df, subs_df, pcx_dir, mri_dir, data_dir
-import scripts.paths as paths
+from scripts.paths import load_paths
+from scripts.surveys import load_surveys
 
 # Register page into dash app as pagename
 dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
+paths_dict = load_paths()
+pcx_dir = paths_dict["pcx_dir"]
+surveys_dir = paths_dict['surveys_dir']
+
+surveys, recoded_surveys = load_surveys(surveys_dir)
+
+first_df = surveys['clinical_administered_data']
+subject_ids = first_df['SUBJECT_ID'].unique()
+
 
 
 subs_df, mindlamp_df, selected_cols, readable_cols = update_dfs(pcx_dir)

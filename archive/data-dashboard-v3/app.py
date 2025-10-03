@@ -26,7 +26,6 @@ from scripts.sidebar_layout import sidebar
 from scripts.client_side_callbacks import drawer_sidebar_togle, theme_switcher_callback
 from components.shadowbox import ShadowBox
 
-import scripts.paths as paths
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 

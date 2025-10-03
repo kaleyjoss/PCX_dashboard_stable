@@ -15,7 +15,16 @@ import sys
 # Import custom scripts
 dashboard_dir = os.path.basename(os.getcwd())
 sys.path.append(dashboard_dir)
-from scripts.surveys import surveys_dir, REPORTS_DIR, subject_ids
+from scripts.paths import load_paths
+from scripts.surveys import load_surveys
+paths = load_paths()
+surveys_dir = paths["surveys_dir"]
+REPORTS_DIR = paths["REPORTS_DIR"]
+
+surveys, recoded_surveys = load_surveys(surveys_dir)
+first_df = surveys['clinical_administered_data']
+subject_ids = first_df['SUBJECT_ID'].unique()
+
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN], use_pages=True,  pages_folder="pages")
 
