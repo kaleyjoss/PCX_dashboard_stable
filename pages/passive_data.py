@@ -33,15 +33,14 @@ dash.register_page(__name__, path="/passive_data", title='Passive Data', name='P
 paths_dict = load_paths()
 pcx_dir = paths_dict["pcx_dir"]
 surveys_dir = paths_dict['surveys_dir']
-
+mindlamp_dir = paths_dict['mindlamp_dir']
 surveys, recoded_surveys = load_surveys(surveys_dir)
 
 first_df = surveys['clinical_administered_data']
 subject_ids = first_df['SUBJECT_ID'].unique()
 
 
-
-subs_df, mindlamp_df, selected_cols, readable_cols = update_dfs(pcx_dir)
+mindlamp_df, selected_cols, readable_cols = update_dfs(mindlamp_dir)
 power_df = mindlamp_df[mindlamp_df['sensor']=='power']
 accel_df = mindlamp_df[mindlamp_df['sensor']=='accel']
 gps_df = mindlamp_df[mindlamp_df['sensor']=='gps']

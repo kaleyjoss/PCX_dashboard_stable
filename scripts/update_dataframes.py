@@ -21,7 +21,7 @@ if 'scripts.paths' in sys.modules:
 if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 
-def update_dfs(pcx_dir):
+def update_dfs(mindlamp_dir):
     # Set up logging
     logging.basicConfig(
         filename='update_dataframes.log',        # File to write logs to, saved in working directory
@@ -29,14 +29,12 @@ def update_dfs(pcx_dir):
         level=logging.INFO,        # Minimum logging level
         format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
     )
-
-    subs_df=pd.read_excel(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.xlsx'), sheet_name='tracker')
-
     
     power = {}
     gps = {}
     accel = {}
-    mindlamp_data_path = scripts.paths.get_path('mindlamp_mri_data', pcx_dir)
+    mindlamp_data_path = scripts.paths.get_path('data', mindlamp_dir)
+    logging.info(f'Found mindlamp data at {mindlamp_data_path}')
     if mindlamp_data_path:
         for dirpath, dirnames, filenames in os.walk(mindlamp_data_path):
             # Search for specific file type
@@ -79,8 +77,8 @@ def update_dfs(pcx_dir):
                     gps[sub]['subject_id'] = sub
 
     logging.info(f'Found power files for: {power.keys()}')
-    logging.info(f'Found accel files for: {power.keys()}')
-    logging.info(f'Found gps files for: {power.keys()}')
+    logging.info(f'Found accel files for: {accel.keys()}')
+    logging.info(f'Found gps files for: {gps.keys()}')
 
 
     # Convert the nested dict into a dataframe of all the subjects concatenated
@@ -110,7 +108,7 @@ def update_dfs(pcx_dir):
 
     # Extract the relevant columns 
     selected_cols = [col for col in power_df.columns if isinstance(col, str) and 'activityScore' in col]
-    legend_path = scripts.paths.get_path('key_to_readable_name.xlsx', pcx_dir)
+    legend_path = scripts.paths.get_path('key_to_readable_name.xlsx', mindlamp_dir)
     if legend_path:
         legend = pd.read_excel(legend_path)
         legend = legend.set_index('key')
@@ -129,18 +127,16 @@ def update_dfs(pcx_dir):
     accel_df['daily_mins'] = accel_df[selected_cols].sum(axis=1)
     gps_df['daily_mins'] = gps_df[selected_cols].sum(axis=1)
 
-    accel_path = os.path.join(mindlamp_data_path, 'aggregated_dfs', 'accel_activityScores_hourly.csv')
+    accel_path = os.path.join(mindlamp_dir, 'aggregated_dfs', 'accel_activityScores_hourly.csv')
     accel_df.to_csv(accel_path)
-    power_path = os.path.join(mindlamp_data_path, 'aggregated_dfs', 'power_activityScores_hourly.csv')
+    power_path = os.path.join(mindlamp_dir, 'aggregated_dfs', 'power_activityScores_hourly.csv')
     power_df.to_csv(power_path)
-    gps_path = os.path.join(mindlamp_data_path, 'aggregated_dfs', 'gps_activityScores_hourly.csv')
+    gps_path = os.path.join(mindlamp_dir, 'aggregated_dfs', 'gps_activityScores_hourly.csv')
     gps_df.to_csv(gps_path)
-    subs_path = os.path.join(mindlamp_data_path, 'aggregated_dfs', 'subs_df.csv')
-    subs_df.to_csv(subs_path)
 
     mindlamp_df = pd.concat([accel_df, power_df, gps_df], ignore_index=True, join='outer')
     
-    mindlamp_path = os.path.join(mindlamp_data_path, 'aggregated_dfs', 'mindlamp.csv')
+    mindlamp_path = os.path.join(mindlamp_dir, 'aggregated_dfs', 'mindlamp.csv')
     mindlamp_df.to_csv(mindlamp_path)
     
-    return subs_df, mindlamp_df, selected_cols, readable_cols
+    return mindlamp_df, selected_cols, readable_cols

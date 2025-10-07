@@ -101,10 +101,11 @@ def load_paths():
     rmr_path = get_path('RMR_running.xlsx', os.path.join(project_dir, 'Admin'))
     rmr_df = pd.read_excel(rmr_path)
 
-    tracker_path = get_path('Subject_tracker_PCR.xlsx', project_dir)
-    tracker_df = pd.read_excel(tracker_path)
+    tracker_path = get_path('Subject_tracker_PCR.csv', project_dir)
+    tracker_df = pd.read_csv(tracker_path)
 
     pcx_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
+    mindlamp_dir = get_path('mindlamp_mri_data', pcx_dir)
     mri_dir = get_path('fmriprep_reports', pcx_dir)
     data_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
     surveys_dir = get_path('behavioral', data_dir)
@@ -123,4 +124,5 @@ def load_paths():
         "data_dir": data_dir,
         "surveys_dir": surveys_dir,
         "demographic_df_dir": demographic_df_dir,
+        "mindlamp_dir": mindlamp_dir
     }
