@@ -3,9 +3,7 @@ import os
 import sys
 import logging
 import pandas as pd
-from datetime import timedelta
-
-
+import requests, zipfile, io, time
 '''
 To load the surveys: 
 at the top of the script, load this file, and then write:
@@ -23,62 +21,48 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 repo_dir = os.path.basename(os.getcwd())
 sys.path.append(repo_dir)
 
-
-def extract_survey_date(filename: str):
-    """
-    Extracts a survey date from a filename of the form '..._<Month Day, Year>.csv'
-    Example: 'survey_results_Sep 06, 2025.csv' → datetime(2025, 9, 6)
-    """
-    try:
-        # Grab the last part after the last underscore, before the extension
-        datestr = filename.split('_')[-1].split('.')[0]
-        return dt.strptime(datestr, '%b %d, %Y')
-    except Exception:
-        return None
-    
-def get_most_recent_survey(directory, recoded=False):
-    # Allowed Excel extensions
-    extensions = (".csv", ".xls", ".xlsx")
-    filenames = [f for f in os.listdir(directory) if f.endswith(extensions)]
-    if recoded==True:
-        filenames = [f for f in filenames if 'recoded' in f]
-    else:
-        filenames = [f for f in filenames if not 'recoded' in f]
-    
-    # List Excel files with their sizes
-    dates = []
-    for filename in filenames:
-
-        survey_date = extract_survey_date(filename)
-        if survey_date is not None:
-            dates.append({'filename': filename, 'date': survey_date})
-            
-
-    if len(dates) > 0:
-        dates.sort(key=lambda file: file['date'], reverse=True)
-        print(f'Most recent survey: {dates[0]['filename']}')
-        return os.path.join(directory, dates[0]['filename']), dates[0]['date']
-    
-    
-    return None
-
-
-
-# constants
-SURVEY_NAMES = [
-    "clinical_administered_data",
-    "clinical_self_report_data",
-    "mri_self_report_data",
-    "supplemental_self_report_data",
-]
-
-subsurvey_key = {
-    "panss": "clinical_administered_data",
-    "madrs": "clinical_administered_data",
-    "ymrs": "clinical_administered_data",
-    "bprs": "clinical_administered_data",
-    "cssrs": "clinical_administered_data",
+survey_id_dict = {
+    "clinical_administered_data":{
+        "SURVEY_ID": "SV_6tBSwRN0CukilQG"
+    },
+    "clinical_self_report_data":{
+        "SURVEY_ID": "SV_78QRYTSOnegCSjQ"
+    },
+    "mri_self_report_data":{
+        "SURVEY_ID": "SV_0UqGfGjgsl2nklU"
+    },
+    "supplemental_self_report_data":{
+        "SURVEY_ID": "SV_08nF8tsZ4NU0rWe"
+    },
 }
+
+
+def fetch_survey_df(SURVEY_ID, API_TOKEN, DATA_CENTER, recoded=False):
+    BASE_URL = f"https://{DATA_CENTER}.qualtrics.com/API/v3/surveys/{SURVEY_ID}/export-responses/"
+    HEADERS = {"Content-Type": "application/json", "X-API-TOKEN": API_TOKEN}
+
+    payload = {"format": "csv", "useLabels": str(not recoded)}
+    response = requests.post(BASE_URL, headers=HEADERS, json=payload)
+    progress_id = response.json()["result"]["progressId"]
+
+    # Poll for completion
+    while True:
+        check_response = requests.get(BASE_URL + progress_id, headers=HEADERS)
+        status = check_response.json()["result"]["status"]
+        if status == "complete":
+            file_id = check_response.json()["result"]["fileId"]
+            break
+        elif status == "failed":
+            raise Exception("Export failed")
+        time.sleep(3)
+
+    # Download and read CSV directly
+    download_response = requests.get(BASE_URL + f"{file_id}/file", headers=HEADERS)
+    with zipfile.ZipFile(io.BytesIO(download_response.content)) as zf:
+        with zf.open(zf.namelist()[0]) as csvfile:
+            df = pd.read_csv(csvfile)
+    return df
+
 
 SUBJECT_ID_PATTERN = r"^qual[rm]2\d{2}$"
 
@@ -113,24 +97,18 @@ def load_surveys(surveys_dir):
 
     surveys = {}
     recoded_surveys = {}
+    API_TOKEN = '8d0zWNKj6WnY0kLjmoecUtwgacbwXBLgQmPT0PWZ'
+    DATA_CENTER = 'yul1'  
+
+
 
     for root, dirs, files in os.walk(surveys_dir):
-        for survey in SURVEY_NAMES:
-            if survey not in dirs:
-                continue
-
-            survey_dir = os.path.join(root, survey)
+        for survey in survey_id_dict:
+            SURVEY_ID = survey_id_dict[survey]["SURVEY_ID"]
             try:
-                filepath, date = get_most_recent_survey(survey_dir)
-                
-                if abs((date - dt.now()).days) > 10:
-                    filepath = os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data_processing/download_qualtrics.py')
-                    os.system(f'python3 {filepath}')
-                    filepath, date = get_most_recent_survey(survey_dir)
+                df = fetch_survey_df(SURVEY_ID, API_TOKEN, DATA_CENTER, recoded=False)
+                rdf = fetch_survey_df(SURVEY_ID, API_TOKEN, DATA_CENTER, recoded=True)
 
-                filepath_recoded, date = get_most_recent_survey(survey_dir, recoded=True)
-
-                df = pd.read_csv(filepath)
                 # clean SUBJECT_ID
                 df["SUBJECT_ID"] = df["SUBJECT_ID"][2:]
                 df["SUBJECT_ID"] = (
@@ -145,7 +123,6 @@ def load_surveys(surveys_dir):
                 df[str(survey)] = df["StartDate"] #indicator column of date completed for once merged
                 surveys[survey] = df
 
-                rdf = pd.read_csv(filepath_recoded)
                 rdf["SUBJECT_ID"] = rdf["SUBJECT_ID"][2:]
                 rdf["SUBJECT_ID"] = (
                     rdf["SUBJECT_ID"].astype(str).str.lower().str.replace("pc", "qual")

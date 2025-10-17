@@ -4,15 +4,16 @@ import logging
 import pandas as pd
 
 '''
-To use: 
+Example of use:
+1. Load paths dict 
 paths = load_paths()
-surveys_dir = paths["surveys_dir"]
-REPORTS_DIR = paths["REPORTS_DIR"]
-...
-
+2. Use the below list of dicts to reference specific paths, ie `surveys_dir = paths["surveys_dir"]`
 '''
 
-def find(target_folder, search_dir):
+
+
+
+def find(search_dir, target_folder):
     """Walk through the filesystem to find the folder recursively.
     
     Args:
@@ -36,7 +37,7 @@ def find(target_folder, search_dir):
 
 def get_cached_path(target, cache_prefix='path_'):
     """Try to load a cached path based on the target's base name."""
-    cache_file = f"{cache_prefix}{target}.pkl"
+    cache_file = f"/paths/{cache_prefix}{target}.pkl"
     if os.path.exists(cache_file):
         with open(cache_file, 'rb') as f:
             cached_path = pickle.load(f)
@@ -47,7 +48,7 @@ def get_cached_path(target, cache_prefix='path_'):
 def save_cached_path(path, cache_prefix='path_'):
     """Save a path to a uniquely named pickle file based on the target name."""
     base = os.path.basename(os.path.normpath(path))  # e.g., 'PCR927.csv' or 'subject_logs'
-    cache_file = f"{cache_prefix}{base}.pkl"
+    cache_file = f"/paths/{cache_prefix}{base}.pkl"
     with open(cache_file, 'wb') as f:
         pickle.dump(path, f)
     logging.info(f"Saved path as {cache_prefix}{base}.pkl")
@@ -77,9 +78,6 @@ def get_path(target, search_dir, cache_file='path_cache.pkl'):
     Raises:
         FileNotFoundError: If the file is not found in the specified search directory.
 
-    Example:
-        >>> path = get_file_path('results.csv', '/Users/myname/Documents')
-        ✅ Using cached path: /Users/myname/Documents/ProjectA/results.csv
     """
 
     # Try to load a cached path
@@ -88,41 +86,43 @@ def get_path(target, search_dir, cache_file='path_cache.pkl'):
         return path
 
     # Otherwise, search for it
-    path = find(target, search_dir)
+    path = find(search_dir, target)
     if path:
         save_cached_path(path)
         return path
 
 
+def check_path(path):
+    if os.path.exists(path):
+        return path
+    else:
+        logging.warning(f"Missing: {path}. This must have moved. Change the filepath location each item is looking for in /scripts/paths.py")
+        return None
+
 def load_paths():
     project_dir = os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2')
     logging.info(f'Using project_dir {project_dir}')
 
-    rmr_path = get_path('RMR_running.xlsx', os.path.join(project_dir, 'Admin'))
-    rmr_df = pd.read_excel(rmr_path)
 
-    tracker_path = get_path('Subject_tracker_PCR.csv', project_dir)
-    tracker_df = pd.read_csv(tracker_path)
+    pcx_dir = find(os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'), 'PCX')
+    mindlamp_dir = find(pcx_dir, 'mindlamp_mri_data')
+    mri_dir = find(pcx_dir, 'fmriprep_reports')
+    data_dir = find(pcx_dir, 'PCX')
+    surveys_dir = find(pcx_dir, 'behavioral')
+    REPORTS_DIR = find(pcx_dir, 'fmriprep_reports')
+    tracker_df = pd.read_csv('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.csv')
+    demographic_df_dir = find(pcx_dir, 'demographic_df')
 
-    pcx_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
-    mindlamp_dir = get_path('mindlamp_mri_data', pcx_dir)
-    mri_dir = get_path('fmriprep_reports', pcx_dir)
-    data_dir = get_path('PCX', os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'))
-    surveys_dir = get_path('behavioral', data_dir)
-    REPORTS_DIR = get_path('fmriprep_reports', pcx_dir)
-    demographic_df_dir = get_path('demographic_df', pcx_dir)
-
-    logging.info('Using cached paths from /scripts/paths.py. If you move a file, change its location.')
+    logging.info('Using cached paths from /scripts/paths.py. If you move a file, change its location in /scripts/paths.py.')
 
     return {
         "project_dir": project_dir,
-        "rmr_df": rmr_df,
-        "tracker_df": tracker_df,
         "pcx_dir": pcx_dir,
         "mri_dir": mri_dir,
         "REPORTS_DIR": REPORTS_DIR,
         "data_dir": data_dir,
         "surveys_dir": surveys_dir,
+        "tracker_df": tracker_df,
         "demographic_df_dir": demographic_df_dir,
         "mindlamp_dir": mindlamp_dir
     }

@@ -2429,3 +2429,705 @@ value  sub-PCR2Pilot          control                0  ...                  0  
 68  1.727740e+12    5   0:00:00        4  ...  sub-PCX-PCT927   accel          3.612500       43.35
 
 [5 rows x 32 columns]
+2025-10-17 08:36:52,095 - INFO - 534500732.py:52 - Found mindlamp data for PCR200 at /Users/demo/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX/mindlamp_mri_data/data/PCR200/processed
+2025-10-17 08:39:41,114 - INFO - 100507757.py:52 - Found mindlamp data for PCR200 at /Users/demo/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX/mindlamp_mri_data/data/PCR200/processed
+2025-10-17 08:40:06,626 - INFO - 3528558254.py:52 - Found mindlamp data for PCR200 at /Users/demo/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX/mindlamp_mri_data/data/PCR200/processed
+2025-10-17 08:40:20,983 - INFO - 3616059949.py:52 - Found mindlamp data for PCR200 at /Users/demo/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX/mindlamp_mri_data/data/PCR200/processed
+2025-10-17 08:40:46,713 - INFO - 370729839.py:52 - Found mindlamp data for PCR200 at /Users/demo/Library/CloudStorage/Box-Box/(Restricted)_PCR/PCX/mindlamp_mri_data/data/PCR200/processed
+2025-10-17 09:02:42,965 - ERROR - app.py:838 - Exception on /_alive_814635c1-9f9f-47d9-9cd9-ad933edc7646 [GET]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 878, in full_dispatch_request
+    rv = self.preprocess_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1253, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1448, in _setup_server
+    _validate.validate_layout(self.layout, self._layout_value())
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_validate.py", line 418, in validate_layout
+    raise exceptions.NoLayoutException(
+dash.exceptions.NoLayoutException: The layout was `None` at the time that `run` was called.
+Make sure to set the `layout` attribute of your application
+before running the server.
+2025-10-17 09:02:57,920 - ERROR - app.py:838 - Exception on /_alive_814635c1-9f9f-47d9-9cd9-ad933edc7646 [GET]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 878, in full_dispatch_request
+    rv = self.preprocess_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1253, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1448, in _setup_server
+    _validate.validate_layout(self.layout, self._layout_value())
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_validate.py", line 418, in validate_layout
+    raise exceptions.NoLayoutException(
+dash.exceptions.NoLayoutException: The layout was `None` at the time that `run` was called.
+Make sure to set the `layout` attribute of your application
+before running the server.
+2025-10-17 09:13:03,960 - WARNING - 1455175693.py:58 - No recent power data found for PCR200
+2025-10-17 09:13:03,960 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/1455175693.py", line 100, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:13:05,053 - WARNING - 1455175693.py:58 - No recent accel data found for PCR200
+2025-10-17 09:13:05,053 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/1455175693.py", line 100, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:13:16,134 - WARNING - 1455175693.py:58 - No recent accel data found for PCR200
+2025-10-17 09:13:16,134 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/1455175693.py", line 97, in cb
+    sub_df = sub_df[sub_df['weekday'].astype(str).str.contains('1|2|3|4|5')]
+                    ~~~~~~^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+2025-10-17 09:13:25,934 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 91, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 41, in update_dfs
+    most_recent_file = return_recent_df(sub, sensor)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 20, in return_recent_df
+    matches = sorted(re.findall(r'to\d+\.', all_files), reverse=True)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/re/__init__.py", line 217, in findall
+    return _compile(pattern, flags).findall(string)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected string or bytes-like object, got 'list'
+2025-10-17 09:13:27,352 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 91, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 41, in update_dfs
+    most_recent_file = return_recent_df(sub, sensor)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 20, in return_recent_df
+    matches = sorted(re.findall(r'to\d+\.', all_files), reverse=True)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/re/__init__.py", line 217, in findall
+    return _compile(pattern, flags).findall(string)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected string or bytes-like object, got 'list'
+2025-10-17 09:13:27,889 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 91, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 41, in update_dfs
+    most_recent_file = return_recent_df(sub, sensor)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/518177960.py", line 20, in return_recent_df
+    matches = sorted(re.findall(r'to\d+\.', all_files), reverse=True)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/re/__init__.py", line 217, in findall
+    return _compile(pattern, flags).findall(string)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected string or bytes-like object, got 'list'
+2025-10-17 09:15:46,279 - WARNING - 1706689803.py:71 - No recent power data found for PCR200
+2025-10-17 09:15:46,279 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/1706689803.py", line 113, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:15:48,414 - WARNING - 1706689803.py:71 - No recent accel data found for PCR200
+2025-10-17 09:15:48,414 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/1706689803.py", line 113, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:18:14,849 - WARNING - 833494046.py:70 - No recent power data found for PCR200
+2025-10-17 09:18:14,850 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/833494046.py", line 112, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:18:17,655 - WARNING - 833494046.py:70 - No recent accel data found for PCR200
+2025-10-17 09:18:17,655 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/833494046.py", line 112, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:18:30,811 - WARNING - 1429954854.py:71 - No recent power data found for PCR200
+2025-10-17 09:18:30,811 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/1429954854.py", line 113, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:18:32,204 - WARNING - 1429954854.py:71 - No recent accel data found for PCR200
+2025-10-17 09:18:32,204 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/1429954854.py", line 113, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:19:04,923 - WARNING - 2563793275.py:72 - No recent power data found for PCR200
+2025-10-17 09:19:04,923 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/2563793275.py", line 114, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:19:06,977 - WARNING - 2563793275.py:72 - No recent accel data found for PCR200
+2025-10-17 09:19:06,977 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/2563793275.py", line 114, in cb
+    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values,
+                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'select_dtypes'
+2025-10-17 09:20:16,697 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/3762695430.py", line 106, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/3762695430.py", line 58, in update_dfs
+    df = pd.read_csv(os.path.join(data_path, most_recent_file))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 90, in join
+  File "<frozen genericpath>", line 164, in _check_arg_types
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'list'
+2025-10-17 09:20:20,820 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/3762695430.py", line 106, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/3762695430.py", line 58, in update_dfs
+    df = pd.read_csv(os.path.join(data_path, most_recent_file))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 90, in join
+  File "<frozen genericpath>", line 164, in _check_arg_types
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'list'
+2025-10-17 09:20:44,003 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/414564530.py", line 106, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/414564530.py", line 58, in update_dfs
+    df = pd.read_csv(os.path.join(data_path, most_recent_file))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 90, in join
+  File "<frozen genericpath>", line 164, in _check_arg_types
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'list'
+2025-10-17 09:22:12,317 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/588310163.py", line 102, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/588310163.py", line 54, in update_dfs
+    df = pd.read_csv(os.path.join(data_path, most_recent_file))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 90, in join
+  File "<frozen genericpath>", line 164, in _check_arg_types
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'list'
+2025-10-17 09:22:13,436 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/588310163.py", line 102, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/588310163.py", line 54, in update_dfs
+    df = pd.read_csv(os.path.join(data_path, most_recent_file))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 90, in join
+  File "<frozen genericpath>", line 164, in _check_arg_types
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'list'
+2025-10-17 09:22:16,607 - ERROR - app.py:838 - Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/dash.py", line 1413, in dispatch
+    ctx.run(
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 536, in add_context
+    raise err
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 525, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/dash/_callback.py", line 47, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/588310163.py", line 102, in cb
+    sub_df = update_dfs(sub, sensor)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fl/b24z_8kn4490x_bl0njv6fg00000gn/T/ipykernel_19192/588310163.py", line 54, in update_dfs
+    df = pd.read_csv(os.path.join(data_path, most_recent_file))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 90, in join
+  File "<frozen genericpath>", line 164, in _check_arg_types
+TypeError: join() argument must be str, bytes, or os.PathLike object, not 'list'
+2025-10-17 09:27:43,036 - INFO - 1086034989.py:18 - Recent demographics before drop_duplicates is length 8
+2025-10-17 09:27:43,037 - INFO - 1086034989.py:20 - Recent demographics after drop_duplicates is length 8
+2025-10-17 09:29:52,761 - INFO - 3630547645.py:4 - Using project_dir /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2
+2025-10-17 09:30:16,862 - INFO - 433037411.py:13 - Recent demographics before drop_duplicates is length 8
+2025-10-17 09:30:16,863 - INFO - 433037411.py:15 - Recent demographics after drop_duplicates is length 8
+2025-10-17 09:30:29,896 - INFO - 2939507832.py:13 - Recent demographics before drop_duplicates is length 8
+2025-10-17 09:30:29,897 - INFO - 2939507832.py:15 - Recent demographics after drop_duplicates is length 8
+2025-10-17 09:30:43,147 - INFO - 1272322266.py:2 - Using project_dir /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2
+2025-10-17 09:31:19,119 - INFO - 743074632.py:2 - Using project_dir /Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2
+2025-10-17 09:52:19,517 - INFO - 4263071831.py:13 - Recent demographics before drop_duplicates is length 8
+2025-10-17 09:52:19,520 - INFO - 4263071831.py:15 - Recent demographics after drop_duplicates is length 8
+2025-10-17 10:01:53,957 - INFO - 2012475773.py:13 - Recent demographics before drop_duplicates is length 8
+2025-10-17 10:01:53,958 - INFO - 2012475773.py:15 - Recent demographics after drop_duplicates is length 8
+2025-10-17 10:02:30,431 - INFO - 3036837422.py:11 - Recent demographics before drop_duplicates is length 8
+2025-10-17 10:02:30,431 - INFO - 3036837422.py:13 - Recent demographics after drop_duplicates is length 8
+2025-10-17 10:03:11,819 - INFO - 2003570677.py:11 - Recent demographics before drop_duplicates is length 8
+2025-10-17 10:03:11,821 - INFO - 2003570677.py:13 - Recent demographics after drop_duplicates is length 8
+2025-10-17 10:33:20,769 - INFO - 2988495342.py:15 - Recent demographics before drop_duplicates is length 8
+2025-10-17 10:33:20,772 - INFO - 2988495342.py:17 - Recent demographics after drop_duplicates is length 8
+2025-10-17 10:34:33,200 - INFO - 1523247558.py:15 - Recent demographics before drop_duplicates is length 9
+2025-10-17 10:34:33,210 - INFO - 1523247558.py:17 - Recent demographics after drop_duplicates is length 9
+2025-10-17 10:34:43,668 - INFO - 3076355086.py:15 - Recent demographics before drop_duplicates is length 9
+2025-10-17 10:34:43,679 - INFO - 3076355086.py:17 - Recent demographics after drop_duplicates is length 9
+2025-10-17 10:34:57,695 - INFO - 2556948920.py:15 - Recent demographics before drop_duplicates is length 9
+2025-10-17 10:34:57,703 - INFO - 2556948920.py:17 - Recent demographics after drop_duplicates is length 9
+2025-10-17 10:35:08,591 - INFO - 2660945333.py:15 - Recent demographics before drop_duplicates is length 9
+2025-10-17 10:35:08,600 - INFO - 2660945333.py:17 - Recent demographics after drop_duplicates is length 9

@@ -21,10 +21,23 @@ import logging
 import re
 import pickle
 import inspect
-import datetime
+from datetime import timedelta
 from datetime import datetime as dt
 import numpy as np
-
+import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import datetime
+from datetime import  timedelta
+from datetime import datetime as dt
+import numpy as np
+import os
+import re
+import logging
+import pandas as pd
+import xarray as xr
+import plotly.express as px
+from dash import Dash, dcc, html, callback, Input, Output
+import plotly.graph_objects as go
 dash.register_page(__name__, 
     path='/', # these 3 are automatically generated like this, but you can edit them
     title='Home',
@@ -54,29 +67,23 @@ from scripts.surveys import load_surveys, add_diagnoses_columns
 paths = load_paths()
 project_dir = paths["project_dir"]
 surveys_dir = paths["surveys_dir"]
-rmr_df = paths["rmr_df"]
-tracker_df = paths["tracker_df"]
 demographic_df_dir = paths["demographic_df_dir"]
-
+tracker_df = paths["tracker_df"]
 surveys, recoded_surveys = load_surveys(surveys_dir)
 surveys = add_diagnoses_columns(surveys)
 
-first_df = surveys['clinical_administered_data']
-subject_ids = first_df['SUBJECT_ID'].unique()
 
-#RMR visual
 session1 = surveys['clinical_administered_data']
+subject_ids = session1['SUBJECT_ID'].unique()
 print(f'session1 head:: len {len(session1)}')
-print(session1.head())
-print('session1 head::')
 
 session2 = surveys['mri_self_report_data']
 session1sr = surveys['clinical_self_report_data']
 session3 = surveys['supplemental_self_report_data']
 
 session1['duration_mins'] = pd.to_numeric(session1['Duration (in seconds)'])/60
-session1_r = session1[session1['SITE_ID']=='Rutgers University / UBHC']
-session1_m = session1[session1['SITE_ID'] == 'McLean Hospital']
+session1_r = session1[session1['SITE_ID']=='Rutgers']
+session1_m = session1[session1['SITE_ID'] == 'McLean']
 
 # Surveys
 s1_recoded = recoded_surveys['clinical_administered_data']
@@ -90,7 +97,6 @@ madrs_total_cols = [f'madrs_0{str(i)}' for i in range(1,10)]+['madrs_10']
 all_cols = panss_p_total_cols+panss_n_total_cols+panss_g_total_cols+bprs_total_cols+ymrs_total_cols+madrs_total_cols
 s1_recoded[all_cols] = s1_recoded[all_cols].astype(float)
 
-
 s1_recoded['panss_p_total'] = s1_recoded[panss_p_total_cols].copy().sum(axis=1)
 s1_recoded['panss_n_total'] = s1_recoded[panss_n_total_cols].copy().sum(axis=1)
 s1_recoded['panss_g_total'] = s1_recoded[panss_g_total_cols].copy().sum(axis=1)
@@ -100,15 +106,13 @@ s1_recoded['bprs_total'] = s1_recoded[bprs_total_cols].copy().sum(axis=1)
 s1_recoded['ymrs_total'] = s1_recoded[ymrs_total_cols].copy().sum(axis=1)
 s1_recoded['madrs_total'] = s1_recoded[madrs_total_cols].copy().sum(axis=1)
 
-
-
 session1sr['duration_mins'] = pd.to_numeric(session1sr['Duration (in seconds)'])/60
-session1sr_r = session1sr[session1sr['SITE_ID']=='Rutgers University / UBHC']
-session1sr_m = session1sr[session1sr['SITE_ID'] == 'McLean Hospital']
+session1sr_r = session1sr[session1sr['SITE_ID']=='Rutgers']
+session1sr_m = session1sr[session1sr['SITE_ID'] == 'McLean']
 
 session2['duration_mins'] = pd.to_numeric(session2['Duration (in seconds)'])/60
-session2_r = session2[session2['SITE_ID']=='Rutgers University / UBHC']
-session2_m = session2[session2['SITE_ID'] == 'McLean Hospital']
+session2_r = session2[session2['SITE_ID']=='Rutgers']
+session2_m = session2[session2['SITE_ID'] == 'McLean']
 
 total_real = len(session1_r) + len(session1_m)
 
@@ -138,7 +142,14 @@ s0 = session0_merge.set_index("SUBJECT_ID")
 srecoded = session1recoded_merge.set_index('SUBJECT_ID')
 demographic_df = s1.combine_first(s2).combine_first(s3).combine_first(s0).combine_first(srecoded).reset_index()
 
-import numpy as np
+# Add in session notes from notion tracker
+today = dt.today()
+today_str = today.strftime('%b %d %Y')
+tracker_df['SUBJECT_ID'] = tracker_df['PCRID'].str.replace('PCR','qualr')
+notes_df = tracker_df.set_index('SUBJECT_ID')
+notes_df = notes_df[['Session Notes','MRI scan notes']]
+combined_df = demographic_df.combine_first(notes_df)
+
 
 # Example: assuming s1_recoded already has 'ymrs_total' and 'madrs_total' columns
 def categorize_scores(df):
@@ -197,53 +208,85 @@ def categorize_scores(df):
     return df
 
 demographic_df = categorize_scores(demographic_df)
-demographic_df["clinical_administered_data"] = pd.to_datetime(demographic_df["clinical_administered_data"], errors="coerce")
-demographic_df["mri_self_report_data"] = pd.to_datetime(demographic_df["clinical_administered_data"], errors="coerce")
-
+# Add the dates of the surveys to the dataframe
+demographic_df["clinical_administered_data"] = pd.to_datetime(surveys["clinical_administered_data"]['StartDate'], errors="coerce")
+demographic_df["mri_self_report_data"] = pd.to_datetime(surveys["mri_self_report_data"]['StartDate'], errors="coerce")
+demographic_df = demographic_df.drop_duplicates()
 # Define 2 weeks ago
-from datetime import  timedelta
-two_weeks_ago = datetime.datetime.now() - timedelta(weeks=3)
-
+two_weeks_ago = dt.now() - timedelta(weeks=2)
 # Filter
 recent_cad = demographic_df[demographic_df['clinical_administered_data'] >= two_weeks_ago]
+num_recent_clin = len(recent_cad)
 recent_mri = demographic_df[demographic_df['mri_self_report_data'] >= two_weeks_ago]
-
+num_recent_mri = len(recent_mri)
 recent_demographics = pd.concat([recent_cad, recent_mri])
-recent_demographics = recent_demographics.drop_duplicates()
+num_recent_subs = len(recent_demographics)
 
-demographic_df = (
-    demographic_df.groupby("SUBJECT_ID")
+
+recent_demographics_clean = (
+    recent_demographics.groupby("SUBJECT_ID")
     .agg(lambda x: ", ".join(x.dropna().astype(str).unique()))
     .reset_index())
-today = datetime.datetime.today()
-today_str = today.strftime('%b %d %Y')
-tracker_df['SUBJECT_ID'] = tracker_df['PCRID'].str.replace('PCR','qualr')
-notes_df = tracker_df.set_index('SUBJECT_ID')[['Session Notes','MRI scan notes']]
-combined_df = demographic_df.combine_first(notes_df)
-demographic_df.to_csv(os.path.join(demographic_df_dir, f'demographic_df_{today_str}.csv'))
 
-rate_per_day = 0.22
-start = 'Dec 1 2024'
-beginning = dt.strptime(start, '%b %d %Y')
-days_of_study = today - beginning
-today_goal = int(days_of_study.days * rate_per_day)
-today_site = today_goal / 2
-today_c = pd.DataFrame([today_str, 'Today', np.nan, np.nan, today_site, today_site, today_goal, len(session1_r), len(session1_r), len(session2_r), len(session1_m), len(session1_m), len(session2_m), total_real])
-today_row = today_c.T
-today_row.columns = rmr_df.columns.to_list()
-rmr_df_today = pd.concat([rmr_df, today_row])
-rmr_df_today['Date'] = rmr_df_today['Date'].apply(lambda x: dt.strptime(x, '%b %d %Y'))
-rmr_df_today = rmr_df_today.sort_values('Date').reset_index(drop=True)
-rmr_df_today = rmr_df_today.reset_index()
-today_row = rmr_df_today.loc[rmr_df_today['Date']==today_str]
-today_index = today_row['index'].values.squeeze()
-two_quarters_out=today_index+2
-rmr_df_today = rmr_df_today[:two_quarters_out]
 
-rmr_goal = px.line(rmr_df_today, x='Date', y=['Total Goal', 'Total Real'], width=500, height=300, title='Total Subjects Consented: Goal and Real', labels='Quarter')
-r_goal = px.line(rmr_df_today, x='Date', y=['Rutgers Goal', 'Rutgers Consented', 'Rutgers Clinical Interview', 'Rutgers Scan'], width=500, height=300, title='Subjects at Rutgers vs. Goal', labels='Quarter')
-m_goal = px.line(rmr_df_today, x='Date', y=['McLean Goal', 'McLean Consented', 'McLean Clinical Interview', 'McLean Scan'], width=500, height=300, title='Subjects at McLean vs. Goal', labels='Quarter')
+mri = demographic_df[["SUBJECT_ID", "mri_self_report_data"]].copy()
+mri = mri.dropna(subset=["mri_self_report_data"])
 
+# Full date range
+mri_date_range = pd.date_range(mri["mri_self_report_data"].min(), mri["mri_self_report_data"].max())
+
+# Cumulative counts
+mri_counts = mri["mri_self_report_data"].value_counts().sort_index()
+cumulative_mri_counts = mri_counts.cumsum()
+cumulative_mri = cumulative_mri_counts.reindex(mri_date_range, method='ffill').fillna(0)
+
+last_mri_date = cumulative_mri.index.max()
+last_mri_value = cumulative_mri.iloc[-1]
+
+clin = demographic_df[["SUBJECT_ID", "clinical_administered_data"]].copy()
+clin = clin.dropna(subset=["clinical_administered_data"])
+
+# Full date range
+clin_date_range = pd.date_range(clin["clinical_administered_data"].min(), clin["clinical_administered_data"].max())
+
+# Cumulative counts
+clin_counts = clin["clinical_administered_data"].value_counts().sort_index()
+cumulative_clin_counts = clin_counts.cumsum()
+cumulative_clin = cumulative_clin_counts.reindex(clin_date_range, method='ffill').fillna(0)
+
+last_clin_date = cumulative_clin.index.max()
+last_clin_value = cumulative_clin.iloc[-1]
+
+## also RMR df is just defined in here 
+rmr = pd.DataFrame({
+    "Date": [
+        "Apr 1 2025", "Aug 1 2025", "Dec 1 2025",
+        "Apr 1 2026", "Aug 1 2026", "Dec 1 2026",
+        "Apr 1 2027", "Aug 1 2027", "Dec 1 2027",
+        "Apr 1 2028"
+    ],
+    "Quarter": [
+        "Q1", "Q2", "Q3", "Q4", "Q5",
+        "Q6", "Q7", "Q8", "Q9", "Q10"
+    ],
+    "Participants per site": [
+        13, 14, 13, 14, 13,
+        14, 13, 14, 13, 14
+    ]
+})
+# Add cumulative and total columns
+rmr["Site Cumulative"] = rmr["Participants per site"].cumsum()
+rmr["Total"] = rmr["Site Cumulative"] * 2
+rmr["Date"] = pd.to_datetime(rmr["Date"])
+rmr = rmr.set_index("Date")
+
+# --- Interpolate expected totals to make it linear over time
+rmr_linear = rmr["Total"].reindex(
+    pd.date_range(rmr.index.min(), rmr.index.max(), freq="D")
+).interpolate()
+
+cutoff = last_mri_date + pd.Timedelta(days=180)
+rmr_linear = rmr_linear.loc[:cutoff]
 
 
 
@@ -337,6 +380,10 @@ def StatsRing():
 def render_table(df, cols):
     if 'SUBJECT_ID' not in cols:
         cols = cols + ['SUBJECT_ID']
+    non_present_cols = [col for col in cols if col not in df.columns]
+    if len(non_present_cols)>0:
+        cols = [col for col in cols if col in df.columns]
+        logging.warning(f'Was not able to find these cols in the table: {non_present_cols}. Using {cols}')
     survey_df = df[cols]
 
     return dash_table.DataTable(
@@ -371,21 +418,21 @@ def render_table(df, cols):
             "backgroundColor": "#f0f2f6",
             "fontWeight": "bold"
         },
-        style_data_conditional=[
-            {
-                "if": {"row_index": "odd"},
-                "backgroundColor": "#fafafa"
-            },
-            # Example: highlight high scores
-            {
-                "if": {
-                    "filter_query": "{PANSS_Total_Category} == Mild",  # condition
-                    "column_id": "PANSS_Total_Category"
-                },
-                "backgroundColor": "#ccffcc",
-                "color": "black"
-            },
-        ]
+        # style_data_conditional=[
+        #     {
+        #         "if": {"row_index": "odd"},
+        #         "backgroundColor": "#fafafa"
+        #     },
+        #     # Example: highlight high scores
+        #     {
+        #         "if": {
+        #             "filter_query": "PANSS_Total_Category == Mild",  # condition
+        #             "column_id": "PANSS_Total_Category"
+        #         },
+        #         "backgroundColor": "#ccffcc",
+        #         "color": "black"
+        #     },
+        # ],
     )
 
 '''
@@ -400,37 +447,53 @@ layout = html.Div([
     dmc.MantineProvider(children=[
         dmc.Text('PCX Current Status',  c='blue', tt='uppercase',style={"fontSize": 40},),
         StatsRing(),
-        html.Div(render_table(recent_demographics, display_survey_cols)),
-        dmc.Group(id='graphs', children=[
-            dcc.Graph(figure=rmr_goal, id='rmr-goal'),
-            dcc.Graph(figure=r_goal, id='rutgers-goal'),
-            dcc.Graph(figure=m_goal, id='mclean-goal'),
-            html.Div(id='graphs', children=[
-                dcc.Graph(figure=primary_pie, id='primary-pie'),
-                dcc.Graph(figure=other_pie, id='other-pie'),
-                ]),
+       ],
+    ),
+    dmc.MantineProvider(children=[
+        dmc.Text(f'All Subject sessions from the last 2 weeks ({num_recent_clin} clinical interviews, {num_recent_mri} MRI scans)',  c='blue',style={"fontSize": 30}),
+    html.Div(render_table(recent_demographics, display_survey_cols)),
+    dmc.MantineProvider(children=[
+        dmc.Text('Adjust weekly Clinical Interview rate',  c='blue',style={"fontSize": 20}),
+        dmc.Text(f'Currently at a rate of: {num_recent_clin/2} subjects per week (both sites)',  c='blue',style={"fontSize": 20})]),
+    dcc.Slider(
+        id='weekly-rate-slider-clin',
+        min=0,
+        max=20,
+        step=0.5,
+        value=1,  # initial weekly rate
+        marks={i: str(i) for i in range(0, 6, 1)}),
+    dcc.Graph(id='clin-done-graph'),
+
+    dmc.MantineProvider(children=[
+        dmc.Text('Adjust weekly MRI rate',  c='blue',style={"fontSize": 20}),
+        dmc.Text(f'Currently at a rate of: {num_recent_mri/2} subjects per week (both sites)',  c='blue',style={"fontSize": 20})]),
+    dcc.Slider(
+        id='weekly-rate-slider-mri',
+        min=0,
+        max=20,
+        step=0.5,
+        value=1,  # initial weekly rate
+        marks={i: str(i) for i in range(0, 6, 1)}),
+    dcc.Graph(id='mri-done-graph'),
+    dmc.Group(id='graphs', children=[
+        html.Div(id='graphs', children=[
+            dcc.Graph(figure=primary_pie, id='primary-pie'),
+            dcc.Graph(figure=other_pie, id='other-pie'),
+            ]),
+        ]),
+    html.Div(id='duration-container', children=[
+            dcc.RadioItems((['Rutgers', 'McLean']), id='site', value='Rutgers'),
+            dcc.Tabs(id="session", value='Clinical Interview Session', children=[
+                dcc.Tab(label='Clinical Interview Session', value='Clinical Interview Session'),
+                dcc.Tab(label='Clinical Self-Report', value='Clinical Self-Report'),
+                dcc.Tab(label='fMRI Self-Report', value='fMRI Self-Report'),
             ]),
 
-        html.Div(id='duration-container', children=[
-				dcc.RadioItems((['Rutgers', 'McLean']), id='site', value='Rutgers'),
-                dcc.Tabs(id="session", value='Clinical Interview Session', children=[
-                    dcc.Tab(label='Clinical Interview Session', value='Clinical Interview Session'),
-					dcc.Tab(label='Clinical Self-Report', value='Clinical Self-Report'),
-                    dcc.Tab(label='fMRI Self-Report', value='fMRI Self-Report'),
-				]),
-
-				html.Div(id='table-duration', style={'width': 500,'padding': '5px'}),
-                html.Div(id='chart-duration', style={'width': 500,'padding': '5px'})
-		]),
-
+            html.Div(id='table-duration', style={'width': 500,'padding': '5px'}),
+            html.Div(id='chart-duration', style={'width': 500,'padding': '5px'}),
     ]),
-    
-    dcc.Graph(figure={}, id='dashboard-graph', style={
-        'width': '100%',
-        'height': '100%',
-        'padding': 10,
-        'flex': 1,})
-    
+
+]),
 ])
 
 
@@ -494,3 +557,75 @@ def cb(site, session):
     fig = px.bar(df, x='SUBJECT_ID', y='duration_mins', text_auto='.2s', range_y=[0,120])
 
     return render_table(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")
+
+
+
+# -----------------------------
+# Callback
+# -----------------------------
+@callback(
+    Output('clin-done-graph', 'figure'),
+    Input('weekly-rate-slider-clin', 'value')
+)
+def update_mri_graph(weekly_rate):
+    # Convert weekly rate to daily
+    daily_rate = weekly_rate / 7
+
+    # Project next 180 days
+    projection_dates = pd.date_range(start=last_clin_date + pd.Timedelta(days=1), periods=180)
+    projected_values = last_clin_value + daily_rate * np.arange(1, 180)
+    
+    fig = go.Figure()
+    # Actual cumulative
+    fig.add_trace(go.Scatter(x=cumulative_clin.index, y=cumulative_clin.values,
+                             mode='lines+markers', name='Actual Cumulative', line=dict(color='blue', width=1,)))
+    # Projected
+    fig.add_trace(go.Scatter(x=projection_dates, y=projected_values,
+                             mode='lines', name='Projected (based on slider)', line=dict(color='blue', width=1, dash='dash')))
+
+    fig.add_trace(go.Scatter(x=rmr_linear.index, y=rmr_linear.values,
+                             mode='lines', name='RMR Goal Values', line=dict(color='orange', width=1)))
+
+    # Highlight next quarter
+    fig.add_vrect(x0=last_mri_date, x1=last_mri_date + pd.Timedelta(days=180),
+                  fillcolor="gray", opacity=0.1, layer="below", line_width=0, annotation_text="Next Quarter")
+
+    fig.update_layout(title=f"Actual vs Projected Clinical Interview Trajectory", 
+                      xaxis_title="Date", yaxis_title="Cumulative Participants",
+                      template="plotly_white", height=500)
+    fig.update_layout(title_subtitle_text=f'At Weekly Rate {weekly_rate} subjects/week')
+    return fig
+
+
+@callback(
+    Output('mri-done-graph', 'figure'),
+    Input('weekly-rate-slider-mri', 'value')
+)
+def update_mri_graph(weekly_rate):
+    # Convert weekly rate to daily
+    daily_rate = weekly_rate / 7
+
+    # Project next 180 days
+    projection_dates = pd.date_range(start=last_mri_date + pd.Timedelta(days=1), periods=180)
+    projected_values = last_mri_value + daily_rate * np.arange(1, 180)
+    
+    fig = go.Figure()
+    # Actual cumulative
+    fig.add_trace(go.Scatter(x=cumulative_mri.index, y=cumulative_mri.values,
+                             mode='lines+markers', name='Actual Cumulative', line=dict(color='blue', width=1,)))
+    # Projected
+    fig.add_trace(go.Scatter(x=projection_dates, y=projected_values,
+                             mode='lines', name='Projected (based on slider)', line=dict(color='blue', width=1, dash='dash')))
+
+    fig.add_trace(go.Scatter(x=rmr_linear.index, y=rmr_linear.values,
+                             mode='lines', name='RMR Goal Values', line=dict(color='orange', width=1)))
+
+    # Highlight next quarter
+    fig.add_vrect(x0=last_mri_date, x1=last_mri_date + pd.Timedelta(days=180),
+                  fillcolor="gray", opacity=0.1, layer="below", line_width=0, annotation_text="Next Quarter")
+
+    fig.update_layout(title=f"Actual vs Projected MRI Scan Trajectory", 
+                      xaxis_title="Date", yaxis_title="Cumulative Participants",
+                      template="plotly_white", height=500)
+    fig.update_layout(title_subtitle_text=f'At Weekly Rate {weekly_rate} subjects/week')
+    return fig

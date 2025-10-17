@@ -20,8 +20,25 @@ if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
+from scripts.paths import load_paths
+paths = load_paths()
+mindlamp_dir = paths['mindlamp_dir']
 
-def update_dfs(mindlamp_dir):
+def return_recent_df(sub: str, sensor: str):
+    mindlamp_data_path = os.path.join(mindlamp_dir, 'data', sub, 'processed','phone', sensor)
+    if not os.path.exists(mindlamp_data_path):
+        return None
+    
+    all_files = os.listdir(mindlamp_data_path)
+    matches = sorted(re.findall(r'to\d+\.', all_files), reverse=True)
+    if not matches:
+        return None
+    most_recent_file = matches[0]
+    return most_recent_file
+    
+    
+
+def update_dfs(sub:str, sensor:str):
     # Set up logging
     logging.basicConfig(
         filename='update_dataframes.log',        # File to write logs to, saved in working directory
@@ -29,114 +46,29 @@ def update_dfs(mindlamp_dir):
         level=logging.INFO,        # Minimum logging level
         format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
     )
-    
-    power = {}
-    gps = {}
-    accel = {}
-    mindlamp_data_path = scripts.paths.get_path('data', mindlamp_dir)
-    logging.info(f'Found mindlamp data at {mindlamp_data_path}')
-    if mindlamp_data_path:
-        for dirpath, dirnames, filenames in os.walk(mindlamp_data_path):
-            # Search for specific file type
-            power_files = [file for file in filenames if 'power_activityScores' in file]
 
-            # Iterate through all those files
-            for file in power_files:  
-                # Extract subject id
-                sub = sub_id.extract(file)
-                if sub:
-                    # Ingest data file into directory
-                    power[sub] = pd.read_csv(os.path.join(dirpath, file))
-                    # Add column 'subject_id' to the data file
-                    power[sub]['subject_id'] = sub
+    data_path = os.path.join(mindlamp_dir, 'data', sub, 'phone', 'processed', sensor)
+    if os.path.exists(data_path):
+        most_recent_file = return_recent_df(sub, sensor)
+        if most_recent_file is not None:
+            df = pd.read_csv(os.path.join(data_path, most_recent_file))
+            df['subject_id'] = sub
+            df['sensor'] = sensor
 
-            # Search for specific file type
-            accel_files = [file for file in filenames if 'accel_activityScores' in file]
+            # Build mapping for renaming to readable names
+            rename_map = {
+                f"activityScore_hour{str(i).zfill(2)}": f"{i-1}:00"
+                for i in range(1, 25)
+            }
 
-            # Iterate through all those files
-            for file in accel_files:  
-                # Extract subject id
-                sub = sub_id.extract(file)
-                if sub:
-                    # Ingest data file into directory
-                    accel[sub] = pd.read_csv(os.path.join(dirpath, file))
-                    # Add column 'subject_id' to the data file
-                    accel[sub]['subject_id'] = sub
+            # Apply rename
+            df = df.rename(columns=rename_map)
 
-            # Search for specific file type
-            gps_files = [file for file in filenames if 'gps_dist' in file]
-
-            # Iterate through all those files
-            for file in gps_files:  
-                # Extract subject id
-                sub = sub_id.extract(file)
-                if sub:
-                    # Ingest data file into directory
-                    gps[sub] = pd.read_csv(os.path.join(dirpath, file))
-                    # Add column 'subject_id' to the data file
-                    gps[sub]['subject_id'] = sub
-
-    logging.info(f'Found power files for: {power.keys()}')
-    logging.info(f'Found accel files for: {accel.keys()}')
-    logging.info(f'Found gps files for: {gps.keys()}')
-
-
-    # Convert the nested dict into a dataframe of all the subjects concatenated
-    try:
-        power_df = pd.concat([sub for sub in power.values()], axis=0, ignore_index=True)
-        # power_df = power_df.set_index(['subject_id'])
-        power_df['sensor'] = 'power'
-    except Exception as e:
-        logging.error(e)
-        raise e
-    try:
-        accel_df = pd.concat([sub for sub in accel.values()], axis=0, ignore_index=True)
-        # accel_df = accel_df.set_index(['subject_id'])
-        accel_df['sensor'] = 'accel'
-    except Exception as e:
-        logging.error(e)
-        raise e
-    try:
-        gps_df = pd.concat([sub for sub in gps.values()], axis=0, ignore_index=True)
-        # gps_df = gps_df.set_index(['subject_id'])
-        gps_df['sensor'] = 'gps'
-    except Exception as e:
-        logging.error(e)
-        raise e
-
-    
-
-    # Extract the relevant columns 
-    selected_cols = [col for col in power_df.columns if isinstance(col, str) and 'activityScore' in col]
-    legend_path = scripts.paths.get_path('key_to_readable_name.xlsx', mindlamp_dir)
-    if legend_path:
-        legend = pd.read_excel(legend_path)
-        legend = legend.set_index('key')
-        readable_cols = [legend.loc[key, 'readable_name'] for key in selected_cols]
+            return df
+        else:
+            logging.warning(f"No recent {sensor} data found for {sub}")
+            return None
     else:
-        print("Could not find file key_to_readable_name.xlsx, using input column names.")
-        readable_cols = selected_cols
+        logging.warning(f"No {sensor} data found for {sub}")
+        return None
 
-    # Average the daily hour scores
-    power_df['daily_hr_average'] = power_df[selected_cols].mean(axis=1)
-    accel_df['daily_hr_average'] = accel_df[selected_cols].mean(axis=1)
-    gps_df['daily_hr_average'] = gps_df[selected_cols].mean(axis=1)
-
-    # Sum the daily hour scores to get a daily number
-    power_df['daily_mins'] = power_df[selected_cols].sum(axis=1)
-    accel_df['daily_mins'] = accel_df[selected_cols].sum(axis=1)
-    gps_df['daily_mins'] = gps_df[selected_cols].sum(axis=1)
-
-    accel_path = os.path.join(mindlamp_dir, 'aggregated_dfs', 'accel_activityScores_hourly.csv')
-    accel_df.to_csv(accel_path)
-    power_path = os.path.join(mindlamp_dir, 'aggregated_dfs', 'power_activityScores_hourly.csv')
-    power_df.to_csv(power_path)
-    gps_path = os.path.join(mindlamp_dir, 'aggregated_dfs', 'gps_activityScores_hourly.csv')
-    gps_df.to_csv(gps_path)
-
-    mindlamp_df = pd.concat([accel_df, power_df, gps_df], ignore_index=True, join='outer')
-    
-    mindlamp_path = os.path.join(mindlamp_dir, 'aggregated_dfs', 'mindlamp.csv')
-    mindlamp_df.to_csv(mindlamp_path)
-    
-    return mindlamp_df, selected_cols, readable_cols
