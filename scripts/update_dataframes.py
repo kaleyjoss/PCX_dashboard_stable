@@ -24,18 +24,21 @@ from scripts.paths import load_paths
 paths = load_paths()
 mindlamp_dir = paths['mindlamp_dir']
 
-def return_recent_df(sub: str, sensor: str):
-    mindlamp_data_path = os.path.join(mindlamp_dir, 'data', sub, 'processed','phone', sensor)
-    if not os.path.exists(mindlamp_data_path):
-        return None
-    
-    all_files = os.listdir(mindlamp_data_path)
-    matches = sorted(re.findall(r'to\d+\.', all_files), reverse=True)
+def return_recent_df(sub: str, sensor: str, data_path:str):    
+    all_files = os.listdir(data_path)
+    matches = []
+    most_recent_files = []
+    for f in all_files:
+        matches.extend(re.findall(r'to\d+\.', f))
     if not matches:
-        return None
-    most_recent_file = matches[0]
-    return most_recent_file
-    
+        return None, None
+    matches = sorted(matches, reverse=True)
+    day = matches[0].replace('d','').replace('.','')
+    for file in all_files:
+        if day in file:
+            most_recent_files.extend(file)
+        
+    return most_recent_files, day
     
 
 def update_dfs(sub:str, sensor:str):
@@ -49,7 +52,7 @@ def update_dfs(sub:str, sensor:str):
 
     data_path = os.path.join(mindlamp_dir, 'data', sub, 'phone', 'processed', sensor)
     if os.path.exists(data_path):
-        most_recent_file = return_recent_df(sub, sensor)
+        most_recent_file, day = return_recent_df(sub, sensor, data_path)
         if most_recent_file is not None:
             df = pd.read_csv(os.path.join(data_path, most_recent_file))
             df['subject_id'] = sub
@@ -66,9 +69,9 @@ def update_dfs(sub:str, sensor:str):
 
             return df
         else:
-            logging.warning(f"No recent {sensor} data found for {sub}")
+            logging.warning(f"No recent {sensor} data found for {sub} in {data_path}")
             return None
     else:
-        logging.warning(f"No {sensor} data found for {sub}")
+        logging.warning(f"No {sensor} data found for {sub} in {data_path}")
         return None
 

@@ -96,15 +96,19 @@ madrs_total_cols = [f'madrs_0{str(i)}' for i in range(1,10)]+['madrs_10']
 
 all_cols = panss_p_total_cols+panss_n_total_cols+panss_g_total_cols+bprs_total_cols+ymrs_total_cols+madrs_total_cols
 s1_recoded[all_cols] = s1_recoded[all_cols].astype(float)
+# new recoded cols
+s1_recoded_newcols = pd.DataFrame({
+    'SUBJECT_ID':  s1_recoded['SUBJECT_ID'],
+    'panss_p_total': s1_recoded[panss_p_total_cols].copy().sum(axis=1),
+    'panss_n_total': s1_recoded[panss_n_total_cols].copy().sum(axis=1),
+    'panss_g_total': s1_recoded[panss_g_total_cols].copy().sum(axis=1),
+    'bprs_total': s1_recoded[bprs_total_cols].copy().sum(axis=1),
+    'ymrs_total': s1_recoded[ymrs_total_cols].copy().sum(axis=1),
+    'madrs_total': s1_recoded[madrs_total_cols].copy().sum(axis=1)
+    })
 
-s1_recoded['panss_p_total'] = s1_recoded[panss_p_total_cols].copy().sum(axis=1)
-s1_recoded['panss_n_total'] = s1_recoded[panss_n_total_cols].copy().sum(axis=1)
-s1_recoded['panss_g_total'] = s1_recoded[panss_g_total_cols].copy().sum(axis=1)
-s1_recoded_copy = s1_recoded.copy()
-s1_recoded['panss_total'] = s1_recoded_copy[['panss_p_total','panss_n_total','panss_g_total']].copy().sum(axis=1)
-s1_recoded['bprs_total'] = s1_recoded[bprs_total_cols].copy().sum(axis=1)
-s1_recoded['ymrs_total'] = s1_recoded[ymrs_total_cols].copy().sum(axis=1)
-s1_recoded['madrs_total'] = s1_recoded[madrs_total_cols].copy().sum(axis=1)
+s1_panss_total = pd.DataFrame({'panss_total': s1_recoded_newcols[['panss_p_total','panss_n_total','panss_g_total']].sum(axis=1)})
+s1_recoded = pd.concat([s1_recoded_newcols, s1_panss_total])
 
 session1sr['duration_mins'] = pd.to_numeric(session1sr['Duration (in seconds)'])/60
 session1sr_r = session1sr[session1sr['SITE_ID']=='Rutgers']
@@ -207,11 +211,12 @@ def categorize_scores(df):
     df['PANSS_Total_Category'] = df['panss_total'].apply(lambda x: categorize_panss(x, 'total'))
     return df
 
-demographic_df = categorize_scores(demographic_df)
+demographic_df = categorize_scores(combined_df)
 # Add the dates of the surveys to the dataframe
 demographic_df["clinical_administered_data"] = pd.to_datetime(surveys["clinical_administered_data"]['StartDate'], errors="coerce")
 demographic_df["mri_self_report_data"] = pd.to_datetime(surveys["mri_self_report_data"]['StartDate'], errors="coerce")
 demographic_df = demographic_df.drop_duplicates()
+
 # Define 2 weeks ago
 two_weeks_ago = dt.now() - timedelta(weeks=2)
 # Filter
@@ -498,31 +503,31 @@ layout = html.Div([
 
 
 
-# Controls to filter the figure by subject ID and
-@callback(
-    Output('dashboard-graph', 'figure'),
-    Input('subject-id', 'data')
-)
+# # Controls to filter the figure by subject ID and
+# @callback(
+#     Output('dashboard-graph', 'figure'),
+#     Input('subject-id', 'data')
+# )
 
-def cb(subject_id):
-    if subject_id is None:
-        filtered_df = tracker_df
-    else:
-        filtered_df = tracker_df[tracker_df['SUBJECT_ID'] == subject_id]
+# def cb(subject_id):
+#     if subject_id is None:
+#         filtered_df = tracker_df
+#     else:
+#         filtered_df = tracker_df[tracker_df['SUBJECT_ID'] == subject_id]
     
-    # Binarize non-zero values
-    filtered_df_bin = filtered_df.where(filtered_df == 0, 1)
-    #display(filtered_df_bin)
+#     # Binarize non-zero values
+#     filtered_df_bin = filtered_df.where(filtered_df == 0, 1)
+#     #display(filtered_df_bin)
     
-    # Create the figure
-    fig = px.imshow(filtered_df_bin, origin='lower',
-                    title="Tasks Completed by Participants",
-                    zmin=0, zmax=1, color_continuous_scale=[[0, "white"], [1, "black"]],
-                    labels=dict(x="Tasks Completed", y="Subject", color="Done = Black"),
-                    x=filtered_df.columns,
-                    y=filtered_df['SUBJECT_ID'],
-                    width=1500, height=800)
-    return fig
+#     # Create the figure
+#     fig = px.imshow(filtered_df_bin, origin='lower',
+#                     title="Tasks Completed by Participants",
+#                     zmin=0, zmax=1, color_continuous_scale=[[0, "white"], [1, "black"]],
+#                     labels=dict(x="Tasks Completed", y="Subject", color="Done = Black"),
+#                     x=filtered_df.columns,
+#                     y=filtered_df['SUBJECT_ID'],
+#                     width=1500, height=800)
+#     return fig
 
 
 @callback(

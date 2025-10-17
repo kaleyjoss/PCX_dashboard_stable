@@ -27,7 +27,7 @@ subject_ids = first_df['SUBJECT_ID'].unique()
 
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN], use_pages=True,  pages_folder="pages")
-
+app.config.suppress_callback_exceptions = True
 server = app.server   # get the Flask server inside Dash
 
 

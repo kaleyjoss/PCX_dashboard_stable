@@ -46,6 +46,7 @@ def filter_subject_qualtrics(df, subject):
 #table = render_table(subject, surveys, subsurvey_key, survey_name=survey_name, survey_cols=survey_cols)
 
 def render_table(subject, surveys, subsurvey_key, survey_name=None, sub_survey_name=None, survey_regex=None, survey_cols=None, df_to_use=None):
+	cols=None
 	if df_to_use is not None:
 		df = df_to_use
 		if sub_survey_name is not None: 
@@ -72,8 +73,7 @@ def render_table(subject, surveys, subsurvey_key, survey_name=None, sub_survey_n
 	else:
 		return html.Div(children=[f'Not enough keywords to render_table -- {subject}'])
 	
-	#logging.info(f'For subject {subject}, rendering table of {cols}. {df.head(2)}')
-	if len(cols)==0:
+	if cols is None or len(cols)==0:
 		return html.Div(children=[f'No data for subject {subject}, survey {survey_name}'])
 	else:
 		if 'SUBJECT_ID' not in cols:
