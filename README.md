@@ -1,5 +1,8 @@
 A flask web app to visualize participant data for a variety of data collection steps, ranging from fMRI analysis to smartphone sensor tracking.
 
+## This is not an app which is online-- for data privacy, each user must run the site themselves. This is a wrapper so that people with access to the data can view it in an interactive way. 
+
+
 To run this app, first open up your terminal, and navigate to this folder. 
 `cd ~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Data-dashboard/data-dashboard`
 
