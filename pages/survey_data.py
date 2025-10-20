@@ -9,6 +9,8 @@ import datetime
 import os
 from datetime import datetime as dt
 import sys
+from pathlib import Path
+
 
 # Import custom scripts
 from scripts.surveys import load_surveys, subsurvey_key
@@ -22,6 +24,10 @@ dash.register_page(__name__, path="/survey_data", title='Survey Data', name='Sur
 paths_dict = load_paths()
 tracker_df=paths_dict['tracker_df']
 surveys_dir = paths_dict['surveys_dir']
+demographic_df_dir = Path(paths_dict['demographic_df_dir'])
+# Get the most recently modified CSV
+demographic_df_path = max(demographic_df_dir.glob("*.csv"), key=lambda f: f.stat().st_mtime)
+demographic_df = pd.read_csv(demographic_df_path)
 surveys, recoded_surveys = load_surveys(surveys_dir)
 
 first_df = surveys['clinical_administered_data']
@@ -39,9 +45,6 @@ def create_sub(df, subject):
 	sub_str=sub_df.to_json()
 	return sub_df, sub_str
 
-
-def filter_subject_qualtrics(df, subject):
-	return df[df['SUBJECT_ID']==subject]
 
 #table = render_table(subject, surveys, subsurvey_key, survey_name=survey_name, survey_cols=survey_cols)
 
@@ -80,7 +83,7 @@ def render_table(subject, surveys, subsurvey_key, survey_name=None, sub_survey_n
 			cols = cols + ['SUBJECT_ID']
 		survey_df = df[cols]
 		mapping = dict(zip(survey_df.columns, survey_df.iloc[0]))
-		sub_df = filter_subject_qualtrics(survey_df, subject)
+		sub_df = survey_df[survey_df['SUBJECT_ID']==subject]
 		long_df = sub_df.melt(id_vars='SUBJECT_ID', var_name='name', value_name='value')
 		long_df['label'] = long_df['name'].map(mapping)
 		long_df = long_df[['label', 'value']]
@@ -138,7 +141,7 @@ def render_chart(subject, recoded_surveys, subsurvey_key, sub_survey_name, surve
 		else:
 			survey_df = df[['SUBJECT_ID']+cols]
 			mapping = dict(zip(survey_df.columns, survey_df.iloc[0]))
-			sub_df = filter_subject_qualtrics(survey_df, subject)
+			sub_df = survey_df[survey_df['SUBJECT_ID']==subject]
 			long_df = sub_df.melt(id_vars='SUBJECT_ID', var_name='name', value_name='value')
 			long_df['label'] = long_df['name'].map(mapping)
 			long_df = long_df[['label', 'value']]
@@ -158,29 +161,30 @@ def render_chart(subject, recoded_surveys, subsurvey_key, sub_survey_name, surve
 def render_graph(subject, recoded_surveys, sub_survey_name, survey_name=None):
 	full_df = pd.DataFrame()
 	if survey_name is not None:
-		full_df = recoded_surveys[survey_name]
+		df = recoded_surveys[survey_name]
 	elif sub_survey_name is not None:
 		df = recoded_surveys[subsurvey_key[sub_survey_name]]
-	cols = [col for col in full_df.columns if any(item in col for item in list(survey_to_df.keys())) in col and 'notes' not in col and 'total' not in col and 'timing' not in col]
-	if len(cols)==0:
-		return html.Div(children=[f'No data for subject {subject}'])
-	else:
-		long_df = sub_df.melt(id_vars='SUBJECT_ID', var_name='name', value_name='value')
-		long_df = long_df[['label', 'value']]
+	# cols = [col for col in full_df.columns if any(item in col for item in list(survey_to_df.keys())) in col and 'notes' not in col and 'total' not in col and 'timing' not in col]
+	# if len(cols)==0:
+	# 	return html.Div(children=[f'No data for subject {subject}'])
+	# else:
+	sub_df = df[['SUBJECT_ID']==subject]
+	long_df = sub_df.melt(id_vars='SUBJECT_ID', var_name='name', value_name='value')
+	long_df = long_df[['label', 'value']]
 		
-		for survey in survey_to_df.keys():
-			long_df.loc[long_df['label'].str.contains(survey), 'label'] = long_df.loc[long_df['name'].str.contains(survey), 'name']
-		long_df['label'] = long_df['label'].str.split('\n').str[0]
-		long_df['label'] = long_df['label'].str.lower()
-		long_df['value'] = pd.to_numeric(long_df['value'], errors='coerce')
-		fig = px.line(long_df, x='label', y='value', color='', text_auto='.2s', range_y=[0,10])
-		fig.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=True)
-		fig.update_layout(xaxis_tickangle=-35)  
-		return dcc.Graph(
-			figure=fig,
-			config={'displayModeBar': True}, 
-			style={'width': 500,  'height': 300, 'padding': 1 },  className = "outer-graph",
-		)
+		# for survey in survey_to_df.keys():
+		# 	long_df.loc[long_df['label'].str.contains(survey), 'label'] = long_df.loc[long_df['name'].str.contains(survey), 'name']
+	long_df['label'] = long_df['label'].str.split('\n').str[0]
+	long_df['label'] = long_df['label'].str.lower()
+	long_df['value'] = pd.to_numeric(long_df['value'], errors='coerce')
+	fig = px.line(long_df, x='label', y='value', color='', text_auto='.2s', range_y=[0,10])
+	fig.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=True)
+	fig.update_layout(xaxis_tickangle=-35)  
+	return dcc.Graph(
+		figure=fig,
+		config={'displayModeBar': True}, 
+		style={'width': 500,  'height': 300, 'padding': 1 },  className = "outer-graph",
+	)
 
 def render_overview(subject, surveys, survey_name):
 	df = surveys[survey_name]
@@ -191,7 +195,8 @@ def render_overview(subject, surveys, survey_name):
 				subject = subject.lower()
 		else:
 			return html.Div(children=[f'Subject {subject} has not completed the MRI scan yet.'])
-	return render_table(subject, surveys, subsurvey_key, survey_cols=demographic_survey_cols)
+	pcrid = subject.replace('qualr', 'PCR').replace('qualm','PCM')
+	return render_table(pcrid, surveys, subsurvey_key, df_to_use=demographic_df)
 
 def render_diagnosis(subject, surveys, survey_name):
 	df = surveys[survey_name]
@@ -264,7 +269,9 @@ def update_subject(subject):
 	Input(component_id='subject-id', component_property='data'),
 )
 def update_subject(subject):
-	session_notes = render_table(subject, surveys, subsurvey_key, survey_cols=['Session Notes (anything missing, MRI notes)'], df_to_use=tracker_df)
+	if subject is not None:
+		subject = subject.replace('qualr','PCR').replace('qualm','PCM')
+	session_notes = render_table(subject, surveys, subsurvey_key, survey_cols=['Session Notes'], df_to_use=tracker_df)
 	return session_notes
 
 
@@ -274,6 +281,9 @@ def update_subject(subject):
 
 )
 def update_subject(subject):
+	if subject is not None:
+		subject = subject.replace('qualr','PCR').replace('qualm','PCM')
+
 	scan_notes = render_table(subject, surveys, subsurvey_key, survey_cols=['MRI Scan Notes'], df_to_use=tracker_df)
 	return scan_notes
 

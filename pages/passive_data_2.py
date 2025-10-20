@@ -47,12 +47,6 @@ layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             html.H3("Participant Dashboard"),
-            dcc.RadioItems(
-                id='sensor',
-                options=sensor_dirs,
-                value='power',
-                inline=True
-            ),
             html.Hr(),
             html.Div(id='data-status', className='text-muted')
         ], width=3),
@@ -60,10 +54,11 @@ layout = dbc.Container([
         dbc.Col([
             dcc.Tabs(id='tabs', value='tab-data', children=[
                 dcc.Tab(label='Heatmap', value='tab-data'),
-                dcc.Tab(label='Survey', value='tab-survey'),
                 dcc.Tab(label='Figures', value='tab-figs'),
             ]),
-            html.Div(id='tab-content', style={'marginTop': 20})
+            html.Div(id='tab-content', style={'marginTop': 20}),
+            dcc.Checklist(id='survey-cols', value=['Cheerful'], options=['Cheerful', 'Stressed', 'Down', 'Relaxed', 'Down', 'Strange', 'Content', 'Suspicious', 'Relaxed', 'Racing', 'Enthusiastic', 'Auditory', 'Empty', 'Anxious', 'Concentrate', 'Irritable', 'Confused', 'Visual', 'Handle', 'Function', 'Socialp', 'Sociald','Negative','Positive'],inline=True, style={'marginTop': 10, 'marginLeft': 10, 'marginRight': 10}),
+            dcc.Graph(figure={}, id='survey-graph'),
         ], width=9)
     ])
 ], fluid=True)
@@ -73,10 +68,10 @@ layout = dbc.Container([
     Output('tab-content', 'children'),
     Output('data-status', 'children'),
     Input(component_id='subject-id', component_property='data'),
-    Input('sensor', 'value'),
-    Input('tabs', 'value')
+    Input('tabs', 'value'),
+
 )
-def update_tab(subject_id, sensor, active_tab):
+def update_tab(subject_id, active_tab):
     if not subject_id:
         return "Please select a participant.", "⚠️ No subject selected."
     if 'qual' in subject_id:
@@ -84,28 +79,27 @@ def update_tab(subject_id, sensor, active_tab):
 
     subj_path = os.path.join(DATA_DIR, subject_id, 'phone', 'processed')
     if not os.path.exists(subj_path):
-        return html.Div("No data found for this sensor."), f"❌ No data for {sensor}. Looking in {subj_path}"
+        return html.Div(f"No sensor activity data found. Looked in {subj_path} "), f"❌ No data in {subj_path}"
 
     # ---- Tab 1: HEATMAP ----
     if active_tab == 'tab-data':
         figs = []
         status_msgs = []
         for sensor in sensor_dirs:
-            path = os.path.join(subj_path, sensor)
+            path = f'{os.path.join(subj_path, sensor)}'
             if not os.path.exists(path):
                 status_msgs.append(f"❌ {sensor}: folder missing")
                 continue
-
-            csvs = glob.glob(os.path.join(path, f"*{sensor}*activityScores*.csv"))
+            
+            csvs = glob.glob(os.path.join(path, f"**.csv"))
             if not csvs:
-                status_msgs.append(f"⚠️ {sensor}: no activityScores CSVs")
+                status_msgs.append(f"⚠️ {sensor}: no CSVs")
                 continue
 
             df = pd.read_csv(sorted(csvs)[-1])  # take latest
-            num_df = df.select_dtypes(include='number')
+            num_df = df[[col for col in df.columns if 'activityScore' in col]]
 
             if num_df.empty:
-                status_msgs.append(f"⚠️ {sensor}: no numeric data")
                 continue
 
             fig = px.imshow(
@@ -116,15 +110,14 @@ def update_tab(subject_id, sensor, active_tab):
                 title=f"{sensor.capitalize()} activity ({os.path.basename(csvs[-1])})"
             )
             fig.update_layout(
-                height=300, width=300,
-                margin=dict(l=30, r=30, t=50, b=30),
+                height=300, width=200,
+                margin=dict(l=10, r=10, t=10, b=10),
                 coloraxis_showscale=False
             )
             figs.append(dcc.Graph(figure=fig, style={'margin': '5px'}))
-            status_msgs.append(f"✅ {sensor}: loaded {os.path.basename(csvs[-1])}")
 
         if not figs:
-            return html.Div("No sensor activity data found."), "⚠️ No data to show"
+            return html.Div(f"No sensor activity data found. Looked in {subj_path} "), "⚠️ No data to show"
 
         grid = html.Div(
             figs,
@@ -138,16 +131,6 @@ def update_tab(subject_id, sensor, active_tab):
         return grid, html.Ul([html.Li(msg) for msg in status_msgs])
 
 
-    # ---- Tab 2: SURVEY ----
-    elif active_tab == 'tab-survey':
-        survey_path = os.path.join(subj_path, 'survey')
-        csvs = glob.glob(os.path.join(survey_path, f"*surveyAnswers_activityScores*.csv"))
-        if not csvs:
-            return html.Div("No survey data found."), f"⚠️ No survey CSVs from {survey_path}"
-        df = pd.read_csv(sorted(csvs)[-1])
-        fig = px.line(df, x='day', y=['Cheerful', 'Stressed', 'Down', 'Relaxed'])
-        return dcc.Graph(figure=fig), f"✅ Survey: {os.path.basename(csvs[-1])}"
-
     # ---- Tab 3: FIGURES ----
     elif active_tab == 'tab-figs':
         fig_dir = os.path.join(subj_path, 'mtl_plt')
@@ -159,5 +142,29 @@ def update_tab(subject_id, sensor, active_tab):
                 html.Img(src=f"/{fig_dir}/{img}", style={'width': '90%', 'margin': '10px'})
                 for img in imgs
             ], style={'display': 'flex', 'flexWrap': 'wrap'})
-        ]), f"🖼️ Showing {len(imgs)} figures."
+        ]), f"Showing {len(imgs)} figures."
+
+
+@callback(
+    Output(component_id='survey-graph', component_property='children'),
+    Input(component_id='subject-id', component_property='data'),
+    Input('survey-cols', 'value'),   
+)
+def update_survey(subject_id, survey_cols):
+    if not subject_id:
+        return "Please select a participant.", "⚠️ No subject selected."
+    if 'qual' in subject_id:
+        subject_id = subject_id.replace('qualr','PCR').replace('qualm','PCM')
+
+    subj_path = os.path.join(DATA_DIR, subject_id, 'phone', 'processed')
+    if not os.path.exists(subj_path):
+        return html.Div("No data found for this sensor."), f"❌ No data in {subj_path}"
+
+    survey_path = os.path.join(subj_path, 'survey')
+    csvs = glob.glob(os.path.join(survey_path, f"*surveyAnswers_activityScores*.csv"))
+    if not csvs:
+        return html.Div("No survey data found."), f"⚠️ No survey CSVs from {survey_path}"
+    df = pd.read_csv(sorted(csvs)[-1])
+    fig = px.line(df, x='day', y=survey_cols)
+    return dcc.Graph(figure=fig), f"✅ Survey: {os.path.basename(csvs[-1])}"
 

@@ -4,7 +4,7 @@ import sys
 import logging
 import pandas as pd
 from datetime import timedelta
-
+import numpy as np
 
 '''
 To load the surveys: 
@@ -164,3 +164,60 @@ def load_surveys(surveys_dir):
 
     return surveys, recoded_surveys
 
+
+
+# Example: assuming s1_recoded already has 'ymrs_total' and 'madrs_total' columns
+def categorize_scores(df):
+    # YMRS categories
+    df['YMRS_category'] = pd.cut(
+        df['ymrs_total'],
+        bins=[-np.inf, 13, 19, 30, np.inf],
+        labels=['Normal', 'Hypomania', 'Moderate Mania', 'Severe Mania']
+    )
+
+    # MADRS categories
+    df['MADRS_category'] = pd.cut(
+        df['madrs_total'],
+        bins=[-np.inf, 6, 19, 34, 59, np.inf],
+        labels=['Normal', 'Mild', 'Moderate', 'Severe', 'Very Severe']
+
+    )
+    def categorize_panss(score, scale='total'):
+        if pd.isna(score):
+            return None
+        if scale in ['positive', 'negative']:
+            if score <= 14:
+                return 'Mild'
+            elif score <= 21:
+                return 'Moderate'
+            elif score <= 28:
+                return 'Severe'
+            else:
+                return 'Very Severe'
+        elif scale == 'general':
+            if score <= 31:
+                return 'Mild'
+            elif score <= 47:
+                return 'Moderate'
+            elif score <= 63:
+                return 'Severe'
+            else:
+                return 'Very Severe'
+        elif scale == 'total':
+            if score <= 59:
+                return 'Mild'
+            elif score <= 89:
+                return 'Moderate'
+            elif score <= 119:
+                return 'Severe'
+            else:
+                return 'Very Severe'
+        else:
+            return None
+    
+    # Apply to columns
+    df['PANSS_Positive_Category'] = df['panss_p_total'].apply(lambda x: categorize_panss(x, 'positive'))
+    df['PANSS_Negative_Category'] = df['panss_n_total'].apply(lambda x: categorize_panss(x, 'negative'))
+    df['PANSS_General_Category'] = df['panss_g_total'].apply(lambda x: categorize_panss(x, 'general'))
+    df['PANSS_Total_category'] = df['panss_total'].apply(lambda x: categorize_panss(x, 'total'))
+    return df

@@ -69,6 +69,7 @@ sidebar = html.Div(
                 dbc.NavLink("Passive Data", href="/passive_data", active="exact"),
                 dbc.NavLink("Survey Data", href="/survey_data", active="exact"),
                 dbc.NavLink("MRI Logs", href="/mri_log", active="exact"),
+                dbc.NavLink("All Subjects Table", href="/sub_table", active="exact"),
 
             ],
             vertical=True,
@@ -95,5 +96,5 @@ def update_subject(subject):
     return subject
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8090, debug=True)
+    app.run(host="127.0.0.1", port=8090, debug=True)
 

@@ -36,7 +36,6 @@ import logging
 import pandas as pd
 import xarray as xr
 import plotly.express as px
-from dash import Dash, dcc, html, callback, Input, Output
 import plotly.graph_objects as go
 dash.register_page(__name__, 
     path='/', # these 3 are automatically generated like this, but you can edit them
@@ -62,8 +61,8 @@ if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 from scripts.sub_id import extract
 from scripts.paths import load_paths
-from scripts.surveys import load_surveys, add_diagnoses_columns
-
+from scripts.surveys import load_surveys, add_diagnoses_columns, categorize_scores
+from scripts.tables import render_demographic_df
 paths = load_paths()
 project_dir = paths["project_dir"]
 surveys_dir = paths["surveys_dir"]
@@ -108,7 +107,7 @@ s1_recoded_newcols = pd.DataFrame({
     })
 
 s1_panss_total = pd.DataFrame({'panss_total': s1_recoded_newcols[['panss_p_total','panss_n_total','panss_g_total']].sum(axis=1)})
-s1_recoded = pd.concat([s1_recoded_newcols, s1_panss_total])
+s1_recoded = pd.concat([s1_recoded_newcols, s1_panss_total], axis=1)
 
 session1sr['duration_mins'] = pd.to_numeric(session1sr['Duration (in seconds)'])/60
 session1sr_r = session1sr[session1sr['SITE_ID']=='Rutgers']
@@ -121,17 +120,17 @@ session2_m = session2[session2['SITE_ID'] == 'McLean']
 total_real = len(session1_r) + len(session1_m)
 
 # Pie charts
-primary_pie = px.pie(session1, names='primary_diagnoses_all', title='Subject Primary Diagnoses')
-other_pie = px.pie(session1, names='other_diagnoses_all', title='Subject Other Diagnoses')
+primary_pie = px.pie(session1, names='primary_diagnoses_all', title=f'Subject Primary Diagnoses - {len(session1)} subjects')
+other_pie = px.pie(session1, names='other_diagnoses_all', title=f'Subject Other Diagnoses - {len(session1)} subjects')
 
 
 survey_cols = [
     "SUBJECT_ID",'SITE_ID','primary_diagnoses_all','other_diagnoses_all',
-    'clinical_administered_data','clinical_self_report_data', 
-    'mri_self_report_data','supplemental_self_report_data', 'MADRS_category','PANSS_Positive_Category','PANSS_Negative_Category','PANSS_General_Category','PANSS_Total_Category',
+    'clinical_administered_data', 'mri_self_report_data','supplemental_self_report_data', 
+    'MADRS_category','YMRS_category', 'PANSS_Positive_Category','PANSS_Negative_Category','PANSS_General_Category','PANSS_Total_category',
 	"sex","age", "ethnic","racial","place_birth", 'name_meds','purpose_meds','panss_total', 'panss_p_total','panss_n_total','panss_g_total', 'bprs_total','ymrs_total','madrs_total',]
 
-display_survey_cols = [col for col in survey_cols if 'total' not in col]
+display_survey_cols = [col for col in survey_cols if 'total' not in col and 'Category' not in col and 'supplemental' not in col]
 session0_merge = session1[[col for col in survey_cols if col in session1.columns]]
 session1_merge = session1sr[[col for col in survey_cols if col in session1sr.columns]]
 session2_merge = session2[[col for col in survey_cols if col in session2.columns]]
@@ -147,78 +146,27 @@ srecoded = session1recoded_merge.set_index('SUBJECT_ID')
 demographic_df = s1.combine_first(s2).combine_first(s3).combine_first(s0).combine_first(srecoded).reset_index()
 
 # Add in session notes from notion tracker
-today = dt.today()
-today_str = today.strftime('%b %d %Y')
-tracker_df['SUBJECT_ID'] = tracker_df['PCRID'].str.replace('PCR','qualr')
 notes_df = tracker_df.set_index('SUBJECT_ID')
 notes_df = notes_df[['Session Notes','MRI scan notes']]
 combined_df = demographic_df.combine_first(notes_df)
 
 
-# Example: assuming s1_recoded already has 'ymrs_total' and 'madrs_total' columns
-def categorize_scores(df):
-    # YMRS categories
-    df['YMRS_category'] = pd.cut(
-        df['ymrs_total'],
-        bins=[-np.inf, 13, 19, 30, np.inf],
-        labels=['Normal', 'Hypomania', 'Moderate Mania', 'Severe Mania']
-    )
-
-    # MADRS categories
-    df['MADRS_category'] = pd.cut(
-        df['madrs_total'],
-        bins=[-np.inf, 6, 19, 34, 59, np.inf],
-        labels=['Normal', 'Mild', 'Moderate', 'Severe', 'Very Severe']
-
-    )
-    def categorize_panss(score, scale='total'):
-        if pd.isna(score):
-            return None
-        if scale in ['positive', 'negative']:
-            if score <= 14:
-                return 'Mild'
-            elif score <= 21:
-                return 'Moderate'
-            elif score <= 28:
-                return 'Severe'
-            else:
-                return 'Very Severe'
-        elif scale == 'general':
-            if score <= 31:
-                return 'Mild'
-            elif score <= 47:
-                return 'Moderate'
-            elif score <= 63:
-                return 'Severe'
-            else:
-                return 'Very Severe'
-        elif scale == 'total':
-            if score <= 59:
-                return 'Mild'
-            elif score <= 89:
-                return 'Moderate'
-            elif score <= 119:
-                return 'Severe'
-            else:
-                return 'Very Severe'
-        else:
-            return None
-    
-    # Apply to columns
-    df['PANSS_Positive_Category'] = df['panss_p_total'].apply(lambda x: categorize_panss(x, 'positive'))
-    df['PANSS_Negative_Category'] = df['panss_n_total'].apply(lambda x: categorize_panss(x, 'negative'))
-    df['PANSS_General_Category'] = df['panss_g_total'].apply(lambda x: categorize_panss(x, 'general'))
-    df['PANSS_Total_Category'] = df['panss_total'].apply(lambda x: categorize_panss(x, 'total'))
-    return df
 
 demographic_df = categorize_scores(combined_df)
 # Add the dates of the surveys to the dataframe
 demographic_df["clinical_administered_data"] = pd.to_datetime(surveys["clinical_administered_data"]['StartDate'], errors="coerce")
 demographic_df["mri_self_report_data"] = pd.to_datetime(surveys["mri_self_report_data"]['StartDate'], errors="coerce")
 demographic_df = demographic_df.drop_duplicates()
+today = dt.today()
+today_str = today.strftime('%b %d %Y')
+demographic_df.to_csv(os.path.join(demographic_df_dir, f'demographic_df_{today_str}.csv'))
+demographic_df.to_csv(os.path.join(project_dir, f'demographic_df_{today_str}.csv'))
 
 # Define 2 weeks ago
 two_weeks_ago = dt.now() - timedelta(weeks=2)
+today_str = dt.now().strftime('%Y-%m-%d')
+two_weeks_ago_str = two_weeks_ago.strftime('%Y-%m-%d')
+
 # Filter
 recent_cad = demographic_df[demographic_df['clinical_administered_data'] >= two_weeks_ago]
 num_recent_clin = len(recent_cad)
@@ -382,71 +330,6 @@ def StatsRing():
 
 
 
-def render_table(df, cols):
-    if 'SUBJECT_ID' not in cols:
-        cols = cols + ['SUBJECT_ID']
-    non_present_cols = [col for col in cols if col not in df.columns]
-    if len(non_present_cols)>0:
-        cols = [col for col in cols if col in df.columns]
-        logging.warning(f'Was not able to find these cols in the table: {non_present_cols}. Using {cols}')
-    survey_df = df[cols]
-
-    return dash_table.DataTable(
-        data=survey_df.to_dict('records'),
-        columns=[{'id': c, 'name': c} for c in survey_df.columns],
-        css=[{
-            "selector": ".dash-spreadsheet td div",
-            "rule": """
-                line-height: 20px;
-                max-height: none; min-height: 20px; height: auto;
-                display: block;
-                white-space: normal;
-                overflow-y: visible;
-            """
-            }],
-        tooltip_data=[
-            {
-                column: {'value': str(value), 'type': 'markdown'}
-                for column, value in row.items()
-            } for row in survey_df.to_dict('records')
-        ],
-        tooltip_duration=None,
-        style_cell={
-            "textAlign": "left",
-            "whiteSpace": "normal",
-            "height": "auto",
-            "fontFamily": "Arial, sans-serif",
-            "fontSize": "12px",
-            "padding": "8px"
-        },
-        style_header={
-            "backgroundColor": "#f0f2f6",
-            "fontWeight": "bold"
-        },
-        # style_data_conditional=[
-        #     {
-        #         "if": {"row_index": "odd"},
-        #         "backgroundColor": "#fafafa"
-        #     },
-        #     # Example: highlight high scores
-        #     {
-        #         "if": {
-        #             "filter_query": "PANSS_Total_Category == Mild",  # condition
-        #             "column_id": "PANSS_Total_Category"
-        #         },
-        #         "backgroundColor": "#ccffcc",
-        #         "color": "black"
-        #     },
-        # ],
-    )
-
-'''
-Light Red → #ffcccc
-	•	Light Green → #ccffcc
-	•	Light Blue → #cce5ff
-	•	Light Yellow → #ffffcc
-'''
-
 # App layout
 layout = html.Div([
     dmc.MantineProvider(children=[
@@ -456,10 +339,10 @@ layout = html.Div([
     ),
     dmc.MantineProvider(children=[
         dmc.Text(f'All Subject sessions from the last 2 weeks ({num_recent_clin} clinical interviews, {num_recent_mri} MRI scans)',  c='blue',style={"fontSize": 30}),
-    html.Div(render_table(recent_demographics, display_survey_cols)),
+    html.Div(render_demographic_df(recent_demographics, display_survey_cols)),
     dmc.MantineProvider(children=[
-        dmc.Text('Adjust weekly Clinical Interview rate',  c='blue',style={"fontSize": 20}),
-        dmc.Text(f'Currently at a rate of: {num_recent_clin/2} subjects per week (both sites)',  c='blue',style={"fontSize": 20})]),
+        dmc.Text('Current + Projected Clinical Interviews',  c='blue',style={"fontSize": 30}),
+        dmc.Text(f'Currently our real rate is: {num_recent_clin/2} subjects per week (both sites)',  c='blue',style={"fontSize": 20})]),
     dcc.Slider(
         id='weekly-rate-slider-clin',
         min=0,
@@ -470,8 +353,8 @@ layout = html.Div([
     dcc.Graph(id='clin-done-graph'),
 
     dmc.MantineProvider(children=[
-        dmc.Text('Adjust weekly MRI rate',  c='blue',style={"fontSize": 20}),
-        dmc.Text(f'Currently at a rate of: {num_recent_mri/2} subjects per week (both sites)',  c='blue',style={"fontSize": 20})]),
+        dmc.Text('Current + Projected MRI Scans',  c='blue',style={"fontSize": 30}),
+        dmc.Text(f'Currently our real rate is: {num_recent_mri/2} subjects per week (both sites)',  c='blue',style={"fontSize": 20})]),
     dcc.Slider(
         id='weekly-rate-slider-mri',
         min=0,
@@ -486,17 +369,17 @@ layout = html.Div([
             dcc.Graph(figure=other_pie, id='other-pie'),
             ]),
         ]),
-    html.Div(id='duration-container', children=[
-            dcc.RadioItems((['Rutgers', 'McLean']), id='site', value='Rutgers'),
-            dcc.Tabs(id="session", value='Clinical Interview Session', children=[
-                dcc.Tab(label='Clinical Interview Session', value='Clinical Interview Session'),
-                dcc.Tab(label='Clinical Self-Report', value='Clinical Self-Report'),
-                dcc.Tab(label='fMRI Self-Report', value='fMRI Self-Report'),
-            ]),
+    # html.Div(id='duration-container', children=[
+    #         dcc.RadioItems((['Rutgers', 'McLean']), id='site', value='Rutgers'),
+    #         dcc.Tabs(id="session", value='Clinical Interview Session', children=[
+    #             dcc.Tab(label='Clinical Interview Session', value='Clinical Interview Session'),
+    #             dcc.Tab(label='Clinical Self-Report', value='Clinical Self-Report'),
+    #             dcc.Tab(label='fMRI Self-Report', value='fMRI Self-Report'),
+    #         ]),
 
-            html.Div(id='table-duration', style={'width': 500,'padding': '5px'}),
-            html.Div(id='chart-duration', style={'width': 500,'padding': '5px'}),
-    ]),
+    #         html.Div(id='table-duration', style={'width': 500,'padding': '5px'}),
+    #         html.Div(id='chart-duration', style={'width': 500,'padding': '5px'}),
+    # ]),
 
 ]),
 ])
@@ -561,7 +444,7 @@ def cb(site, session):
     #Bar chart of duration for each sub
     fig = px.bar(df, x='SUBJECT_ID', y='duration_mins', text_auto='.2s', range_y=[0,120])
 
-    return render_table(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")
+    return render_demographic_df(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")
 
 
 
