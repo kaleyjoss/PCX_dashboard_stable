@@ -38,9 +38,9 @@ import xarray as xr
 import plotly.express as px
 import plotly.graph_objects as go
 dash.register_page(__name__, 
-    path='/', # these 3 are automatically generated like this, but you can edit them
-    title='Home',
-    name='Home'
+	path='/', # these 3 are automatically generated like this, but you can edit them
+	title='Home',
+	name='Home'
 )
 
 # # Import custom scripts
@@ -49,16 +49,16 @@ sys.path.append(dashboard_dir)
 
 # Set up logging
 logging.basicConfig(
-    filename='dashboard.log',        # File to write logs to, saved in working directory
-    filemode='a',              # 'a' for append, 'w' to overwrite each time
-    level=logging.INFO,        # Minimum logging level
-    format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
+	filename='dashboard.log',        # File to write logs to, saved in working directory
+	filemode='a',              # 'a' for append, 'w' to overwrite each time
+	level=logging.INFO,        # Minimum logging level
+	format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
 import scripts.sub_id as sub_id
 if 'scripts.paths' in sys.modules:
-    importlib.reload(sys.modules['scripts.paths'])
+	importlib.reload(sys.modules['scripts.paths'])
 if 'scripts.sub_id' in sys.modules:
-    importlib.reload(sys.modules['scripts.sub_id'])
+	importlib.reload(sys.modules['scripts.sub_id'])
 from scripts.sub_id import extract
 from scripts.paths import load_paths
 from scripts.surveys import load_surveys, add_diagnoses_columns, categorize_scores
@@ -97,14 +97,14 @@ all_cols = panss_p_total_cols+panss_n_total_cols+panss_g_total_cols+bprs_total_c
 s1_recoded[all_cols] = s1_recoded[all_cols].astype(float)
 # new recoded cols
 s1_recoded_newcols = pd.DataFrame({
-    'SUBJECT_ID':  s1_recoded['SUBJECT_ID'],
-    'panss_p_total': s1_recoded[panss_p_total_cols].copy().sum(axis=1),
-    'panss_n_total': s1_recoded[panss_n_total_cols].copy().sum(axis=1),
-    'panss_g_total': s1_recoded[panss_g_total_cols].copy().sum(axis=1),
-    'bprs_total': s1_recoded[bprs_total_cols].copy().sum(axis=1),
-    'ymrs_total': s1_recoded[ymrs_total_cols].copy().sum(axis=1),
-    'madrs_total': s1_recoded[madrs_total_cols].copy().sum(axis=1)
-    })
+	'SUBJECT_ID':  s1_recoded['SUBJECT_ID'],
+	'panss_p_total': s1_recoded[panss_p_total_cols].copy().sum(axis=1),
+	'panss_n_total': s1_recoded[panss_n_total_cols].copy().sum(axis=1),
+	'panss_g_total': s1_recoded[panss_g_total_cols].copy().sum(axis=1),
+	'bprs_total': s1_recoded[bprs_total_cols].copy().sum(axis=1),
+	'ymrs_total': s1_recoded[ymrs_total_cols].copy().sum(axis=1),
+	'madrs_total': s1_recoded[madrs_total_cols].copy().sum(axis=1)
+	})
 
 s1_panss_total = pd.DataFrame({'panss_total': s1_recoded_newcols[['panss_p_total','panss_n_total','panss_g_total']].sum(axis=1)})
 s1_recoded = pd.concat([s1_recoded_newcols, s1_panss_total], axis=1)
@@ -125,9 +125,9 @@ other_pie = px.pie(session1, names='other_diagnoses_all', title=f'Subject Other 
 
 
 survey_cols = [
-    "SUBJECT_ID",'SITE_ID','primary_diagnoses_all','other_diagnoses_all',
-    'clinical_administered_data', 'mri_self_report_data','supplemental_self_report_data', 
-    'MADRS_category','YMRS_category', 'PANSS_Positive_Category','PANSS_Negative_Category','PANSS_General_Category','PANSS_Total_category',
+	"SUBJECT_ID",'SITE_ID','primary_diagnoses_all','other_diagnoses_all',
+	'clinical_administered_data', 'mri_self_report_data','supplemental_self_report_data', 
+	'MADRS_category','YMRS_category', 'PANSS_Positive_Category','PANSS_Negative_Category','PANSS_General_Category','PANSS_Total_category',
 	"sex","age", "ethnic","racial","place_birth", 'name_meds','purpose_meds','panss_total', 'panss_p_total','panss_n_total','panss_g_total', 'bprs_total','ymrs_total','madrs_total',]
 
 display_survey_cols = [col for col in survey_cols if 'total' not in col and 'Category' not in col and 'supplemental' not in col]
@@ -177,9 +177,9 @@ num_recent_subs = len(recent_demographics)
 
 
 recent_demographics_clean = (
-    recent_demographics.groupby("SUBJECT_ID")
-    .agg(lambda x: ", ".join(x.dropna().astype(str).unique()))
-    .reset_index())
+	recent_demographics.groupby("SUBJECT_ID")
+	.agg(lambda x: ", ".join(x.dropna().astype(str).unique()))
+	.reset_index())
 
 
 mri = demographic_df[["SUBJECT_ID", "mri_self_report_data"]].copy()
@@ -212,20 +212,20 @@ last_clin_value = cumulative_clin.iloc[-1]
 
 ## also RMR df is just defined in here 
 rmr = pd.DataFrame({
-    "Date": [
-        "Apr 1 2025", "Aug 1 2025", "Dec 1 2025",
-        "Apr 1 2026", "Aug 1 2026", "Dec 1 2026",
-        "Apr 1 2027", "Aug 1 2027", "Dec 1 2027",
-        "Apr 1 2028"
-    ],
-    "Quarter": [
-        "Q1", "Q2", "Q3", "Q4", "Q5",
-        "Q6", "Q7", "Q8", "Q9", "Q10"
-    ],
-    "Participants per site": [
-        13, 14, 13, 14, 13,
-        14, 13, 14, 13, 14
-    ]
+	"Date": [
+		"Apr 1 2025", "Aug 1 2025", "Dec 1 2025",
+		"Apr 1 2026", "Aug 1 2026", "Dec 1 2026",
+		"Apr 1 2027", "Aug 1 2027", "Dec 1 2027",
+		"Apr 1 2028"
+	],
+	"Quarter": [
+		"Q1", "Q2", "Q3", "Q4", "Q5",
+		"Q6", "Q7", "Q8", "Q9", "Q10"
+	],
+	"Participants per site": [
+		13, 14, 13, 14, 13,
+		14, 13, 14, 13, 14
+	]
 })
 # Add cumulative and total columns
 rmr["Site Cumulative"] = rmr["Participants per site"].cumsum()
@@ -235,7 +235,7 @@ rmr = rmr.set_index("Date")
 
 # --- Interpolate expected totals to make it linear over time
 rmr_linear = rmr["Total"].reindex(
-    pd.date_range(rmr.index.min(), rmr.index.max(), freq="D")
+	pd.date_range(rmr.index.min(), rmr.index.max(), freq="D")
 ).interpolate()
 
 cutoff = last_mri_date + pd.Timedelta(days=180)
@@ -251,15 +251,15 @@ subs_df_filtered = subs_df_filtered.loc[:, ~subs_df_filtered.columns.str.contain
 tags_row = subs_df_filtered.iloc[0]
 
 def filter_by_tag(df, tags_row, desired_tags):
-    matching_cols = []
-    for tag in desired_tags:
-        matching = tags_row[tags_row.astype(str).str.contains(tag, na=False)].index.tolist()
-        matching_cols.extend(matching)
+	matching_cols = []
+	for tag in desired_tags:
+		matching = tags_row[tags_row.astype(str).str.contains(tag, na=False)].index.tolist()
+		matching_cols.extend(matching)
 
-    # Remove duplicates while preserving order
-    matching_cols = list(dict.fromkeys(matching_cols))
+	# Remove duplicates while preserving order
+	matching_cols = list(dict.fromkeys(matching_cols))
 
-    return df[matching_cols]
+	return df[matching_cols]
 
 tracker_df = filter_by_tag(subs_df_filtered, tags_row, ['id','tracker'])
 
@@ -270,8 +270,8 @@ tracker_df = filter_by_tag(subs_df_filtered, tags_row, ['id','tracker'])
 
 
 icons = {
-    'up': "tabler:arrow-up-right",
-    'down': "tabler:arrow-down-right",
+	'up': "tabler:arrow-up-right",
+	'down': "tabler:arrow-down-right",
 }
 
 
@@ -281,108 +281,110 @@ m_prog = int((len(session1_m)/135)*100)
 m_scans_prog = int((len(session2_m)/135)*100)
 
 data = [
-    {'label': 'Rutgers Clinical Interview', 'stats': len(session1_r), 'progress': r_prog, 'color': 'red', 'icon': 'up'},
-    {'label': 'Rutgers Scans', 'stats': len(session2_r), 'progress': r_scans_prog, 'color': 'red', 'icon': 'up'},
-    {'label': 'McLean Clinical Interview', 'stats': len(session1_m), 'progress': m_prog, 'color': 'blue', 'icon': 'up'},
-    {'label': 'McLean Scans', 'stats': len(session2_m), 'progress': m_scans_prog, 'color': 'blue', 'icon': 'up'},
+	{'label': 'Rutgers Clinical Interview', 'stats': len(session1_r), 'progress': r_prog, 'color': 'red', 'icon': 'up'},
+	{'label': 'Rutgers Scans', 'stats': len(session2_r), 'progress': r_scans_prog, 'color': 'red', 'icon': 'up'},
+	{'label': 'McLean Clinical Interview', 'stats': len(session1_m), 'progress': m_prog, 'color': 'blue', 'icon': 'up'},
+	{'label': 'McLean Scans', 'stats': len(session2_m), 'progress': m_scans_prog, 'color': 'blue', 'icon': 'up'},
 ]
 
 
 
 def StatsRing():
-    stats = []
-    for stat in data:
-        Icon = icons[stat['icon']]
-        stats.append(
-            dmc.Paper(
-                children=[
-                    dmc.Group(
-                        children=[
-                            dmc.RingProgress(
-                                size=80,
-                                roundCaps=True,
-                                thickness=8,
-                                sections=[{'value': stat['progress'], 'color': stat['color']}],
-                                label=dmc.Center(
-                                    DashIconify(icon=Icon, width=20, height=20)
-                                )
-                            ),
-                            dmc.Box(
-                                children=[
-                                    dmc.Text(stat['label'], c="dimmed", size="xs", tt="uppercase", fw=700),
-                                    dmc.Text(str(stat['stats']), fw=700, size="xl"),
-                                ]
-                            )
-                        ]
-                    )
-                ],
-                withBorder=True,
-                radius="md",
-                p="xs",
-            )
-        )
+	stats = []
+	for stat in data:
+		Icon = icons[stat['icon']]
+		stats.append(
+			dmc.Paper(
+				children=[
+					dmc.Group(
+						children=[
+							dmc.RingProgress(
+								size=80,
+								roundCaps=True,
+								thickness=8,
+								sections=[{'value': stat['progress'], 'color': stat['color']}],
+								label=dmc.Center(
+									DashIconify(icon=Icon, width=20, height=20)
+								)
+							),
+							dmc.Box(
+								children=[
+									dmc.Text(stat['label'], c="dimmed", size="xs", tt="uppercase", fw=700),
+									dmc.Text(str(stat['stats']), fw=700, size="xl"),
+								]
+							)
+						]
+					)
+				],
+				withBorder=True,
+				radius="md",
+				p="xs",
+			)
+		)
 
-    return dmc.SimpleGrid(
-        children=stats,
-        cols={"base": 4, "sm": 1},
-        p="lg"
-    )
+	return dmc.SimpleGrid(
+		children=stats,
+		cols={"base": 4, "sm": 1},
+		p="lg"
+	)
 
 
 
 # App layout
 layout = html.Div([
-    dmc.MantineProvider(children=[
-        dmc.Text('PCX Current Status',  c='blue', tt='uppercase',style={"fontSize": 40},),
-        StatsRing(),
-       ],
-    ),
-    dmc.MantineProvider(children=[
-        dmc.Text(f'All Subject sessions from the last 2 weeks ({num_recent_clin} clinical interviews, {num_recent_mri} MRI scans)',  c='blue',style={"fontSize": 30}),
-    html.Div(render_demographic_df(recent_demographics, display_survey_cols)),
-    dmc.MantineProvider(children=[
-        dmc.Text('Current + Projected Clinical Interviews',  c='blue',style={"fontSize": 30}),
-        dmc.Text(f'Currently our real rate is: {num_recent_clin/2} subjects per week (both sites)',  c='blue',style={"fontSize": 20})]),
-    dcc.Slider(
-        id='weekly-rate-slider-clin',
-        min=0,
-        max=20,
-        step=0.5,
-        value=1,  # initial weekly rate
-        marks={i: str(i) for i in range(0, 6, 1)}),
-    dcc.Graph(id='clin-done-graph'),
+	dmc.MantineProvider(children=[
+		dmc.Text('PCX Current Status',  c='blue', tt='uppercase',style={"fontSize": 40},),
+		StatsRing(),
+	   ],
+	),
+	dmc.MantineProvider(children=[
+		dmc.Text(f'All Subject sessions from the last 2 weeks ({num_recent_clin} clinical interviews, {num_recent_mri} MRI scans)',  c='blue',style={"fontSize": 30}),
+	html.Div(render_demographic_df(recent_demographics, display_survey_cols)),
+	dmc.MantineProvider(children=[
+		dmc.Text('Current + Projected Clinical Interviews',  c='blue',style={"fontSize": 30}),
+		dmc.Text(f'Currently our real rate is: {num_recent_clin/2} subjects per week (both sites, {num_recent_clin/4} per site)',  c='blue',style={"fontSize": 20})]),        
+		dmc.Text(f'Adjust rate below to see the projected progress at different rates',  c='grey',style={"fontSize": 18})]),        
+	dcc.Slider(
+		id='weekly-rate-slider-clin',
+		min=0,
+		max=20,
+		step=0.5,
+		value=num_recent_clin/2,  # initial weekly rate autofilled as current real rate
+		marks={i: str(i) for i in range(0, 6, 1)}),
+	dcc.Graph(id='clin-done-graph'),
 
-    dmc.MantineProvider(children=[
-        dmc.Text('Current + Projected MRI Scans',  c='blue',style={"fontSize": 30}),
-        dmc.Text(f'Currently our real rate is: {num_recent_mri/2} subjects per week (both sites)',  c='blue',style={"fontSize": 20})]),
-    dcc.Slider(
-        id='weekly-rate-slider-mri',
-        min=0,
-        max=20,
-        step=0.5,
-        value=1,  # initial weekly rate
-        marks={i: str(i) for i in range(0, 6, 1)}),
-    dcc.Graph(id='mri-done-graph'),
-    dmc.Group(id='graphs', children=[
-        html.Div(id='graphs', children=[
-            dcc.Graph(figure=primary_pie, id='primary-pie'),
-            dcc.Graph(figure=other_pie, id='other-pie'),
-            ]),
-        ]),
-    # html.Div(id='duration-container', children=[
-    #         dcc.RadioItems((['Rutgers', 'McLean']), id='site', value='Rutgers'),
-    #         dcc.Tabs(id="session", value='Clinical Interview Session', children=[
-    #             dcc.Tab(label='Clinical Interview Session', value='Clinical Interview Session'),
-    #             dcc.Tab(label='Clinical Self-Report', value='Clinical Self-Report'),
-    #             dcc.Tab(label='fMRI Self-Report', value='fMRI Self-Report'),
-    #         ]),
+	dmc.MantineProvider(children=[
+		dmc.Text('Current + Projected MRI Scans',  c='blue',style={"fontSize": 30}),
+		dmc.Text(f'Currently our real rate is: {num_recent_mri/2} subjects per week (both {num_recent_mri/4} per site)',  c='blue',style={"fontSize": 20})]),
+		dmc.Text(f'Adjust rate below to see the projected progress at different rates',  c='grey',style={"fontSize": 18}),
+	dcc.Slider(
+		id='weekly-rate-slider-mri',
+		min=0,
+		max=20,
+		step=0.5,
+		value=num_recent_mri/2,   # initial weekly rate autofilled as current real rate
+		marks={i: str(i) for i in range(0, 6, 1)}),
+	dcc.Graph(id='mri-done-graph'),
+	dmc.Group(id='graphs', children=[
+		html.Div(id='graphs', children=[
+			dcc.Graph(figure=primary_pie, id='primary-pie'),
+			dcc.Graph(figure=other_pie, id='other-pie'),
+			]),
+		]),
+	# html.Div(id='duration-container', children=[
+	#         dcc.RadioItems((['Rutgers', 'McLean']), id='site', value='Rutgers'),
+	#         dcc.Tabs(id="session", value='Clinical Interview Session', children=[
+	#             dcc.Tab(label='Clinical Interview Session', value='Clinical Interview Session'),
+	#             dcc.Tab(label='Clinical Self-Report', value='Clinical Self-Report'),
+	#             dcc.Tab(label='fMRI Self-Report', value='fMRI Self-Report'),
+	#         ]),
 
-    #         html.Div(id='table-duration', style={'width': 500,'padding': '5px'}),
-    #         html.Div(id='chart-duration', style={'width': 500,'padding': '5px'}),
-    # ]),
+	#         html.Div(id='table-duration', style={'width': 500,'padding': '5px'}),
+	#         html.Div(id='chart-duration', style={'width': 500,'padding': '5px'}),
+	# ]),
 
 ]),
-])
+
 
 
 
@@ -397,11 +399,11 @@ layout = html.Div([
 #         filtered_df = tracker_df
 #     else:
 #         filtered_df = tracker_df[tracker_df['SUBJECT_ID'] == subject_id]
-    
+	
 #     # Binarize non-zero values
 #     filtered_df_bin = filtered_df.where(filtered_df == 0, 1)
 #     #display(filtered_df_bin)
-    
+	
 #     # Create the figure
 #     fig = px.imshow(filtered_df_bin, origin='lower',
 #                     title="Tasks Completed by Participants",
@@ -414,37 +416,37 @@ layout = html.Div([
 
 
 @callback(
-    Output('table-duration', 'children'),
-    Output('chart-duration', 'children'),
-    Input('site', 'value'),
-    Input('session', 'value'),
+	Output('table-duration', 'children'),
+	Output('chart-duration', 'children'),
+	Input('site', 'value'),
+	Input('session', 'value'),
 )
 
 def cb(site, session):
-    if session=='Clinical Interview Session':
-        if site=='McLean':
-            df = session1_m
-        else:
-            df = session1_r
-    if session=='Clinical Self-Report':
-        if site=='McLean':
-            df = session1sr_m
-        else:
-            df = session1sr_r
-    if session=='fMRI Self-Report':
-        if site=='McLean':
-            df = session2_m
-        else:
-            df = session2_r
-    cols = ['SUBJECT_ID','RecordedDate', 'duration_mins','primary_diagnoses_all', 'other_diagnoses_all']
-    cols_present = [col for col in cols if col in df.columns]
+	if session=='Clinical Interview Session':
+		if site=='McLean':
+			df = session1_m
+		else:
+			df = session1_r
+	if session=='Clinical Self-Report':
+		if site=='McLean':
+			df = session1sr_m
+		else:
+			df = session1sr_r
+	if session=='fMRI Self-Report':
+		if site=='McLean':
+			df = session2_m
+		else:
+			df = session2_r
+	cols = ['SUBJECT_ID','RecordedDate', 'duration_mins','primary_diagnoses_all', 'other_diagnoses_all']
+	cols_present = [col for col in cols if col in df.columns]
 
 
-    
-    #Bar chart of duration for each sub
-    fig = px.bar(df, x='SUBJECT_ID', y='duration_mins', text_auto='.2s', range_y=[0,120])
+	
+	#Bar chart of duration for each sub
+	fig = px.bar(df, x='SUBJECT_ID', y='duration_mins', text_auto='.2s', range_y=[0,120])
 
-    return render_demographic_df(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")
+	return render_demographic_df(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")
 
 
 
@@ -452,68 +454,84 @@ def cb(site, session):
 # Callback
 # -----------------------------
 @callback(
-    Output('clin-done-graph', 'figure'),
-    Input('weekly-rate-slider-clin', 'value')
+	Output('clin-done-graph', 'figure'),
+	Input('weekly-rate-slider-clin', 'value')
 )
 def update_mri_graph(weekly_rate):
-    # Convert weekly rate to daily
-    daily_rate = weekly_rate / 7
+	# Convert weekly rate to daily
+	daily_rate = weekly_rate / 7
 
-    # Project next 180 days
-    projection_dates = pd.date_range(start=last_clin_date + pd.Timedelta(days=1), periods=180)
-    projected_values = last_clin_value + daily_rate * np.arange(1, 180)
-    
-    fig = go.Figure()
-    # Actual cumulative
-    fig.add_trace(go.Scatter(x=cumulative_clin.index, y=cumulative_clin.values,
-                             mode='lines+markers', name='Actual Cumulative', line=dict(color='blue', width=1,)))
-    # Projected
-    fig.add_trace(go.Scatter(x=projection_dates, y=projected_values,
-                             mode='lines', name='Projected (based on slider)', line=dict(color='blue', width=1, dash='dash')))
+	# Project next 180 days
+	projection_dates = pd.date_range(start=last_clin_date + pd.Timedelta(days=1), periods=180)
+	projected_values = last_clin_value + daily_rate * np.arange(1, 180)
+	
+	fig = go.Figure()
+	# Actual cumulative
+	fig.add_trace(go.Scatter(x=cumulative_clin.index, y=cumulative_clin.values,
+							 mode='lines+markers', name='Actual Cumulative', line=dict(color='blue', width=1,)))
+	# Projected
+	fig.add_trace(go.Scatter(x=projection_dates, y=projected_values,
+							 mode='lines', name='Projected (based on slider)', line=dict(color='blue', width=1, dash='dash')))
 
-    fig.add_trace(go.Scatter(x=rmr_linear.index, y=rmr_linear.values,
-                             mode='lines', name='RMR Goal Values', line=dict(color='orange', width=1)))
+	fig.add_trace(go.Scatter(x=rmr_linear.index, y=rmr_linear.values,
+							 mode='lines', name='RMR Goal Values', line=dict(color='orange', width=1)))
 
-    # Highlight next quarter
-    fig.add_vrect(x0=last_mri_date, x1=last_mri_date + pd.Timedelta(days=180),
-                  fillcolor="gray", opacity=0.1, layer="below", line_width=0, annotation_text="Next Quarter")
+	# Highlight next quarter
+	fig.add_vrect(x0=last_mri_date, x1=last_mri_date + pd.Timedelta(days=180),
+				  fillcolor="gray", opacity=0.1, layer="below", line_width=0, annotation_text="Next Quarter")
 
-    fig.update_layout(title=f"Actual vs Projected Clinical Interview Trajectory", 
-                      xaxis_title="Date", yaxis_title="Cumulative Participants",
-                      template="plotly_white", height=500)
-    fig.update_layout(title_subtitle_text=f'At Weekly Rate {weekly_rate} subjects/week')
-    return fig
+	fig.update_layout(title=f"Actual vs Projected Clinical Interview Trajectory", 
+					  xaxis_title="Date", yaxis_title="Cumulative Participants",
+					  template="plotly_white", height=500)
+	fig.update_layout(title_subtitle_text=f'At Weekly Rate {weekly_rate} subjects/week')
+	return fig
 
 
 @callback(
-    Output('mri-done-graph', 'figure'),
-    Input('weekly-rate-slider-mri', 'value')
+	Output('mri-done-graph', 'figure'),
+	Input('weekly-rate-slider-mri', 'value')
 )
 def update_mri_graph(weekly_rate):
-    # Convert weekly rate to daily
-    daily_rate = weekly_rate / 7
+	# Convert weekly rate to daily
+	daily_rate = weekly_rate / 7
 
-    # Project next 180 days
-    projection_dates = pd.date_range(start=last_mri_date + pd.Timedelta(days=1), periods=180)
-    projected_values = last_mri_value + daily_rate * np.arange(1, 180)
-    
-    fig = go.Figure()
-    # Actual cumulative
-    fig.add_trace(go.Scatter(x=cumulative_mri.index, y=cumulative_mri.values,
-                             mode='lines+markers', name='Actual Cumulative', line=dict(color='blue', width=1,)))
-    # Projected
-    fig.add_trace(go.Scatter(x=projection_dates, y=projected_values,
-                             mode='lines', name='Projected (based on slider)', line=dict(color='blue', width=1, dash='dash')))
+	# Project next 180 days
+	projection_dates = pd.date_range(start=last_mri_date + pd.Timedelta(days=1), periods=180)
+	projected_values = last_mri_value + daily_rate * np.arange(1, 180)
+	
+	fig = go.Figure()
+	# Actual cumulative
+	fig.add_trace(go.Scatter(x=cumulative_mri.index, y=cumulative_mri.values,
+							 mode='lines+markers', name='Actual Cumulative', line=dict(color='blue', width=1,)))
+	# Projected
+	fig.add_trace(go.Scatter(x=projection_dates, y=projected_values,
+							 mode='lines', name='Projected (based on slider)', line=dict(color='blue', width=1, dash='dash')))
 
-    fig.add_trace(go.Scatter(x=rmr_linear.index, y=rmr_linear.values,
-                             mode='lines', name='RMR Goal Values', line=dict(color='orange', width=1)))
+	fig.add_trace(go.Scatter(x=rmr_linear.index, y=rmr_linear.values,
+							 mode='lines', name='RMR Goal Values', line=dict(color='orange', width=1)))
 
-    # Highlight next quarter
-    fig.add_vrect(x0=last_mri_date, x1=last_mri_date + pd.Timedelta(days=180),
-                  fillcolor="gray", opacity=0.1, layer="below", line_width=0, annotation_text="Next Quarter")
+	# Highlight next quarter
+	fig.add_vrect(x0=last_mri_date, x1=last_mri_date + pd.Timedelta(days=180),
+				  fillcolor="gray", opacity=0.1, layer="below", line_width=0, annotation_text="Next Quarter")
 
-    fig.update_layout(title=f"Actual vs Projected MRI Scan Trajectory", 
-                      xaxis_title="Date", yaxis_title="Cumulative Participants",
-                      template="plotly_white", height=500)
-    fig.update_layout(title_subtitle_text=f'At Weekly Rate {weekly_rate} subjects/week')
-    return fig
+	fig.update_layout(title=f"Actual vs Projected MRI Scan Trajectory", 
+					  xaxis_title="Date", yaxis_title="Cumulative Participants",
+					  template="plotly_white", height=500)
+	fig.update_layout(title_subtitle_text=f'At Weekly Rate {weekly_rate} subjects/week')
+	return fig
+
+
+@callback(
+	Output('shown-rate-text-clin', 'children'),
+	Input('weekly-rate-slider-clin', 'value')
+)
+def update_shown_rate(weekly_rate):
+	return f'Projected progress given weekly clincal rate of {weekly_rate} sessions per week: '
+
+
+@callback(
+	Output('shown-rate-text-mri', 'children'),
+	Input('weekly-rate-slider-mri', 'value')
+)
+def update_shown_rate(weekly_rate):
+	return f'Projected progress given weekly MRI rate of {weekly_rate} scans per week: '

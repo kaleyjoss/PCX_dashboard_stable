@@ -110,7 +110,7 @@ def load_paths():
     data_dir = find(pcx_dir, 'PCX')
     surveys_dir = find(pcx_dir, 'behavioral')
     REPORTS_DIR = find(pcx_dir, 'fmriprep_reports')
-    tracker_df = pd.read_csv('/Users/demo/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.csv')
+    tracker_df = pd.read_csv(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.csv'))
     demographic_df_dir = find(pcx_dir, 'demographic_df')
 
     logging.info('Using cached paths from /scripts/paths.py. If you move a file, change its location in /scripts/paths.py.')
