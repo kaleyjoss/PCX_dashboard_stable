@@ -1,3 +1,5 @@
+# Ensure compatibility with React 18
+
 import dash
 from dash import html, Input, Output, callback, dcc
 import dash_bootstrap_components as dbc
@@ -37,45 +39,58 @@ import pandas as pd
 import xarray as xr
 import plotly.express as px
 import plotly.graph_objects as go
+
+# ===============================================
+# Dash Page Registration
+# ===============================================
+# Registers this file as the main '/' page of the Dash multi-page app
 dash.register_page(__name__, 
 	path='/', # these 3 are automatically generated like this, but you can edit them
 	title='Home',
 	name='Home'
 )
 
-# # Import custom scripts
-dashboard_dir = os.path.basename(os.getcwd())
-sys.path.append(dashboard_dir)
 
-# Set up logging
+# ===============================================
+# Logging Configuration
+# ===============================================
 logging.basicConfig(
 	filename='dashboard.log',        # File to write logs to, saved in working directory
 	filemode='a',              # 'a' for append, 'w' to overwrite each time
 	level=logging.INFO,        # Minimum logging level
 	format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
 )
-import scripts.sub_id as sub_id
+
+
+# ===============================================
+# Custom Script Imports (from local `scripts` directory)
+# ===============================================
+dashboard_dir = os.path.basename(os.getcwd())
+sys.path.append(dashboard_dir)
+
+from scripts import sub_id, paths, surveys_loader, surveys_api, tables
+# Do the below if any of the above packages aren't updating to the most recent version
 if 'scripts.paths' in sys.modules:
 	importlib.reload(sys.modules['scripts.paths'])
-if 'scripts.sub_id' in sys.modules:
-	importlib.reload(sys.modules['scripts.sub_id'])
-from scripts.sub_id import extract
-from scripts.paths import load_paths
-from scripts.surveys import load_surveys, add_diagnoses_columns, categorize_scores
-from scripts.tables import render_demographic_df
-paths = load_paths()
-project_dir = paths["project_dir"]
-surveys_dir = paths["surveys_dir"]
-demographic_df_dir = paths["demographic_df_dir"]
-tracker_df = paths["tracker_df"]
-surveys, recoded_surveys = load_surveys(surveys_dir)
-surveys = add_diagnoses_columns(surveys)
+
+# ===============================================
+# Load Paths and Survey Data
+# ===============================================
+paths_dict = paths.load_paths()
+project_dir = paths_dict["project_dir"]
+surveys_dir = paths_dict["surveys_dir"]
+demographic_df_dir = paths_dict["demographic_df_dir"]
+tracker_df = paths_dict["tracker_df"]
+surveys, recoded_surveys = surveys_loader.load_surveys(surveys_dir)
+surveys = surveys_loader.add_diagnoses_columns(surveys)
 
 
+# ===============================================
+# Site-based Filtering and Duration Conversion
+# ===============================================
 session1 = surveys['clinical_administered_data']
 subject_ids = session1['SUBJECT_ID'].unique()
 print(f'session1 head:: len {len(session1)}')
-
 session2 = surveys['mri_self_report_data']
 session1sr = surveys['clinical_self_report_data']
 session3 = surveys['supplemental_self_report_data']
@@ -84,7 +99,9 @@ session1['duration_mins'] = pd.to_numeric(session1['Duration (in seconds)'])/60
 session1_r = session1[session1['SITE_ID']=='Rutgers']
 session1_m = session1[session1['SITE_ID'] == 'McLean']
 
-# Surveys
+# ===============================================
+# Compute Recoded Survey Totals (PANSS, YMRS, etc.)
+# ===============================================
 s1_recoded = recoded_surveys['clinical_administered_data']
 panss_p_total_cols = [f'panss_p0{str(i)}' for i in range(1,8)]
 panss_n_total_cols = [f'panss_n0{str(i)}' for i in range(1,8)]
@@ -95,7 +112,7 @@ madrs_total_cols = [f'madrs_0{str(i)}' for i in range(1,10)]+['madrs_10']
 
 all_cols = panss_p_total_cols+panss_n_total_cols+panss_g_total_cols+bprs_total_cols+ymrs_total_cols+madrs_total_cols
 s1_recoded[all_cols] = s1_recoded[all_cols].astype(float)
-# new recoded cols
+
 s1_recoded_newcols = pd.DataFrame({
 	'SUBJECT_ID':  s1_recoded['SUBJECT_ID'],
 	'panss_p_total': s1_recoded[panss_p_total_cols].copy().sum(axis=1),
@@ -123,9 +140,10 @@ total_real = len(session1_r) + len(session1_m)
 primary_pie = px.pie(session1, names='primary_diagnoses_all', title=f'Subject Primary Diagnoses - {len(session1)} subjects')
 other_pie = px.pie(session1, names='other_diagnoses_all', title=f'Subject Other Diagnoses - {len(session1)} subjects')
 
-
-survey_cols = [
-	"SUBJECT_ID",'SITE_ID','primary_diagnoses_all','other_diagnoses_all',
+# ===============================================
+# Merge All Sessions into a Unified Demographic DF
+# ===============================================
+survey_cols = [ "SUBJECT_ID",'SITE_ID','primary_diagnoses_all','other_diagnoses_all',
 	'clinical_administered_data', 'mri_self_report_data','supplemental_self_report_data', 
 	'MADRS_category','YMRS_category', 'PANSS_Positive_Category','PANSS_Negative_Category','PANSS_General_Category','PANSS_Total_category',
 	"sex","age", "ethnic","racial","place_birth", 'name_meds','purpose_meds','panss_total', 'panss_p_total','panss_n_total','panss_g_total', 'bprs_total','ymrs_total','madrs_total',]
@@ -150,9 +168,7 @@ notes_df = tracker_df.set_index('SUBJECT_ID')
 notes_df = notes_df[['Session Notes','MRI scan notes']]
 combined_df = demographic_df.combine_first(notes_df)
 
-
-
-demographic_df = categorize_scores(combined_df)
+demographic_df = surveys_loader.categorize_scores(combined_df)
 # Add the dates of the surveys to the dataframe
 demographic_df["clinical_administered_data"] = pd.to_datetime(surveys["clinical_administered_data"]['StartDate'], errors="coerce")
 demographic_df["mri_self_report_data"] = pd.to_datetime(surveys["mri_self_report_data"]['StartDate'], errors="coerce")
@@ -160,7 +176,6 @@ demographic_df = demographic_df.drop_duplicates()
 today = dt.today()
 today_str = today.strftime('%b %d %Y')
 demographic_df.to_csv(os.path.join(demographic_df_dir, f'demographic_df_{today_str}.csv'))
-demographic_df.to_csv(os.path.join(project_dir, f'demographic_df_{today_str}.csv'))
 
 # Define 2 weeks ago
 two_weeks_ago = dt.now() - timedelta(weeks=2)
@@ -244,7 +259,7 @@ rmr_linear = rmr_linear.loc[:cutoff]
 
 
 # Tracker Visual
-subs_df = paths['tracker_df']
+subs_df = paths_dict['tracker_df']
 subs_df_binary = subs_df.fillna(0)
 subs_df_filtered = subs_df_binary.loc[subs_df_binary['Clinical Interview Session'] != 0, :]
 subs_df_filtered = subs_df_filtered.loc[:, ~subs_df_filtered.columns.str.contains('Unnamed', case=False)]
@@ -339,7 +354,7 @@ layout = html.Div([
 	),
 	dmc.MantineProvider(children=[
 		dmc.Text(f'All Subject sessions from the last 2 weeks ({num_recent_clin} clinical interviews, {num_recent_mri} MRI scans)',  c='blue',style={"fontSize": 30}),
-	html.Div(render_demographic_df(recent_demographics, display_survey_cols)),
+	html.Div(tables.render_demographic_df(recent_demographics, display_survey_cols)),
 	dmc.MantineProvider(children=[
 		dmc.Text('Current + Projected Clinical Interviews',  c='blue',style={"fontSize": 30}),
 		dmc.Text(f'Currently our real rate is: {num_recent_clin/2} subjects per week (both sites, {num_recent_clin/4} per site)',  c='blue',style={"fontSize": 20})]),        
@@ -446,7 +461,7 @@ def cb(site, session):
 	#Bar chart of duration for each sub
 	fig = px.bar(df, x='SUBJECT_ID', y='duration_mins', text_auto='.2s', range_y=[0,120])
 
-	return render_demographic_df(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")
+	return tables.render_demographic_df(df, cols_present), dcc.Graph(figure=fig,config={'displayModeBar': True},style={'width': 500,  'height': 300},  className = "outer-graph")
 
 
 

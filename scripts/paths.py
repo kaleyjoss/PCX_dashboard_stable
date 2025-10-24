@@ -4,10 +4,13 @@ import logging
 import pandas as pd
 
 '''
-Example of use:
-1. Load paths dict 
-paths = load_paths()
-2. Use the below list of dicts to reference specific paths, ie `surveys_dir = paths["surveys_dir"]`
+Tutorial for use:
+
+1. In the .py file you want to use paths, load paths dict: 
+`paths = load_paths()`
+2. Use the below list of dicts to reference specific paths, ie 
+`surveys_dir = paths["surveys_dir"]`
+
 '''
 
 

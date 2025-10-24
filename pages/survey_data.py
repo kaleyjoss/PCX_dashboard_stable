@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 # Import custom scripts
-from scripts.surveys import load_surveys, subsurvey_key
+from scripts.surveys_loader import load_surveys, subsurvey_key
 from scripts.paths import load_paths
 dashboard_dir = os.path.basename(os.getcwd())
 sys.path.append(dashboard_dir)

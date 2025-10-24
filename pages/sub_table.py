@@ -25,7 +25,7 @@ sys.path.append(dashboard_dir)
 from scripts.update_dataframes import update_dfs
 from scripts.paths import load_paths
 import scripts.sub_id as sub_id
-from scripts.surveys import load_surveys
+from scripts.surveys_loader import load_surveys
 from scripts.tables import render_demographic_df
 if 'scripts.paths' in sys.modules:
     importlib.reload(sys.modules['scripts.paths'])

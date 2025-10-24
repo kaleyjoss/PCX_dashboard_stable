@@ -1,3 +1,7 @@
+# ===============================================
+# Imports and Initialization
+# ===============================================
+
 import dash
 from dash import Dash, dcc, html, callback, Input, Output, dash_table
 from flask import send_from_directory
@@ -16,12 +20,37 @@ import sys
 dashboard_dir = os.path.basename(os.getcwd())
 sys.path.append(dashboard_dir)
 from scripts.paths import load_paths
-from scripts.surveys import load_surveys
+from scripts.surveys_loader import load_surveys, get_most_recent_survey
+from scripts.surveys_api import export_surveys, survey_id_dict
+
+# Load all the needed paths from paths.py
 paths = load_paths()
 surveys_dir = paths["surveys_dir"]
 REPORTS_DIR = paths["REPORTS_DIR"]
 
-surveys, recoded_surveys = load_surveys(surveys_dir)
+# Check if the most recent Qualtrics surveys were from >2 days ago
+# Use first key in survey_id_dict, which is the name of the survey/folder name, 
+# because get_most_recent_survey needs to look in a folder that has .xlsx / .csv files with the date
+survey_dir = os.path.join(surveys_dir, list(survey_id_dict.keys())[0])
+path, date = get_most_recent_survey(survey_dir, recoded=False)
+# Ensure 'date' is a datetime object
+if date is None: 
+    print(f'Could not find any surveys in {os.path.join(surveys_dir, list(survey_id_dict.keys())[0])}, alter the place to look for qualtrics surveys in app.py `survey_dir`')
+if date is not None:
+    if isinstance(date, str):
+        date = dt.strptime(date, '%b %d, %Y')
+    if (dt.today()-date).days > 2:
+        # If so, download them again
+        print(f'Last survey was {date}, redownloading from Qualtrics. This takes 2-3 mins.')
+        API_TOKEN = input('Paste your qualtrics API token here-- one in Passwords sheet if you dont have one')
+
+        # Survey dir = surveys_dir and the first survey folder, so that the function 
+        surveys = export_surveys(survey_id_dict, API_TOKEN, surveys_dir)
+        recoded_surveys = export_surveys(survey_id_dict, API_TOKEN, surveys_dir, recoded=True)
+    else:
+        # Otherwise just load from the existing surveys
+        surveys, recoded_surveys = load_surveys(surveys_dir)
+
 first_df = surveys['clinical_administered_data']
 subject_ids = first_df['SUBJECT_ID'].unique()
 
@@ -96,5 +125,5 @@ def update_subject(subject):
     return subject
     
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8090, debug=True)
+    app.run(host="0.0.0.0", port=8050, debug=True)
 

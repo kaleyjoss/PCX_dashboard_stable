@@ -60,7 +60,7 @@ def get_most_recent_survey(directory, recoded=False):
         return os.path.join(directory, dates[0]['filename']), dates[0]['date']
     
     
-    return None
+    return None, None
 
 
 

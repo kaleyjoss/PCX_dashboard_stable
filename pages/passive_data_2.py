@@ -31,7 +31,7 @@ if 'scripts.sub_id' in sys.modules:
     importlib.reload(sys.modules['scripts.sub_id'])
 from scripts.update_dataframes import update_dfs
 from scripts.paths import load_paths
-from scripts.surveys import load_surveys
+from scripts.surveys_loader import load_surveys
 
 # Register page into dash app as pagename
 dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
