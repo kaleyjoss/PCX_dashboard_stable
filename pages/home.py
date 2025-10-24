@@ -89,11 +89,19 @@ surveys = surveys_loader.add_diagnoses_columns(surveys)
 # Site-based Filtering and Duration Conversion
 # ===============================================
 session1 = surveys['clinical_administered_data']
-subject_ids = session1['SUBJECT_ID'].unique()
-print(f'session1 head:: len {len(session1)}')
 session2 = surveys['mri_self_report_data']
 session1sr = surveys['clinical_self_report_data']
 session3 = surveys['supplemental_self_report_data']
+
+# Make a column in each session DF, named the name of the survey, filled by the date it was done (for combining later)
+session1['clinical_administered_data'] = pd.to_datetime(surveys['clinical_administered_data']['StartDate'], errors='raise')
+session2['mri_self_report_data'] = pd.to_datetime(surveys['mri_self_report_data']['StartDate'], errors='raise')
+session1sr['clinical_self_report_data'] = pd.to_datetime(surveys['clinical_self_report_data']['StartDate'], errors='raise')
+session3['supplemental_self_report_data'] = pd.to_datetime(surveys['supplemental_self_report_data']['StartDate'], errors='raise')
+
+subject_ids = session1['SUBJECT_ID'].unique()
+print(f'session1 head:: len {len(session1)}')
+
 
 session1['duration_mins'] = pd.to_numeric(session1['Duration (in seconds)'])/60
 session1_r = session1[session1['SITE_ID']=='Rutgers']
@@ -170,8 +178,8 @@ combined_df = demographic_df.combine_first(notes_df)
 
 demographic_df = surveys_loader.categorize_scores(combined_df)
 # Add the dates of the surveys to the dataframe
-demographic_df["clinical_administered_data"] = pd.to_datetime(surveys["clinical_administered_data"]['StartDate'], errors="coerce")
-demographic_df["mri_self_report_data"] = pd.to_datetime(surveys["mri_self_report_data"]['StartDate'], errors="coerce")
+# demographic_df["clinical_administered_data"] = pd.to_datetime(surveys["clinical_administered_data"]['StartDate'], errors="coerce")
+# demographic_df["mri_self_report_data"] = pd.to_datetime(surveys["mri_self_report_data"]['StartDate'], errors="coerce")
 demographic_df = demographic_df.drop_duplicates()
 today = dt.today()
 today_str = today.strftime('%b %d %Y')
