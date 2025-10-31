@@ -224,7 +224,7 @@ layout = html.Div([
 	html.Div(children=[
 		# dcc.Markdown(id='caption'),
 		# dcc.Markdown(id='diagnosis', style={'width': '100%', 'padding': '0px'}),
-
+		
 		html.Div(children=[
 			html.Div(id='sub-overview', style={'width': '20%', 'padding': '0px'}),
 			html.Div(id='msgs', style={'width': 500,'padding': '5px'}),

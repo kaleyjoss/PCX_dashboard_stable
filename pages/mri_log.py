@@ -54,6 +54,7 @@ def cb(subject_id):
     if subject_id is None:
         return None
     pcrid = subject_id.replace('qualr', 'sub-PCR').replace('qualm', 'sub-PCM')
+    pcrid = subject_id.replace('PCR', 'sub-PCR').replace('PCM', 'sub-PCM')
     """Callback to update the filepath based on the selected id"""
     return f"/reports/{pcrid}.html/index.html"
 

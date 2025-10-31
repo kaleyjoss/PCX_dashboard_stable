@@ -221,3 +221,6 @@ def categorize_scores(df):
     df['PANSS_General_Category'] = df['panss_g_total'].apply(lambda x: categorize_panss(x, 'general'))
     df['PANSS_Total_category'] = df['panss_total'].apply(lambda x: categorize_panss(x, 'total'))
     return df
+
+
+
