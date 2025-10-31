@@ -103,6 +103,7 @@ def update_tab(subject_id, active_tab):
 
                 df = pd.read_csv(sorted(csvs)[-1])  # take latest
                 num_df = df[[col for col in df.columns if 'activityScore' in col]]
+                # Drop empty rows/days, this happens bc participants start some time after start of study
                 num_df_clean = num_df.dropna(axis=0, how='all')
                 
                 if num_df_clean.empty:
@@ -111,7 +112,6 @@ def update_tab(subject_id, active_tab):
                 
                 status_msgs.append(f'Found {file} csv')
 
-                # Drop empty rows/days, this happens bc participants start some time after start of study
                 
                 fig = px.imshow(
                     num_df_clean.values,

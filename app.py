@@ -27,6 +27,7 @@ from scripts.surveys_api import export_surveys, survey_id_dict
 paths = load_paths()
 surveys_dir = paths["surveys_dir"]
 REPORTS_DIR = paths["REPORTS_DIR"]
+tracker_df = paths['tracker_df']
 
 # Check if the most recent Qualtrics surveys were from >2 days ago
 # Use first key in survey_id_dict, which is the name of the survey/folder name, 
@@ -52,7 +53,15 @@ if date is not None:
         surveys, recoded_surveys = load_surveys(surveys_dir)
 
 first_df = surveys['clinical_administered_data']
-subject_ids = first_df['SUBJECT_ID'].unique()
+tracker_df=tracker_df.dropna(subset='SUBJECT_ID')
+subject_ids = tracker_df['SUBJECT_ID']
+subject_ids = [sub for sub in subject_ids if not pd.isna(sub)]
+subject_ids_emojis = tracker_df['SUBJECT_ID'].astype(str) + ' ' + tracker_df['consents_icons'].astype(str)
+subject_ids_for_sidebar = [
+    {"label": sid, "value": sid.replace(' ','').replace('🧠','').replace('📱','')}
+    for sid in subject_ids_emojis
+]
+
 
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN], use_pages=True,  pages_folder="pages")
@@ -91,7 +100,7 @@ sidebar = html.Div(
         html.H2("PCX Study", className="display-4"),
         html.Hr(),
         html.P("Interactive dashboard for the PCX study.", className="lead"),
-        dcc.Dropdown(subject_ids, id='subject-picker',clearable=True),
+        dcc.Dropdown(subject_ids_for_sidebar, id='subject-picker',clearable=True),
         dbc.Nav(
             [
                 dbc.NavLink("Home", href="/", active="exact"),
