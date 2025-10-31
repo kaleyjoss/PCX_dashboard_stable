@@ -1,5 +1,5 @@
 import logging
-from dash import Dash, _dash_renderer, dash_table
+from dash import Dash, _dash_renderer, dash_table, html
 from datetime import datetime as dt
 from datetime import timedelta
 import numpy as np
@@ -16,7 +16,9 @@ two_weeks_ago = dt.now() - timedelta(weeks=2)
 today_str = dt.now().strftime('%Y-%m-%d')
 two_weeks_ago_str = two_weeks_ago.strftime('%Y-%m-%d')
 
-def render_demographic_df(df, cols):
+def render_demographic_df(df, cols=None, subject=None):
+    if cols is None:
+        cols = df.columns.to_list()
     if 'SUBJECT_ID' not in cols:
         cols = cols + ['SUBJECT_ID']
     non_present_cols = [col for col in cols if col not in df.columns]
@@ -24,6 +26,14 @@ def render_demographic_df(df, cols):
         cols = [col for col in cols if col in df.columns]
         logging.warning(f'Was not able to find these cols in the table: {non_present_cols}. Using {cols}')
     survey_df = df[cols]
+    
+    if subject is not None:
+        if 'pc' in subject.lower():
+            subject=subject.replace('PCM','qualm').replace('PCR','qualr')
+        if not subject in survey_df['SUBJECT_ID'].unique():
+            return html.Div(f'No {subject} found in demographic df')
+    
+        survey_df = survey_df[survey_df['SUBJECT_ID']==subject]
 
     return dash_table.DataTable(
         data=survey_df.to_dict('records'),
@@ -164,3 +174,41 @@ Light Red → #ffcccc
 	•	Light Blue → #cce5ff
 	•	Light Yellow → #ffffcc
 '''
+
+
+def render_simple_table(df, subject=None):
+    """
+    Render a simple Dash DataTable.
+
+    Args:
+        df (pd.DataFrame): The DataFrame to display.
+        subject (str, optional): If provided, filters df to rows where SUBJECT_ID == subject.
+    """
+    if df is None or df.empty:
+        return html.Div("No data available.")
+
+    if subject is not None and 'SUBJECT_ID' in df.columns:
+        df = df[df['SUBJECT_ID'] == subject]
+
+    if df.empty:
+        return html.Div(f"No data for subject {subject}.")
+
+    return dash_table.DataTable(
+        data=df.to_dict('records'),
+        columns=[{"name": col, "id": col} for col in df.columns],
+        style_table={"overflowX": "auto"},
+        style_cell={
+            "textAlign": "left",
+            "whiteSpace": "normal",
+            "fontFamily": "Arial, sans-serif",
+            "fontSize": "14px",
+            "padding": "6px",
+        },
+        style_header={
+            "backgroundColor": "#f0f2f6",
+            "fontWeight": "bold",
+        },
+        style_data_conditional=[
+            {"if": {"row_index": "odd"}, "backgroundColor": "#fafafa"}
+        ],
+    )

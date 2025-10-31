@@ -46,6 +46,8 @@ paths_dict = load_paths()
 pcx_dir = paths_dict["pcx_dir"]
 mindlamp_dir = paths_dict['mindlamp_dir']
 DATA_DIR = os.path.join(mindlamp_dir, 'data')
+
+
 # === Layout ===
 layout = dbc.Container([
     dbc.Row([
@@ -62,7 +64,8 @@ layout = dbc.Container([
             ]),
             html.Div(id='tab-content', style={'marginTop': 20}),
             dcc.Checklist(id='survey-cols', value=['Cheerful'], options=['Cheerful', 'Stressed', 'Down', 'Relaxed', 'Down', 'Strange', 'Content', 'Suspicious', 'Relaxed', 'Racing', 'Enthusiastic', 'Auditory', 'Empty', 'Anxious', 'Concentrate', 'Irritable', 'Confused', 'Visual', 'Handle', 'Function', 'Socialp', 'Sociald','Negative','Positive'],inline=True, style={'marginTop': 10, 'marginLeft': 10, 'marginRight': 10}),
-            dcc.Graph(figure={}, id='survey-graph'),
+            html.Div(id='survey-graph'),
+            html.Div(id='survey-msgs')
         ], width=9)
     ])
 ], fluid=True)
@@ -158,6 +161,7 @@ def update_tab(subject_id, active_tab):
 
 @callback(
     Output(component_id='survey-graph', component_property='children'),
+    Output(component_id='survey-msgs', component_property='children'),
     Input(component_id='subject-id', component_property='data'),
     Input('survey-cols', 'value'),   
 )
@@ -172,10 +176,14 @@ def update_survey(subject_id, survey_cols):
         return html.Div("No data found for this sensor."), f"❌ No data in {subj_path}"
 
     survey_path = os.path.join(subj_path, 'survey')
-    csvs = glob.glob(os.path.join(survey_path, f"*surveyAnswers_activityScores*.csv"))
+    csvs = glob.glob(os.path.join(survey_path, f"**surveyAnswers_activityScores**.csv"))
     if not csvs:
         return html.Div("No survey data found."), f"⚠️ No survey CSVs from {survey_path}"
     df = pd.read_csv(sorted(csvs)[-1])
-    fig = px.line(df, x='day', y=survey_cols)
+    if 'day' in df.columns:
+        df['day'] = pd.to_numeric(df['day'], errors='coerce')
+    else:
+        return html.Div(f"Survey {os.path.basename(csvs[-1])} had no 'day' column"), f"Survey {os.path.basename(csvs[-1])} had no 'day' column"
+    fig = px.line(df, x='day', y=survey_cols, title=f'Subject {subject_id} Survey Responses')
     return dcc.Graph(figure=fig), f"✅ Survey: {os.path.basename(csvs[-1])}"
 

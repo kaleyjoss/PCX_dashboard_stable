@@ -15,6 +15,7 @@ from pathlib import Path
 # Import custom scripts
 from scripts.surveys_loader import load_surveys, subsurvey_key
 from scripts.paths import load_paths
+from scripts.tables import render_simple_table, render_demographic_df
 dashboard_dir = os.path.basename(os.getcwd())
 sys.path.append(dashboard_dir)
 
@@ -29,9 +30,6 @@ demographic_df_dir = Path(paths_dict['demographic_df_dir'])
 demographic_df_path = max(demographic_df_dir.glob("*.csv"), key=lambda f: f.stat().st_mtime)
 demographic_df = pd.read_csv(demographic_df_path)
 surveys, recoded_surveys = load_surveys(surveys_dir)
-
-first_df = surveys['clinical_administered_data']
-subject_ids = first_df['SUBJECT_ID'].unique()
 
 import logging
 logging.basicConfig(
@@ -190,7 +188,7 @@ def render_overview(subject, surveys, survey_name):
 	df = surveys[survey_name]
 	if subject is None:
 		return html.Div(children=['No subject selected'])
-	if not subject in surveys[survey_name]['SUBJECT_ID'].unique():
+	if not subject in df['SUBJECT_ID'].unique():
 		if subject.lower() in surveys[survey_name]['SUBJECT_ID'].unique():
 				subject = subject.lower()
 		else:
@@ -224,26 +222,28 @@ layout = html.Div([
 	html.H1(children='Subject Viewer', style={'margin':20}),
 	
 	html.Div(children=[
-		dcc.Markdown(id='caption'),
-		dcc.Markdown(id='diagnosis', style={'width': '100%', 'padding': '0px'}),
-
+		# dcc.Markdown(id='caption'),
+		# dcc.Markdown(id='diagnosis', style={'width': '100%', 'padding': '0px'}),
 
 		html.Div(children=[
 			html.Div(id='sub-overview', style={'width': '20%', 'padding': '0px'}),
-			html.Div(id='survey-container', 
-					children=[
-						html.Div(id='session-notes'),
-						html.Div(id='scan-notes'),
-					], style={'width': '20%','padding': '0px'}
-			),
-			html.Div(id='chart-container', children=[
-				dcc.RadioItems((['panss', 'bprs', 'ymrs', 'madrs', 'cssrs']), id='sub-survey-name', value='panss'),
-				dcc.Tabs(id="content-type", value='Chart', children=[
-					dcc.Tab(label='Chart', value='Chart'),
-					dcc.Tab(label='Table', value='Table'),
-					]),
-				html.Div(id='tabs-content', style={'width': 500,'padding': '5px'})
-			]),
+			html.Div(id='msgs', style={'width': 500,'padding': '5px'}),
+			html.Div(id='sub-table', style={'width': 500,'padding': '5px'}),
+			# html.Div(id='survey-container', 
+			# 		children=[
+			# 			html.Div(id='session-notes'),
+			# 			html.Div(id='scan-notes'),
+			# 		], style={'width': '20%','padding': '0px'}
+			# ),
+			# html.Div(id='chart-container', children=[
+			# 	dcc.RadioItems((['panss', 'bprs', 'ymrs', 'madrs', 'cssrs']), id='sub-survey-name', value='panss'),
+			# 	dcc.Tabs(id="content-type", value='Chart', children=[
+			# 		dcc.Tab(label='Chart', value='Chart'),
+			# 		dcc.Tab(label='Table', value='Table'),
+			# 		]),
+			# 	html.Div(id='tabs-content', style={'width': 500,'padding': '5px'})
+			# ]),
+			
 
 		], style={
 			'display': 'flex',
@@ -260,63 +260,125 @@ layout = html.Div([
 	Input(component_id='subject-id', component_property='data'),
 )
 def update_subject(subject):
-	sub_overview = render_overview(subject, surveys, survey_name='mri_self_report_data')
+	sub_overview = render_demographic_df(demographic_df, subject=subject)
 	return sub_overview
 
 
+
+
 @callback(
-	Output(component_id='session-notes', component_property='children'),
+	Output(component_id='sub-table', component_property='children'),
+	Output(component_id='msgs', component_property='children'),
 	Input(component_id='subject-id', component_property='data'),
 )
-def update_subject(subject):
-	if subject is not None:
-		subject = subject.replace('qualr','PCR').replace('qualm','PCM')
-	session_notes = render_table(subject, surveys, subsurvey_key, survey_cols=['Session Notes'], df_to_use=tracker_df)
-	return session_notes
+def update_sub_table(subject):
+	sub_table = []
+	msgs = []
+	if subject is None:
+		return html.Div('Please select a subject'), html.Ul([html.Li(m) for m in msgs]) if msgs else html.Div("No messages")
+	for survey in surveys:
+		df = surveys[survey]
+		# Drop all columns before 'SUBJECT_ID', these are Qualtrics-internal columns
+		# Get the position of the column
+		idx = df.columns.get_loc("SUBJECT_ID")
+
+		# Use iloc for position-based slicing
+		df = df.iloc[:, idx:]
+
+		subject_qual = subject  # default
+		if 'pc' in subject.lower():
+			subject_qual = subject.replace('PCM','qualm').replace('PCR','qualr')
+		if not subject_qual in df['SUBJECT_ID'].unique():
+			msgs.append(f'Changed {subject} to {subject_qual}, but was not found in {survey}')
+			continue
+		
+		sub_df = df[df['SUBJECT_ID']==subject_qual]
+		labels = sub_df.iloc[0]# The readable names are in the first row
+		values = sub_df.iloc[2]# The values (for one subject) are in the third row
+
+		# Combine into a two-column table
+		table_df = pd.DataFrame({
+			"Question": labels.values,
+			"Value": values.values
+		})
+
+		# Optional: clean up whitespace
+		table_df["Question"] = table_df["Question"].str.strip()
+
+		sub_table.append(table_df)
+
+	if len(sub_table)>0:
+		sub_table_all = pd.concat(sub_table, ignore_index=True)
+
+		# --- Dash table ---
+		return dash_table.DataTable(
+			data=sub_table_all.to_dict("records"),
+			columns=[{"name": c, "id": c} for c in sub_table_all.columns],
+			style_cell={"textAlign": "left", "whiteSpace": "normal", "height": "auto"},
+			style_header={"fontWeight": "bold"},
+		), html.Ul([html.Li(m) for m in msgs]) if msgs else html.Div("No messages")
+	
+	else:
+		return html.Div('No tables to concatenate'), html.Ul([html.Li(m) for m in msgs]) if msgs else html.Div("No messages")
+
+	
 
 
-@callback(
-	Output(component_id='scan-notes', component_property='children'),
-	Input(component_id='subject-id', component_property='data'),
-
-)
-def update_subject(subject):
-	if subject is not None:
-		subject = subject.replace('qualr','PCR').replace('qualm','PCM')
-
-	scan_notes = render_table(subject, surveys, subsurvey_key, survey_cols=['MRI Scan Notes'], df_to_use=tracker_df)
-	return scan_notes
+# @callback(
+# 	Output(component_id='session-notes', component_property='children'),
+# 	Input(component_id='subject-id', component_property='data'),
+# )
+# def update_subject(subject):
+# 	if subject is not None:
+# 		subject = subject.replace('qualr','PCR').replace('qualm','PCM')
+# 	session_notes = render_table(subject, surveys, subsurvey_key, survey_cols=['Session Notes'], df_to_use=tracker_df)
+# 	return session_notes
 
 
-@callback(
-	Output(component_id='caption', component_property='children'), 
-	Output(component_id='diagnosis', component_property='children'),
-	Input(component_id='subject-id', component_property='data'),
-)
-def update_caption(subject):
-	primary, other = render_diagnosis(subject, surveys, survey_name='clinical_administered_data')
+# @callback(
+# 	Output(component_id='scan-notes', component_property='children'),
+# 	Input(component_id='subject-id', component_property='data'),
 
-	subject_text = '''
-	### Your subject is {}
-	'''.format(subject)
+# )
+# def update_subject(subject):
+# 	if subject is not None:
+# 		subject = subject.replace('qualr','PCR').replace('qualm','PCM')
 
-	diagnoses_text = f'''
-	#### Primary Diagnoses: {primary}
-	Other diagnoses: {other}
-	'''
-	return subject_text, diagnoses_text
+# 	scan_notes = render_table(subject, surveys, subsurvey_key, survey_cols=['MRI Scan Notes'], df_to_use=tracker_df)
+# 	return scan_notes
 
 
-@callback(
-		Output('tabs-content', 'children'),
-		Input('subject-id', 'data'),
-		Input('sub-survey-name', 'value'),
-		Input('content-type', 'value'),
-)
+# @callback(
+# 	Output(component_id='caption', component_property='children'), 
+# 	Output(component_id='diagnosis', component_property='children'),
+# 	Input(component_id='subject-id', component_property='data'),
+# )
+# def update_caption(subject):
+# 	primary, other = render_diagnosis(subject, surveys, survey_name='clinical_administered_data')
 
-def render_content(subject, sub_survey_name, contentType):
-	if contentType=='Table':
-		return render_table(subject, surveys, subsurvey_key, sub_survey_name=sub_survey_name)
-	if contentType=='Chart':
-		return render_chart(subject, recoded_surveys, subsurvey_key, sub_survey_name=sub_survey_name)
+# 	subject_text = '''
+# 	### Your subject is {}
+# 	'''.format(subject)
+
+# 	diagnoses_text = f'''
+# 	#### Primary Diagnoses: {primary}
+# 	Other diagnoses: {other}
+# 	'''
+# 	return subject_text, diagnoses_text
+
+
+# @callback(
+# 		Output('tabs-content', 'children'),
+# 		Input('subject-id', 'data'),
+# 		Input('sub-survey-name', 'value'),
+# 		Input('content-type', 'value'),
+# )
+
+# def render_content(subject, sub_survey_name, contentType):
+# 	if contentType=='Table':
+# 		return render_table(subject, surveys, subsurvey_key, sub_survey_name=sub_survey_name)
+# 	if contentType=='Chart':
+# 		return render_chart(subject, recoded_surveys, subsurvey_key, sub_survey_name=sub_survey_name)
+
+
 
