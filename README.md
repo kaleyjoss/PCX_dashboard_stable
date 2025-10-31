@@ -16,10 +16,12 @@ conda env create --name dashboard -f environment.yml
 conda activate dashboard 
 ```
 
-Or, install the following packages with whatever package manager you use:
+Or, install the following packages with whatever package manager you use:  
 pandas                    2.3.3           
 numpy                     2.3.3           
 dash                      2.14.2
+flask                     3.0.3
+xarray
 (*This was originally developed with Python 3.13.9)
 
 ## Run app
