@@ -13,7 +13,12 @@ import pickle
 import inspect
 import os
 import sys
-
+from dash import Dash, html, dcc, Input, Output, ctx
+import dash_bootstrap_components as dbc
+import plotly.express as px
+import pandas as pd
+import os
+import glob
 
 # Import custom scripts
 dashboard_dir = os.path.basename(os.getcwd())
@@ -29,114 +34,148 @@ from scripts.paths import load_paths
 from scripts.surveys_loader import load_surveys
 
 # Register page into dash app as pagename
-# dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
+dash.register_page(__name__, path="/passive_data", title='Passive Data', name='Passive Data')
+
+sensor_to_file_dict = {'gps': ['gps_freq','gps_freq2','gps_dist'],
+                       'accel': ['accel_activityScores'],
+                       'power': ['power_activityScores']}
+
+
+# === Paths ===
 paths_dict = load_paths()
 pcx_dir = paths_dict["pcx_dir"]
-surveys_dir = paths_dict['surveys_dir']
 mindlamp_dir = paths_dict['mindlamp_dir']
-surveys, recoded_surveys = load_surveys(surveys_dir)
+DATA_DIR = os.path.join(mindlamp_dir, 'data')
+# === Layout ===
+layout = dbc.Container([
+    dbc.Row([
+        dbc.Col([
+            html.H3("Participant Dashboard"),
+            html.Hr(),
+            html.Div(id='data-status', className='text-muted')
+        ], width=3),
 
-first_df = surveys['clinical_administered_data']
-subject_ids = first_df['SUBJECT_ID'].unique()
-
-logging.basicConfig(
-        filename='update_dataframes.log',        # File to write logs to, saved in working directory
-        filemode='a',              # 'a' for append, 'w' to overwrite each time
-        level=logging.INFO,        # Minimum logging level
-        format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
-    )
-
-def return_recent_df(sub: str, sensor: str, data_path:str):    
-    all_files = os.listdir(data_path)
-    matches = []
-    most_recent_files = []
-    for f in all_files:
-        matches.extend(re.findall(r'to\d+\.', f))
-    if not matches:
-        return None, None
-    matches = sorted(matches, reverse=True)
-    day = matches[0].replace('d','').replace('.','')
-    for file in all_files:
-        if day in file:
-            most_recent_files.extend(file)
-        
-    return most_recent_files, day
-    
-
-def update_dfs(sub:str, sensor:str):
-    # Set up logging
-
-    data_path = os.path.join(mindlamp_dir, 'data', sub, 'phone', 'processed', sensor)
-    if os.path.exists(data_path):
-        most_recent_files, day = return_recent_df(sub, sensor, data_path)
-        if most_recent_files is not None:
-            for file in most_recent_files:
-                df = pd.read_csv(os.path.join(data_path, most_recent_files))
-                df['subject_id'] = sub
-                df['sensor'] = sensor
-
-            # Build mapping for renaming to readable names
-            rename_map = {
-                f"activityScore_hour{str(i).zfill(2)}": f"{i-1}:00"
-                for i in range(1, 25)
-            }
-
-            # Apply rename
-            df = df.rename(columns=rename_map)
-
-            return df
-        else:
-            logging.warning(f"No recent {sensor} data found for {sub}")
-            return None
-    else:
-        logging.warning(f"No {sensor} data found for {sub}")
-        return None
+        dbc.Col([
+            dcc.Tabs(id='tabs', value='tab-data', children=[
+                dcc.Tab(label='Heatmap', value='tab-data'),
+                dcc.Tab(label='Figures', value='tab-figs'),
+            ]),
+            html.Div(id='tab-content', style={'marginTop': 20}),
+            dcc.Checklist(id='survey-cols', value=['Cheerful'], options=['Cheerful', 'Stressed', 'Down', 'Relaxed', 'Down', 'Strange', 'Content', 'Suspicious', 'Relaxed', 'Racing', 'Enthusiastic', 'Auditory', 'Empty', 'Anxious', 'Concentrate', 'Irritable', 'Confused', 'Visual', 'Handle', 'Function', 'Socialp', 'Sociald','Negative','Positive'],inline=True, style={'marginTop': 10, 'marginLeft': 10, 'marginRight': 10}),
+            dcc.Graph(figure={}, id='survey-graph'),
+        ], width=9)
+    ])
+], fluid=True)
 
 
-
-
-
-# App layout
-layout = html.Div([
-    dcc.RadioItems(id='sensor', value='power',
-        options=['power','accel','gps']),
-    dcc.RadioItems(id='days', value='All days',
-        options=['All days','Weekdays','Weekends']),
-    dcc.Graph(figure={}, id='sensor-graph'),
-
-])
-
-# Add controls to build the interaction
 @callback(
-    Output(component_id='sensor-graph', component_property='figure'),
+    Output('tab-content', 'children'),
+    Output('data-status', 'children'),
     Input(component_id='subject-id', component_property='data'),
-    Input(component_id='days', component_property='value'),
-    Input(component_id='sensor', component_property='value'),
+    Input('tabs', 'value'),
+
 )
-
-def cb(subject_id, days, sensor):
+def update_tab(subject_id, active_tab):
     if not subject_id:
-        return None
-    
-    sub_clean = subject_id.lower().replace('_','').replace('qualr','PCR').replace('qualm','PCM')
+        return "Please select a participant.", "⚠️ No subject selected."
+    if 'qual' in subject_id:
+        subject_id = subject_id.replace('qualr','PCR').replace('qualm','PCM')
 
-    sub_df = update_dfs(sub_clean, sensor)
+    subj_path = os.path.join(DATA_DIR, subject_id, 'phone', 'processed')
+    if not os.path.exists(subj_path):
+        return html.Div(f"No sensor activity data found. Looked in {subj_path} "), f"❌ No data in {subj_path}"
 
-    """Callback to update the figure based on the selected id"""
-    if subject_id is None:
-        return None
-    if sub_df is None:
-        data_path = os.path.join(mindlamp_dir, 'data', subject_id, 'phone', 'processed', sensor)
-        return None, f'No data found for {subject_id} in {data_path}'
-    if days == 'Weekdays':
-        sub_df = sub_df[sub_df['weekday'].astype(str).str.contains('1|2|3|4|5')]
-    elif days == 'Weekends':
-        sub_df = sub_df[sub_df['weekday'].astype(str).str.contains('6|7')]
-    xr_power = xr.DataArray(sub_df.select_dtypes(include=['number']).values, 
-                        dims=["Days", "Hours of the Day"],
-                        coords={"Days": sub_df['day'], "Hours of the Day": sub_df.select_dtypes(include=['number']).columns})
-    
-    fig = px.imshow(xr_power, origin='lower', title=f'{sensor} Activity (minutes each hour) for {sub_clean}',
-                    zmin=0,zmax=60,height=400, width=600)
-    return fig
+    # ---- Tab 1: HEATMAP ----
+    if active_tab == 'tab-data':
+        figs = []
+        status_msgs = []
+        for sensor in sensor_to_file_dict:
+            for file in sensor_to_file_dict[sensor]:
+                path = f'{os.path.join(subj_path, sensor)}'
+                if not os.path.exists(path):
+                    status_msgs.append(f"❌ {sensor}: folder missing")
+                    continue
+                
+                csvs = glob.glob(os.path.join(path, f"**{file}**.csv"))
+                if not csvs:
+                    status_msgs.append(f"⚠️ {sensor}: no CSVs")
+                    continue
+
+                df = pd.read_csv(sorted(csvs)[-1])  # take latest
+                num_df = df[[col for col in df.columns if 'activityScore' in col]]
+                num_df_clean = num_df.dropna(axis=0, how='all')
+                
+                if num_df_clean.empty:
+                    status_msgs.append(f'{file} exists but no data has been collected.')
+                    continue
+                
+                status_msgs.append(f'Found {file} csv')
+
+                # Drop empty rows/days, this happens bc participants start some time after start of study
+                
+                fig = px.imshow(
+                    num_df.values,
+                    origin='lower',
+                    color_continuous_scale='Viridis',
+                    labels={'x': "Hour of Day", 'y': "Day"},
+                    title=f"{file.capitalize()})"
+                )
+                fig.update_layout(
+                    height=400, width=300,
+                    margin=dict(l=10, r=10, t=30, b=30),
+                    coloraxis_showscale=False
+                )
+                figs.append(dcc.Graph(figure=fig, style={'margin': '15px'}))
+
+        if not figs:
+            return html.Div(f"No sensor activity data found. Looked in {subj_path} "), f"{status_msgs} ⚠️ No data to show"
+
+        grid = html.Div(
+            figs,
+            style={
+                'display': 'flex',
+                'flexWrap': 'wrap',
+                'justifyContent': 'center',
+                'gap': '10px'
+            }
+        )
+        return grid, html.Ul([html.Li(msg) for msg in status_msgs])
+
+
+    # ---- Tab 3: FIGURES ----
+    elif active_tab == 'tab-figs':
+        fig_dir = os.path.join(subj_path, 'mtl_plt')
+        imgs = [f for f in os.listdir(fig_dir) if f.endswith('.png')]
+        if not imgs:
+            return html.Div("No images available."), f"⚠️ No .png figures from {fig_dir}"
+        return html.Div([
+            html.Div([
+                html.Img(src=f"/{fig_dir}/{img}", style={'width': '90%', 'margin': '10px'})
+                for img in imgs
+            ], style={'display': 'flex', 'flexWrap': 'wrap'})
+        ]), f"Showing {len(imgs)} figures."
+
+
+@callback(
+    Output(component_id='survey-graph', component_property='children'),
+    Input(component_id='subject-id', component_property='data'),
+    Input('survey-cols', 'value'),   
+)
+def update_survey(subject_id, survey_cols):
+    if not subject_id:
+        return "Please select a participant.", "⚠️ No subject selected."
+    if 'qual' in subject_id:
+        subject_id = subject_id.replace('qualr','PCR').replace('qualm','PCM')
+
+    subj_path = os.path.join(DATA_DIR, subject_id, 'phone', 'processed')
+    if not os.path.exists(subj_path):
+        return html.Div("No data found for this sensor."), f"❌ No data in {subj_path}"
+
+    survey_path = os.path.join(subj_path, 'survey')
+    csvs = glob.glob(os.path.join(survey_path, f"*surveyAnswers_activityScores*.csv"))
+    if not csvs:
+        return html.Div("No survey data found."), f"⚠️ No survey CSVs from {survey_path}"
+    df = pd.read_csv(sorted(csvs)[-1])
+    fig = px.line(df, x='day', y=survey_cols)
+    return dcc.Graph(figure=fig), f"✅ Survey: {os.path.basename(csvs[-1])}"
 

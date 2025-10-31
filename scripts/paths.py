@@ -107,8 +107,9 @@ def load_paths():
     logging.info(f'Using project_dir {project_dir}')
 
 
-    pcx_dir = find(os.path.expanduser('~/Library/CloudStorage/Box-Box/(Restricted)_PCR'), 'PCX')
+    pcx_dir = find(os.path.expanduser('~/Library/CloudStorage/Box-Box/Restricted_PCR'), 'PCX')
     mindlamp_dir = find(pcx_dir, 'mindlamp_mri_data')
+    mindlamp_dir = f'{mindlamp_dir}'
     mri_dir = find(pcx_dir, 'fmriprep_reports')
     data_dir = find(pcx_dir, 'PCX')
     surveys_dir = find(pcx_dir, 'behavioral')
