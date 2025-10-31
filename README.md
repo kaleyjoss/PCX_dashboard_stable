@@ -47,3 +47,21 @@ You should see the app dashboard there.
 - If there are errors but the site is still running, go to the URL http://127.0.0.1:5000 and check the "Callbacks" popup to see what the errors are. 
 
 - If it can't find a specific file/path, or you move/rename a file/folder, change the relevant filepaths in /scripts/paths.py
+
+## App Visuals
+
+### Homepage
+![home](img/home.png)
+
+### Smartphone Sensor Activity Heatmaps
+![sensor](img/sensor.png)
+
+### Daily Survey Interactive Charts
+![survey](img/survey.png)
+
+### fMRI Visualization and QC Metrics
+![fmri](img/fmri.png)
+![fmriqc](img/fmriqc.png)
+
+### Interactive Collection Rate Projections
+![proj](img/projection.png)
