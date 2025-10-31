@@ -1,4 +1,4 @@
-name: pcx-dashboard
+name: dashboard
 channels:
   - defaults
   - https://repo.anaconda.com/pkgs/main
@@ -6,5 +6,4 @@ channels:
 dependencies:
   - pandas
   - dash
-  - xarray
-prefix: /opt/anaconda3/envs/pcx-dashboard
+prefix: /opt/anaconda3/envs/dashboard

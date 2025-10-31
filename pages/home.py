@@ -26,8 +26,6 @@ import inspect
 from datetime import timedelta
 from datetime import datetime as dt
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
 import datetime
 from datetime import  timedelta
 from datetime import datetime as dt

@@ -32,7 +32,7 @@ def find(search_dir, target_folder):
             full_path = os.path.join(search_dir, target_folder)
             return full_path
         else:
-            logging.debug(f'Searching in: {search_dir} — didnt find {target_folder}, found subfolders: {filenames}. If you would like to change what directory to look for this file, change it in /scripts/paths.py')
+            logging.debug(f'Searching in: {search_dir} — didnt find {target_folder}, found subfolders: {filenames}. If you would like to change the directory in which to look for this file, change it in /scripts/paths.py')
 
     return None
 
