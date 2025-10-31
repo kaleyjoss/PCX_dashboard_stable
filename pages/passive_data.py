@@ -114,7 +114,7 @@ def update_tab(subject_id, active_tab):
                 # Drop empty rows/days, this happens bc participants start some time after start of study
                 
                 fig = px.imshow(
-                    num_df.values,
+                    num_df_clean.values,
                     origin='lower',
                     color_continuous_scale='Viridis',
                     labels={'x': "Hour of Day", 'y': "Day"},

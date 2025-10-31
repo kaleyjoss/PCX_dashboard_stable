@@ -388,7 +388,7 @@ layout = html.Div([
 		value=num_recent_mri/2,   # initial weekly rate autofilled as current real rate
 		marks={i: str(i) for i in range(0, 6, 1)}),
 	dcc.Graph(id='mri-done-graph'),
-	dmc.Group(id='graphs', children=[
+	html.Div(id='graphs', children=[
 		html.Div(id='graphs', children=[
 			dcc.Graph(figure=primary_pie, id='primary-pie'),
 			dcc.Graph(figure=other_pie, id='other-pie'),
