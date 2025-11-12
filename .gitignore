@@ -1,8 +1,0 @@
-# Ignore MATLAB data files
-*.mat
-
-# Ignore log files
-*.log
-
-# Ignore compiled Python files
-*.pyc

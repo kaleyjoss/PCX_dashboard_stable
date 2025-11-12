@@ -31,10 +31,9 @@ def find(search_dir, target_folder):
         if target_folder in filenames:
             full_path = os.path.join(search_dir, target_folder)
             return full_path
-        else:
-            logging.debug(f'Searching in: {search_dir} — didnt find {target_folder}, found subfolders: {filenames}. If you would like to change the directory in which to look for this file, change it in /scripts/paths.py')
-
-    return None
+    else:
+        logging.warning(f'FILE NOT FOUND:: Searching in: {search_dir} — didnt find {target_folder}, found subfolders: {filenames}. If you would like to change the directory in which to look for this file, change it in /scripts/paths.py')
+        return None
 
 
 
@@ -111,7 +110,7 @@ def load_paths():
     mindlamp_dir = find(pcx_dir, 'mindlamp_mri_data')
     mindlamp_dir = f'{mindlamp_dir}'
     mri_dir = find(pcx_dir, 'fmriprep_reports')
-    data_dir = find(pcx_dir, 'PCX')
+    data_dir = pcx_dir
     surveys_dir = find(pcx_dir, 'behavioral')
     REPORTS_DIR = find(pcx_dir, 'fmriprep_reports')
     tracker_df = pd.read_csv(os.path.expanduser('~/Library/CloudStorage/Box-Box/Holmes_Lab_Wiki/PCX_Round2/Subject_tracker_PCR.csv'))

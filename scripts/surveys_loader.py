@@ -95,14 +95,14 @@ def add_diagnoses_columns(surveys):
         col for col in df if "primary_diagnoses" in col
     ]
     df["primary_diagnoses_all"] = (
-        df[prim_cols].bfill(axis=1).iloc[:, 1:2]
+        df[prim_cols].bfill(axis=1).iloc[:, 1]
     )
 
     other_cols = ["SUBJECT_ID"] + [
         col for col in df if "other_diagnoses" in col
     ]
     df["other_diagnoses_all"] = (
-        df[other_cols].bfill(axis=1).iloc[:, 1:2]
+        df[other_cols].bfill(axis=1).iloc[:, 1]
     )
 
     surveys["clinical_administered_data"] = df
